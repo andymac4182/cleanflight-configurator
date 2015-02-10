@@ -15,7 +15,7 @@ function startApplication() {
         }
     }, function (createdWindow) {
         createdWindow.contentWindow.addEventListener('load', function () {
-            createdWindow.contentWindow.catch_startup_time(applicationStartTime);
+            //createdWindow.contentWindow.catch_startup_time(applicationStartTime);
         });
 
         createdWindow.onClosed.addListener(function () {

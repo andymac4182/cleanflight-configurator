@@ -3,8 +3,8 @@
     "minimum_chrome_version": "38",
     "version": "0.61.0",
     "author": "Hydra",
-    "name": "Cleanflight - Configurator",
-    "short_name": "cleanflight",
+    "name": "Cleanflight - Configurator - Angular",
+    "short_name": "cleanflight-angular",
     "description": "Crossplatform configuration tool for Cleanflight flight control system",
 
     "offline_enabled": true,
@@ -40,6 +40,6 @@
     ],
 
     "icons": {
-        "128": "images/icon_128.png"
+        "128": "assets/img/icon_128.png"
     }
 }

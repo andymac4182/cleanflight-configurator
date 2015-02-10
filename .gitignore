@@ -1,2 +1,5 @@
 .DS_store
-
+*.map
+.sass-cache/
+.idea/
+old/
