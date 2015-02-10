@@ -2,30 +2,39 @@
 <html lang="en" ng-app="cleanflightConfigurator" ng-csp>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="author" content="Chaotic" />
+        <meta name="author" content="andymac4182 Chaotic" />
 
-        <link rel="stylesheet" href="assets/lib/foundation/foundation.css">
+        <!-- Bower Components -->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="bower_components/angular-translate/angular-translate.js"></script>
+        <script src="bower_components/d3/d3.js"></script>
+        <script src="bower_components/three.js/three.js"></script>
 
-        <script src="assets/lib/jquery-2.1.3.min.js"></script>
-        <script src="assets/lib/angular/angular.min.js"></script>
-        <script src="assets/lib/angular/angular-route.min.js"></script>
-        <script src="assets/lib/google-analytics-bundle.js"></script>
-        <script src="assets/lib/d3.min.js"></script>
-        <script src="assets/lib/three/three.min.js"></script>
+        <script src="bower_components/toastr/toastr.js"></script>
+
+        <!-- Extra Libs -->
         <script src="assets/lib/three/Projector.js"></script>
         <script src="assets/lib/three/CanvasRenderer.js"></script>
 
+        <!-- App JS -->
         <script src="app/app.js"></script>
 
-        <link rel="stylesheet" href="app/app.css">
+        <!-- Bower CSS -->
+        <link rel="stylesheet" href="bower_components/foundation/css/foundation.css">
+        <link rel="stylesheet" href="bower_components/toastr/toastr.css" />
+
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="app/app.css" />
+
+        <!-- Directives -->
+        <script src="app/shared/navigation/navigationDirective.js"></script>
+        <script src="app/shared/connection/connectionDirective.js"></script>
 
         <!-- Components -->
-        <script src="app/components/navigation/navigationDirective.js"></script>
-
-        <script src="app/components/connection/connectionDirective.js"></script>
-
-        <!-- Tabs -->
-        <script src="app/views/landing/landingController.js"></script>
+        <script src="app/components/landing/landingController.js"></script>
     </head>
     <body>
          <div class="grid-frame vertical">

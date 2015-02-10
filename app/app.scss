@@ -2,7 +2,7 @@
 @import "_style";
 
 // Components
-@import "components/connection/_connectionStyle", "components/navigation/_navigationStyle";
+@import "shared/connection/_connectionStyle", "shared/navigation/_navigationStyle";
 
 // Views
-@import "views/landing/_landingStyle";
+@import "components/landing/_landingStyle";

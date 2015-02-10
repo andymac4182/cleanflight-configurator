@@ -1,19 +1,22 @@
-(function () {
-    "use strict";
-    var app = angular.module('cleanflightConfigurator', ['ngRoute']);
+(function() {
+	"use strict";
+	var app = angular.module('cleanflightConfigurator', ['ui.router']);
 
-    app.config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/landing', {
-            templateUrl: 'app/views/landing/landingView.html',
-            controller: 'LandingController'
-        }).otherwise({
-                redirectTo: '/landing'
-        });
-    }]);
+	app.config(['$urlRouterProvider', '$stateProvider', function(
+		$urlRouterProvider, $stateProvider) {
+		$stateProvider
+			.state('landing', {
+				url: "",
+				templateUrl: 'components/landing/landingView.html',
+				controllerAs: 'landingController'
+			})
 
-    app.run(function($rootScope, $window) {
-        angular.element($window).bind('resize', function() {
-            $rootScope.$broadcast('resize');
-        });
-    });
+		$urlRouterProvider.otherwise('/');
+	}]);
+
+	app.run(function($rootScope, $window) {
+		angular.element($window).bind('resize', function() {
+			$rootScope.$broadcast('resize');
+		});
+	});
 }());
