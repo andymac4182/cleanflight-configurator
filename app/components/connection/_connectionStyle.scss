@@ -1,0 +1,46 @@
+.connection-container {
+  padding: 5px;
+  width: 600px;
+
+  select {
+    margin-bottom: 0;
+    margin-right: 5px;
+    padding: 0.1rem;
+  }
+
+  #port {
+    width: 150px;
+  }
+
+  #baud {
+    width: 80px;
+  }
+
+  .connect-button {
+    margin-bottom: 0;
+    margin-right: 5px;
+    height: 25px;
+    width: 100px;
+    line-height: 25px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  label {
+    margin-bottom: 0px;
+    padding: 5px 0 5px 0;
+  }
+
+  .auto-connect {
+    width: 300px;
+  }
+
+  .disconnected {
+    background-color: $color-bad-unselected;
+  }
+
+  .disconnected:hover {
+    background-color: $color-bad;
+  }
+}

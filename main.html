@@ -17,14 +17,21 @@
 
         <script src="app/app.js"></script>
 
-        <!-- Components -->
-        <script src="app/components/landing/landingController.js"></script>
-        <link rel="stylesheet" href="app/components/landing/landingStyle.css">
+        <link rel="stylesheet" href="app/app.css">
 
+        <!-- Components -->
+        <script src="app/components/navigation/navigationDirective.js"></script>
+
+        <script src="app/components/connection/connectionDirective.js"></script>
+
+        <!-- Tabs -->
+        <script src="app/views/landing/landingController.js"></script>
     </head>
     <body>
          <div class="grid-frame vertical">
-             <div class="main-content grid-block" ng-view=""></div>
+             <connection></connection>
+             <navigation></navigation>
+             <div class="grid-block" ng-view=""></div>
          </div>
     </body>
 </html>
