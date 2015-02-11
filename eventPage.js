@@ -6,7 +6,7 @@
 function startApplication() {
   var applicationStartTime = new Date().getTime();
 
-  chrome.app.window.create('main.html', {
+  chrome.app.window.create('index.html', {
     id: 'main-window',
     frame: 'chrome',
     innerBounds: {
