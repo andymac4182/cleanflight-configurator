@@ -3,7 +3,7 @@
 Modernizr.addTest('emoji', function() {
   if (!Modernizr.canvastext) return false;
   var node = document.createElement('canvas'),
-      ctx = node.getContext('2d');
+    ctx = node.getContext('2d');
   ctx.textBaseline = 'top';
   ctx.font = '32px Arial';
   ctx.fillText('\ud83d\ude03', 0, 0); // "smiling face with open mouth" emoji

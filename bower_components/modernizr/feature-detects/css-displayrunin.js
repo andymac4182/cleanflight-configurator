@@ -1,4 +1,3 @@
-
 // by alanhogan
 
 // https://github.com/Modernizr/Modernizr/issues/198
@@ -6,13 +5,12 @@
 
 
 
-Modernizr.testStyles(' #modernizr { display: run-in; } ', function(elem, rule){ 
+Modernizr.testStyles(' #modernizr { display: run-in; } ', function(elem, rule) {
 
   var ret = (window.getComputedStyle ?
-         getComputedStyle(elem, null).getPropertyValue('display') :
-         elem.currentStyle['display']);
+    getComputedStyle(elem, null).getPropertyValue('display') :
+    elem.currentStyle['display']);
 
   Modernizr.addTest('display-runin', ret == 'run-in');
 
 });
-

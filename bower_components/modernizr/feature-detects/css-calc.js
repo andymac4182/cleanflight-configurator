@@ -2,11 +2,11 @@
 // By @calvein
 
 Modernizr.addTest('csscalc', function() {
-    var prop = 'width:';
-    var value = 'calc(10px);';
-    var el = document.createElement('div');
+  var prop = 'width:';
+  var value = 'calc(10px);';
+  var el = document.createElement('div');
 
-    el.style.cssText = prop + Modernizr._prefixes.join(value + prop);
+  el.style.cssText = prop + Modernizr._prefixes.join(value + prop);
 
-    return !!el.style.length;
+  return !!el.style.length;
 });

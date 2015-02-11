@@ -1,20 +1,15 @@
 // Foundation by ZURB
 // foundation.zurb.com
 // Licensed under MIT Open Source
-
 @import "global";
-
 //
 // @variables
 //
 $include-html-pricing-classes: $include-html-classes !default;
-
 // We use this to control the border color
 $price-table-border: solid 1px $gainsboro !default;
-
 // We use this to control the bottom margin of the pricing table
 $price-table-margin-bottom: rem-calc(20) !default;
-
 // We use these to control the title styles
 $price-title-bg: $oil !default;
 $price-title-padding: rem-calc(15 20) !default;
@@ -23,7 +18,6 @@ $price-title-color: $smoke !default;
 $price-title-weight: $font-weight-normal !default;
 $price-title-size: rem-calc(16) !default;
 $price-title-font-family: $body-font-family !default;
-
 // We use these to control the price styles
 $price-money-bg: $vapor !default;
 $price-money-padding: rem-calc(15 20) !default;
@@ -32,8 +26,6 @@ $price-money-color: $oil !default;
 $price-money-weight: $font-weight-normal !default;
 $price-money-size: rem-calc(32) !default;
 $price-money-font-family: $body-font-family !default;
-
-
 // We use these to control the description styles
 $price-bg: $white !default;
 $price-desc-color: $monsoon !default;
@@ -43,7 +35,6 @@ $price-desc-font-size: rem-calc(12) !default;
 $price-desc-weight: $font-weight-normal !default;
 $price-desc-line-height: 1.4 !default;
 $price-desc-bottom-border: dotted 1px $gainsboro !default;
-
 // We use these to control the list item styles
 $price-item-color: $oil !default;
 $price-item-padding: rem-calc(15) !default;
@@ -51,20 +42,17 @@ $price-item-align: center !default;
 $price-item-font-size: rem-calc(14) !default;
 $price-item-weight: $font-weight-normal !default;
 $price-item-bottom-border: dotted 1px $gainsboro !default;
-
 // We use these to control the CTA area styles
 $price-cta-bg: $white !default;
 $price-cta-align: center !default;
 $price-cta-padding: rem-calc(20 20 0) !default;
-
 // @mixins
 //
 // We use this to create the container element for the pricing tables
 @mixin pricing-table-container {
   border: $price-table-border;
-  margin-#{$default-float}: 0;
+  margin-#{$default-float} : 0;
   margin-bottom: $price-table-margin-bottom;
-
   & * {
     list-style: none;
     line-height: 1;
@@ -82,7 +70,6 @@ $price-cta-padding: rem-calc(20 20 0) !default;
   font-size: $price-title-size;
   font-family: $price-title-font-family;
 }
-
 // @mixins
 //
 // We use this mixin to control the pricing table price styles
@@ -95,7 +82,6 @@ $price-cta-padding: rem-calc(20 20 0) !default;
   font-size: $price-money-size;
   font-family: $price-money-font-family;
 }
-
 // @mixins
 //
 // We use this mixin to create the description styles for the pricing table
@@ -109,7 +95,6 @@ $price-cta-padding: rem-calc(20 20 0) !default;
   line-height: $price-desc-line-height;
   border-bottom: $price-desc-bottom-border;
 }
-
 // @mixins
 //
 // We use this mixin to style the bullet items in the pricing table
@@ -122,7 +107,6 @@ $price-cta-padding: rem-calc(20 20 0) !default;
   font-weight: $price-item-weight;
   border-bottom: $price-item-bottom-border;
 }
-
 // @mixins
 //
 // We use this mixin to style the CTA area of the pricing tables
@@ -131,20 +115,26 @@ $price-cta-padding: rem-calc(20 20 0) !default;
   text-align: $price-cta-align;
   padding: $price-cta-padding;
 }
-
 @include exports("pricing-table") {
   @if $include-html-pricing-classes {
-
     /* Pricing Tables */
     .pricing-table {
       @include pricing-table-container;
-
-      .title { @include pricing-table-title; }
-      .price { @include pricing-table-price; }
-      .description { @include pricing-table-description; }
-      .bullet-item { @include pricing-table-bullet; }
-      .cta-button { @include pricing-table-cta; }
+      .title {
+        @include pricing-table-title;
+      }
+      .price {
+        @include pricing-table-price;
+      }
+      .description {
+        @include pricing-table-description;
+      }
+      .bullet-item {
+        @include pricing-table-bullet;
+      }
+      .cta-button {
+        @include pricing-table-cta;
+      }
     }
-
   }
 }

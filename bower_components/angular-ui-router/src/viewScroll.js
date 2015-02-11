@@ -18,7 +18,7 @@ function $ViewScrollProvider() {
    * Reverts back to using the core [`$anchorScroll`](http://docs.angularjs.org/api/ng.$anchorScroll) service for
    * scrolling based on the url anchor.
    */
-  this.useAnchorScroll = function () {
+  this.useAnchorScroll = function() {
     useAnchorScroll = true;
   };
 
@@ -36,13 +36,13 @@ function $ViewScrollProvider() {
    * If you prefer to rely on `$anchorScroll` to scroll the view to the anchor,
    * this can be enabled by calling {@link ui.router.state.$uiViewScrollProvider#methods_useAnchorScroll `$uiViewScrollProvider.useAnchorScroll()`}.
    */
-  this.$get = ['$anchorScroll', '$timeout', function ($anchorScroll, $timeout) {
+  this.$get = ['$anchorScroll', '$timeout', function($anchorScroll, $timeout) {
     if (useAnchorScroll) {
       return $anchorScroll;
     }
 
-    return function ($element) {
-      $timeout(function () {
+    return function($element) {
+      $timeout(function() {
         $element[0].scrollIntoView();
       }, 0, false);
     };

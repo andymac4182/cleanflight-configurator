@@ -1,21 +1,17 @@
 // Foundation by ZURB
 // foundation.zurb.com
 // Licensed under MIT Open Source
-
 @import "global";
-
 //
 // Tooltip Variables
 //
 $include-html-tooltip-classes: $include-html-classes !default;
-
 $has-tip-border-bottom: dotted 1px $iron !default;
 $has-tip-font-weight: $font-weight-bold !default;
 $has-tip-font-color: $oil !default;
 $has-tip-border-bottom-hover: dotted 1px scale-color($primary-color, $lightness: -55%) !default;
 $has-tip-font-color-hover: $primary-color !default;
 $has-tip-cursor-type: help !default;
-
 $tooltip-padding: rem-calc(12) !default;
 $tooltip-bg: $oil !default;
 $tooltip-font-size: rem-calc(14) !default;
@@ -30,27 +26,24 @@ $tooltip-radius: $global-radius !default;
 $tooltip-rounded: $global-rounded !default;
 $tooltip-pip-size: 5px !default;
 $tooltip-max-width: 300px !default;
-
 @include exports("tooltip") {
   @if $include-html-tooltip-classes {
-
     /* Tooltips */
     .has-tip {
       border-bottom: $has-tip-border-bottom;
       cursor: $has-tip-cursor-type;
       font-weight: $has-tip-font-weight;
       color: $has-tip-font-color;
-
       &:hover,
       &:focus {
         border-bottom: $has-tip-border-bottom-hover;
         color: $has-tip-font-color-hover;
       }
-
       &.tip-left,
-      &.tip-right { float: none !important; }
+      &.tip-right {
+        float: none !important;
+      }
     }
-
     .tooltip {
       display: none;
       position: absolute;
@@ -60,14 +53,13 @@ $tooltip-max-width: 300px !default;
       line-height: $tooltip-line-height;
       padding: $tooltip-padding;
       max-width: $tooltip-max-width;
-      #{$default-float}: 50%;
+      #{$default-float} : 50%;
       width: 100%;
       color: $tooltip-font-color;
       background: $tooltip-bg;
-
       &>.nub {
         display: block;
-        #{$default-float}: $tooltip-pip-size;
+        #{$default-float} : $tooltip-pip-size;
         position: absolute;
         width: 0;
         height: 0;
@@ -75,13 +67,11 @@ $tooltip-max-width: 300px !default;
         border-color: transparent transparent $tooltip-bg transparent;
         top: -($tooltip-pip-size * 2);
         pointer-events: none;
-
         &.rtl {
           left: auto;
-          #{$opposite-direction}: $tooltip-pip-size;
+          #{$opposite-direction} : $tooltip-pip-size;
         }
       }
-
       &.radius {
         @include radius($tooltip-radius);
       }
@@ -91,20 +81,17 @@ $tooltip-max-width: 300px !default;
           left: 2rem;
         }
       }
-
       &.opened {
         color: $has-tip-font-color-hover !important;
         border-bottom: $has-tip-border-bottom-hover !important;
       }
     }
-
     .tap-to-close {
       display: block;
       font-size: $tooltip-close-font-size;
       color: $tooltip-close-font-color;
       font-weight: $tooltip-close-font-weight;
     }
-
     @media #{$small} {
       .tooltip {
         &>.nub {
@@ -116,10 +103,10 @@ $tooltip-max-width: 300px !default;
           top: auto;
           bottom: -($tooltip-pip-size * 2);
         }
-
         &.tip-left,
-        &.tip-right { float: none !important; }
-
+        &.tip-right {
+          float: none !important;
+        }
         &.tip-left>.nub {
           border-color: transparent transparent transparent $tooltip-bg;
           right: -($tooltip-pip-size * 2);
@@ -134,9 +121,7 @@ $tooltip-max-width: 300px !default;
           top: 50%;
           margin-top: -$tooltip-pip-size;
         }
-
       }
     }
-
   }
 }

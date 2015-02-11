@@ -1,5 +1,3 @@
-
-
 // Detects whether input type="file" is available on the platform
 // E.g. iOS < 6 and some android version don't support this
 
@@ -7,7 +5,7 @@
 //  don't support it (iphone, ipad, etc).
 
 Modernizr.addTest('fileinput', function() {
-    var elem = document.createElement('input');
-    elem.type = 'file';
-    return !elem.disabled;
+  var elem = document.createElement('input');
+  elem.type = 'file';
+  return !elem.disabled;
 });

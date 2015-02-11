@@ -4,8 +4,7 @@
 Modernizr.addTest('createelement-attrs', function() {
   try {
     return document.createElement("<input name='test' />").getAttribute('name') == 'test';
-  } catch(e) {
+  } catch (e) {
     return false;
   }
 });
-

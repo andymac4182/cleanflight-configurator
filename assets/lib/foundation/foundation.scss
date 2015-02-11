@@ -2,20 +2,14 @@
 // by ZURB
 // foundation.zurb.com
 // Licensed under MIT Open Source
-
 $foundation-version: '1.0.2';
-
 // Make sure the charset is set appropriately
 @charset "UTF-8";
-
 // Libraries (let's make Normalize an external dependency eventually)
 @import "vendor/_normalize";
-
 // Helpers
 @import "helpers/_functions", "helpers/_mixins", "helpers/_breakpoints", "helpers/_images";
-
 // Global styles
 @import "global";
-
 // Components
 @import "components/_iconic", "components/_action-sheet", "components/_block-list", "components/_button", "components/_button-group", "components/_card", "components/_extras", "components/_forms", "components/_grid", "components/_title-bar", "components/_label", "components/_list", "components/_menu-bar", "components/_modal", "components/_motion", "components/_notification", "components/_off-canvas", "components/_popup", "components/_switch", "components/_tabs", "components/_accordion", "components/_typography", "components/_utilities";

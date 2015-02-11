@@ -14,9 +14,11 @@
 
 Modernizr.addTest('lowbandwidth', function() {
 
-  var connection = navigator.connection || { type: 0 }; // polyfill
+  var connection = navigator.connection || {
+    type: 0
+  }; // polyfill
 
   return connection.type == 3 || // connection.CELL_2G
-      connection.type == 4 || // connection.CELL_3G
-      /^[23]g$/.test(connection.type); // string value in new spec
+    connection.type == 4 || // connection.CELL_3G
+    /^[23]g$/.test(connection.type); // string value in new spec
 });

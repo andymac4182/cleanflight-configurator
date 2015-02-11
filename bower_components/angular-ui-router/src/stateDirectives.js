@@ -1,9 +1,13 @@
 function parseStateRef(ref, current) {
-  var preparsed = ref.match(/^\s*({[^}]*})\s*$/), parsed;
+  var preparsed = ref.match(/^\s*({[^}]*})\s*$/),
+    parsed;
   if (preparsed) ref = current + '(' + preparsed[1] + ')';
   parsed = ref.replace(/\n/g, " ").match(/^([^(]+?)\s*(\((.*)\))?$/);
   if (!parsed || parsed.length !== 4) throw new Error("Invalid state ref '" + ref + "'");
-  return { state: parsed[1], paramExpr: parsed[3] || null };
+  return {
+    state: parsed[1],
+    paramExpr: parsed[3] || null
+  };
 }
 
 function stateContext(el) {
@@ -24,17 +28,17 @@ function stateContext(el) {
  * @restrict A
  *
  * @description
- * A directive that binds a link (`<a>` tag) to a state. If the state has an associated 
- * URL, the directive will automatically generate & update the `href` attribute via 
- * the {@link ui.router.state.$state#methods_href $state.href()} method. Clicking 
- * the link will trigger a state transition with optional parameters. 
+ * A directive that binds a link (`<a>` tag) to a state. If the state has an associated
+ * URL, the directive will automatically generate & update the `href` attribute via
+ * the {@link ui.router.state.$state#methods_href $state.href()} method. Clicking
+ * the link will trigger a state transition with optional parameters.
  *
- * Also middle-clicking, right-clicking, and ctrl-clicking on the link will be 
+ * Also middle-clicking, right-clicking, and ctrl-clicking on the link will be
  * handled natively by the browser.
  *
- * You can also use relative state paths within ui-sref, just like the relative 
+ * You can also use relative state paths within ui-sref, just like the relative
  * paths passed to `$state.go()`. You just need to be aware that the path is relative
- * to the state that the link lives in, in other words the state that loaded the 
+ * to the state that the link lives in, in other words the state that loaded the
  * template containing the link.
  *
  * You can specify options to pass to {@link ui.router.state.$state#go $state.go()}
@@ -42,22 +46,22 @@ function stateContext(el) {
  * and `reload`.
  *
  * @example
- * Here's an example of how you'd use ui-sref and how it would compile. If you have the 
+ * Here's an example of how you'd use ui-sref and how it would compile. If you have the
  * following template:
  * <pre>
  * <a ui-sref="home">Home</a> | <a ui-sref="about">About</a> | <a ui-sref="{page: 2}">Next page</a>
- * 
+ *
  * <ul>
  *     <li ng-repeat="contact in contacts">
  *         <a ui-sref="contacts.detail({ id: contact.id })">{{ contact.name }}</a>
  *     </li>
  * </ul>
  * </pre>
- * 
+ *
  * Then the compiled html would be (assuming Html5Mode is off and current state is contacts):
  * <pre>
  * <a href="#/home" ui-sref="home">Home</a> | <a href="#/about" ui-sref="about">About</a> | <a href="#/contacts?page=2" ui-sref="{page: 2}">Next page</a>
- * 
+ *
  * <ul>
  *     <li ng-repeat="contact in contacts">
  *         <a href="#/contacts/1" ui-sref="contacts.detail({ id: contact.id })">Joe</a>
@@ -77,6 +81,7 @@ function stateContext(el) {
  * @param {Object} ui-sref-opts options to pass to {@link ui.router.state.$state#go $state.go()}
  */
 $StateRefDirective.$inject = ['$state', '$timeout'];
+
 function $StateRefDirective($state, $timeout) {
   var allowedOptions = ['location', 'inherit', 'reload'];
 
@@ -85,12 +90,19 @@ function $StateRefDirective($state, $timeout) {
     require: ['?^uiSrefActive', '?^uiSrefActiveEq'],
     link: function(scope, element, attrs, uiSrefActive) {
       var ref = parseStateRef(attrs.uiSref, $state.current.name);
-      var params = null, url = null, base = stateContext(element) || $state.$current;
-      var newHref = null, isAnchor = element.prop("tagName") === "A";
+      var params = null,
+        url = null,
+        base = stateContext(element) || $state.$current;
+      var newHref = null,
+        isAnchor = element.prop("tagName") === "A";
       var isForm = element[0].nodeName === "FORM";
-      var attr = isForm ? "action" : "href", nav = true;
+      var attr = isForm ? "action" : "href",
+        nav = true;
 
-      var options = { relative: base, inherit: true };
+      var options = {
+        relative: base,
+        inherit: true
+      };
       var optionsOverride = scope.$eval(attrs.uiSrefOpts) || {};
 
       angular.forEach(allowedOptions, function(option) {
@@ -128,7 +140,7 @@ function $StateRefDirective($state, $timeout) {
 
       element.bind("click", function(e) {
         var button = e.which || e.button;
-        if ( !(button > 1 || e.ctrlKey || e.metaKey || e.shiftKey || element.attr('target')) ) {
+        if (!(button > 1 || e.ctrlKey || e.metaKey || e.shiftKey || element.attr('target'))) {
           // HACK: This is to allow ng-clicks to be processed before the transition is initiated:
           var transition = $timeout(function() {
             $state.go(ref.state, params, options);
@@ -136,7 +148,7 @@ function $StateRefDirective($state, $timeout) {
           e.preventDefault();
 
           // if the state has no URL, ignore one preventDefault from the <a> directive.
-          var ignorePreventDefaultCount = isAnchor && !newHref ? 1: 0;
+          var ignorePreventDefaultCount = isAnchor && !newHref ? 1 : 0;
           e.preventDefault = function() {
             if (ignorePreventDefaultCount-- <= 0)
               $timeout.cancel(transition);
@@ -222,10 +234,11 @@ function $StateRefDirective($state, $timeout) {
  *
  */
 $StateRefActiveDirective.$inject = ['$state', '$stateParams', '$interpolate'];
+
 function $StateRefActiveDirective($state, $stateParams, $interpolate) {
-  return  {
+  return {
     restrict: "A",
-    controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
+    controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
       var state, params, activeClass;
 
       // There probably isn't much point in $observing this
@@ -234,7 +247,7 @@ function $StateRefActiveDirective($state, $stateParams, $interpolate) {
       activeClass = $interpolate($attrs.uiSrefActiveEq || $attrs.uiSrefActive || '', false)($scope);
 
       // Allow uiSref to communicate with uiSrefActive[Equals]
-      this.$$setStateInfo = function (newState, newParams) {
+      this.$$setStateInfo = function(newState, newParams) {
         state = $state.get(newState, stateContext($element));
         params = newParams;
         update();

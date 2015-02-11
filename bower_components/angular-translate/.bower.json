@@ -8,12 +8,10 @@
   },
   "ignore": [],
   "author": "Pascal Precht",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/MIT"
-    }
-  ],
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://www.opensource.org/licenses/MIT"
+  }],
   "homepage": "https://github.com/PascalPrecht/bower-angular-translate",
   "_release": "2.6.0",
   "_resolution": {

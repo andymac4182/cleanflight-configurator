@@ -3,16 +3,18 @@
 'use strict';
 
 var isDefined = angular.isDefined,
-    isFunction = angular.isFunction,
-    isString = angular.isString,
-    isObject = angular.isObject,
-    isArray = angular.isArray,
-    forEach = angular.forEach,
-    extend = angular.extend,
-    copy = angular.copy;
+  isFunction = angular.isFunction,
+  isString = angular.isString,
+  isObject = angular.isObject,
+  isArray = angular.isArray,
+  forEach = angular.forEach,
+  extend = angular.extend,
+  copy = angular.copy;
 
 function inherit(parent, extra) {
-  return extend(new (extend(function() {}, { prototype: parent }))(), extra);
+  return extend(new(extend(function() {}, {
+    prototype: parent
+  }))(), extra);
 }
 
 function merge(dst) {
@@ -72,7 +74,8 @@ function indexOf(array, value) {
   if (Array.prototype.indexOf) {
     return array.indexOf(value, Number(arguments[2]) || 0);
   }
-  var len = array.length >>> 0, from = Number(arguments[2]) || 0;
+  var len = array.length >>> 0,
+    from = Number(arguments[2]) || 0;
   from = (from < 0) ? Math.ceil(from) : Math.floor(from);
 
   if (from < 0) from += len;
@@ -93,7 +96,9 @@ function indexOf(array, value) {
  * @param {Object} $to Internal definition of object representing state to transition to.
  */
 function inheritParams(currentParams, newParams, $current, $to) {
-  var parents = ancestors($current, $to), parentParams, inherited = {}, inheritList = [];
+  var parents = ancestors($current, $to),
+    parentParams, inherited = {},
+    inheritList = [];
 
   for (var i in parents) {
     if (!parents[i].params) continue;
@@ -124,7 +129,7 @@ function equalForKeys(a, b, keys) {
     for (var n in a) keys.push(n); // Used instead of Object.keys() for IE8 compatibility
   }
 
-  for (var i=0; i<keys.length; i++) {
+  for (var i = 0; i < keys.length; i++) {
     var k = keys[i];
     if (a[k] != b[k]) return false; // Not '===', values aren't necessarily normalized
   }
@@ -141,7 +146,7 @@ function equalForKeys(a, b, keys) {
 function filterByKeys(keys, values) {
   var filtered = {};
 
-  forEach(keys, function (name) {
+  forEach(keys, function(name) {
     filtered[name] = values[name];
   });
   return filtered;
@@ -224,7 +229,7 @@ angular.module('ui.router.util', ['ng']);
 /**
  * @ngdoc overview
  * @name ui.router.router
- * 
+ *
  * @requires ui.router.util
  *
  * @description
@@ -238,7 +243,7 @@ angular.module('ui.router.router', ['ui.router.util']);
 /**
  * @ngdoc overview
  * @name ui.router.state
- * 
+ *
  * @requires ui.router.router
  * @requires ui.router.util
  *
@@ -247,7 +252,7 @@ angular.module('ui.router.router', ['ui.router.util']);
  *
  * This module is a dependency of the main ui.router module. Do not include this module as a dependency
  * in your angular app (use {@link ui.router} module instead).
- * 
+ *
  */
 angular.module('ui.router.state', ['ui.router.router', 'ui.router.util']);
 
@@ -259,17 +264,17 @@ angular.module('ui.router.state', ['ui.router.router', 'ui.router.util']);
  *
  * @description
  * # ui.router
- * 
- * ## The main module for ui.router 
+ *
+ * ## The main module for ui.router
  * There are several sub-modules included with the ui.router module, however only this module is needed
- * as a dependency within your angular app. The other modules are for organization purposes. 
+ * as a dependency within your angular app. The other modules are for organization purposes.
  *
  * The modules are:
  * * ui.router - the main "umbrella" module
- * * ui.router.router - 
- * 
+ * * ui.router.router -
+ *
  * *You'll need to include **only** this module as the dependency within your angular app.*
- * 
+ *
  * <pre>
  * <!doctype html>
  * <html ng-app="myApp">

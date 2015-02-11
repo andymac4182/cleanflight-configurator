@@ -1,19 +1,19 @@
 (function() {
-	'use strict';
+  'use strict';
 
-	angular
-		.module('cleanflightConfigurator')
-		.factory('serialBackendService', serialBackendService);
+  angular
+    .module('cleanflightConfigurator')
+    .factory('serialBackendService', serialBackendService);
 
-	serialBackendService.$inject = ['$http'];
+  serialBackendService.$inject = ['$http'];
 
-	function serialBackendService($http) {
-		var service = {
-			getData: getData
-		};
+  function serialBackendService($http) {
+    var service = {
+      getData: getData
+    };
 
-		return service;
+    return service;
 
-		function getData() {}
-	}
+    function getData() {}
+  }
 })();

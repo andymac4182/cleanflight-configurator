@@ -2,7 +2,6 @@
   SWITCH
   ------
 */
-
 /// @Foundation.settings
 // Switch
 $switch-width: rem-calc(50) !default;
@@ -12,31 +11,26 @@ $switch-background-active: $primary-color !default;
 $switch-border: 0 !default;
 $switch-radius: 9999px !default;
 $switch-animation-speed: 0.15s !default;
-
 $switch-paddle-color: white !default;
 $switch-paddle-offset: 4px !default;
 ///
-
 %switch {
   position: relative;
   overflow: hidden;
   display: inline-block;
-
   > input {
     position: absolute;
     left: -9999px;
     outline: none;
   }
-
   > label {
     -ms-touch-action: manipulation;
-        touch-action: manipulation;
+    touch-action: manipulation;
     display: block;
     width: 100%;
     height: 100%;
     cursor: pointer;
     margin: 0;
-
     // Paddle
     &::after {
       content: '';
@@ -47,20 +41,15 @@ $switch-paddle-offset: 4px !default;
     }
   }
 }
-
 /*
   Defines the dimmensions of the switch.
 
   $width - width of the switch.
   $height - height of the switch.
 */
-@mixin switch-layout(
-  $width: $switch-width,
-  $height: $switch-height
-) {
+@mixin switch-layout( $width: $switch-width, $height: $switch-height ) {
   width: $width;
   height: $height;
-
   > label {
     &::after {
       width: $height;
@@ -73,39 +62,25 @@ $switch-paddle-offset: 4px !default;
     }
   }
 }
-
-@mixin switch-style(
-  $background: $switch-background,
-  $background-active: $switch-background-active,
-  $border: $switch-border,
-  $radius: $switch-radius,
-  $paddle-color: $switch-paddle-color,
-  $paddle-offset: $switch-paddle-offset,
-  $animation-speed: $switch-animation-speed
-) {
+@mixin switch-style( $background: $switch-background, $background-active: $switch-background-active, $border: $switch-border, $radius: $switch-radius, $paddle-color: $switch-paddle-color, $paddle-offset: $switch-paddle-offset, $animation-speed: $switch-animation-speed ) {
   @if hasvalue($border) {
     border: $border;
   }
   border-radius: $radius;
-
   > label {
     background: $background;
-
     &::after {
       background: $paddle-color;
       border-radius: $radius;
       transition: left $animation-speed ease-out;
-
       @if hasvalue($paddle-offset) {
-        border: $paddle-offset solid $background
+        border: $paddle-offset solid $background;
       }
     }
   }
-
   input:checked + label {
     background: $background-active;
     margin: 0;
-
     &::after {
       @if hasvalue($paddle-offset) {
         border-color: $background-active;
@@ -113,18 +88,19 @@ $switch-paddle-offset: 4px !default;
     }
   }
 }
-
 @mixin switch() {
   @extend %switch;
   @include switch-layout;
   @include switch-style;
 }
-
 @include exports(switch) {
   .switch {
     @include switch;
-
-    &.small { @include switch-layout(rem-calc(40), rem-calc(26)); }
-    &.large { @include switch-layout(rem-calc(60), rem-calc(38)); }
+    &.small {
+      @include switch-layout(rem-calc(40), rem-calc(26));
+    }
+    &.large {
+      @include switch-layout(rem-calc(60), rem-calc(38));
+    }
   }
 }

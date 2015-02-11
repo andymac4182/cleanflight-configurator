@@ -7,13 +7,13 @@
 
 (function() {
 
-    var elem = document.createElement('a'),
-        eStyle = elem.style,
-        val = "right 10px bottom 10px";
+  var elem = document.createElement('a'),
+    eStyle = elem.style,
+    val = "right 10px bottom 10px";
 
-    Modernizr.addTest('bgpositionshorthand', function(){
-        eStyle.cssText = "background-position: " + val + ";";
-        return (eStyle.backgroundPosition === val);
-    });
+  Modernizr.addTest('bgpositionshorthand', function() {
+    eStyle.cssText = "background-position: " + val + ";";
+    return (eStyle.backgroundPosition === val);
+  });
 
 }());
