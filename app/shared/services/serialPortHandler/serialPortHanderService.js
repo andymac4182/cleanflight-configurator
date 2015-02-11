@@ -5,9 +5,9 @@
 		.module('app')
 		.factory('cleanflightConfigurator', cleanflightConfigurator);
 
-	cleanflightConfigurator.$inject = ['$log'];
+	cleanflightConfigurator.$inject = ['$log', '$serialService'];
 
-	function cleanflightConfigurator($log) {
+	function cleanflightConfigurator($log, $serialService) {
 		var service = {
 
 
@@ -37,7 +37,7 @@
 		function check() {
 			var self = this;
 
-			serial.getDevices(function(current_ports) {
+			$serialService.getDevices(function(current_ports) {
 				// port got removed or initial_ports wasn't initialized yet
 				if (self.array_difference(self.initial_ports, current_ports).length >
 					0 ||

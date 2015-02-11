@@ -1,0 +1,26 @@
+{
+  "name": "cleanflight-configurator",
+  "version": "0.61.0",
+  "homepage": "https://github.com/andymac4182/cleanflight-configurator",
+  "authors": [
+    "Andrew McClenaghan <andrew.mcclenaghan@gmail.com>"
+  ],
+  "main": "main.html",
+  "license": "GPLv3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-translate": "~2.6.0",
+    "angular-ui-router": "~0.2.13",
+    "d3": "~3.5.4",
+    "foundation": "zurb/bower-foundation#~5.5.1",
+    "three.js": "*",
+    "toastr": "~2.1.0"
+  }
+}
