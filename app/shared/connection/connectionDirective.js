@@ -16,17 +16,23 @@
 			link: function(scope, element, attrs) {
 				scope.portSpeedList = serialPortHandlerService.portSpeedList;
 
-				scope.currentSpeed = serialPortHandlerService.defaultPortSpeed;
+				scope.portBaudRate = serialPortHandlerService.portBaudRate;
+				scope.currentPortName = serialPortHandlerService.currentPortName;
 
 				scope.refreshPortList = function refreshPortList() {
 					$log.info("Loading port list");
 					serialPortHandlerService.refreshPortList();
 				};
 
+				scope.connect = function connect() {
+					$log.log("Connect function");
+					serialPortHandlerService.connectToDevice();
+				};
+
 				scope.$watch(serialPortHandlerService.portList, function() {
 					scope.portList = serialPortHandlerService.portList;
 					if (!scope.currentPort) {
-						scope.currentPort = serialPortHandlerService.portList[0];
+
 					}
 
 				});
@@ -34,6 +40,8 @@
 				scope.$watch(scope.currentPort, function() {
 					$log.info("Current port: " + scope.currentPort);
 				})
+
+
 			}
 		};
 	};
