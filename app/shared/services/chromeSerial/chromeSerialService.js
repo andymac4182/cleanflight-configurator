@@ -6,20 +6,22 @@
 		.factory('chromeSerialService', chromeSerialService);
 
 
-	function chromeSerialService($log) {
-		var service = {
+	function chromeSerialService($log, $rootScope) {
+		var portIsConnected = false;
+
+        var service = {
 			getPortList: getPortList,
 			openPort: openPort,
 			writeHex: writeHex,
 			registerReadCallback: registerReadCallback,
-			closePort: closePort
+			closePort: closePort,
+
+            portIsConnected: portIsConnected
 		};
 
 		activate();
 
-		return service;
-
-		var connectionId;
+        var connectionId;
 
 		function activate() {
 
@@ -39,10 +41,16 @@
 		}
 
 		function openPort(portName, bitrate) {
-			var options = {
-				bitrate: bitrate
-			}
-			chrome.serial.connect(portName, options, portOpened);
+			if(!portIsConnected) {
+                var options = {
+                    bitrate: bitrate
+                }
+                chrome.serial.connect(portName, options, portOpened);
+            }
+            else
+            {
+                $log.error("Port already connected");
+            }
 		}
 
 		function writeHex(data) {
@@ -73,11 +81,14 @@
 		function portOpened(connectionInfo) {
 			$rootScope.$broadcast('SerialPort.Opened');
 			connectionId = connectionInfo.connectionId;
+            portIsConnected = true;
 		}
 
 		function portClosed(bool) {
 			$rootScope.$broadcast('SerialPort.Closed');
 			connectionId = null;
 		}
+
+        return service;
 	}
 })();
