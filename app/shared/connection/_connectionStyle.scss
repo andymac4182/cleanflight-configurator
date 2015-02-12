@@ -1,16 +1,21 @@
 .connection-container {
   padding: 5px;
-  width: 600px;
+  //width: 600px;
   select {
     margin-bottom: 0;
     margin-right: 5px;
     padding: 0.1rem;
   }
+
+  .float {
+    float: left;
+  }
+
   #port {
     width: 150px;
   }
   #baud {
-    width: 80px;
+    width: 100px;
   }
   .connect-button {
     margin-bottom: 0;
