@@ -16,5 +16,5 @@
 		//}
 
 		return $injector.get('chromeSerialService');
-	};
+	}
 })();

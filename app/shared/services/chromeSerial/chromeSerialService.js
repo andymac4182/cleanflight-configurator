@@ -5,13 +5,12 @@
 		.module('cleanflightConfigurator')
 		.factory('chromeSerialService', chromeSerialService);
 
-	chromeSerialService.$inject = ['$log'];
 
 	function chromeSerialService($log) {
 		var self = this;
 
 		var service = {
-			getPortList: getPortList,
+			getPortList: getPortList
 		};
 
 		activate();
@@ -32,7 +31,7 @@
 				});
 			});
 
-			return portList;
+      return portList;
 		}
 	}
 })();
