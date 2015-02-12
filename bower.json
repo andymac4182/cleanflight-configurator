@@ -21,6 +21,7 @@
     "d3": "~3.5.4",
     "foundation": "zurb/bower-foundation#~5.5.1",
     "three.js": "*",
-    "toastr": "~2.1.0"
+    "toastr": "~2.1.0",
+    "angulartics": "~0.17.2"
   }
 }
