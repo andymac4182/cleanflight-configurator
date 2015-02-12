@@ -1,8 +1,10 @@
 <div class="connection-container grid-block shrink">
-  <select id="port" class="float" ng-model="portDetails.portName" ng-options="port for port in portList"></select>
-  <!--<a href="#" class="button" ng-click="refreshPortList()">Refresh</a>-->
-  <select id="baud" class="float" ng-model="portDetails.baudRate" ng-options="portSpeed for portSpeed in portSpeedList"></select>
-  <div class="connect-button disconnected float" ng-click="connect()" ng-hide="portDetails.isConnected">Connect</div>
-  <label class="checkbox-label float">
-    <input type="checkbox">Auto-Connect</label>
+    <select id="port" class="float" ng-model="portDetails.portName" ng-options="port for port in portList"></select>
+    <!--<a href="#" class="button" ng-click="refreshPortList()">Refresh</a>-->
+    <select id="baud" class="float" ng-model="portDetails.baudRate"
+            ng-options="portSpeed for portSpeed in portSpeedList"></select>
+
+    <a class="button disconnected float" ng-click="connect()" ng-hide="portDetails.isConnected">Connect</a>
+    <a class="button connected float ng-hide" ng-click="connect()" ng-show="portDetails.isConnected">Disconnect</a>
+    <label class="checkbox-label float"> <input type="checkbox">Auto-Connect</label>
 </div>

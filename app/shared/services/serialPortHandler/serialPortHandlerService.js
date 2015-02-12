@@ -40,6 +40,7 @@
 
         $rootScope.$on('SerialPort.Closed', function (event, data) {
             portDetails.isConnected = false;
+            $log.info("Serial port disconnected");
         });
 
 
