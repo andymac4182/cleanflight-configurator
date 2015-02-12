@@ -1,46 +1,44 @@
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.slider = {
-    name: 'slider',
+    name : 'slider',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      start: 0,
-      end: 100,
-      step: 1,
-      precision: null,
-      initial: null,
-      display_selector: '',
-      vertical: false,
-      trigger_input_change: false,
-      on_change: function() {}
+    settings : {
+      start : 0,
+      end : 100,
+      step : 1,
+      precision : null,
+      initial : null,
+      display_selector : '',
+      vertical : false,
+      trigger_input_change : false,
+      on_change : function () {}
     },
 
-    cache: {},
+    cache : {},
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       Foundation.inherit(this, 'throttle');
       this.bindings(method, options);
       this.reflow();
     },
 
-    events: function() {
+    events : function () {
       var self = this;
 
       $(this.scope)
         .off('.slider')
         .on('mousedown.fndtn.slider touchstart.fndtn.slider pointerdown.fndtn.slider',
-          '[' + self.attr_name() + ']:not(.disabled, [disabled]) .range-slider-handle',
-          function(e) {
-            if (!self.cache.active) {
-              e.preventDefault();
-              self.set_active_slider($(e.target));
-            }
-          })
-        .on('mousemove.fndtn.slider touchmove.fndtn.slider pointermove.fndtn.slider', function(e) {
+        '[' + self.attr_name() + ']:not(.disabled, [disabled]) .range-slider-handle', function (e) {
+          if (!self.cache.active) {
+            e.preventDefault();
+            self.set_active_slider($(e.target));
+          }
+        })
+        .on('mousemove.fndtn.slider touchmove.fndtn.slider pointermove.fndtn.slider', function (e) {
           if (!!self.cache.active) {
             e.preventDefault();
             if ($.data(self.cache.active[0], 'settings').vertical) {
@@ -54,23 +52,23 @@
             }
           }
         })
-        .on('mouseup.fndtn.slider touchend.fndtn.slider pointerup.fndtn.slider', function(e) {
+        .on('mouseup.fndtn.slider touchend.fndtn.slider pointerup.fndtn.slider', function (e) {
           self.remove_active_slider();
         })
-        .on('change.fndtn.slider', function(e) {
+        .on('change.fndtn.slider', function (e) {
           self.settings.on_change();
         });
 
       self.S(window)
-        .on('resize.fndtn.slider', self.throttle(function(e) {
+        .on('resize.fndtn.slider', self.throttle(function (e) {
           self.reflow();
         }, 300));
     },
 
-    get_cursor_position: function(e, xy) {
+    get_cursor_position : function (e, xy) {
       var pageXY = 'page' + xy.toUpperCase(),
-        clientXY = 'client' + xy.toUpperCase(),
-        position;
+          clientXY = 'client' + xy.toUpperCase(),
+          position;
 
       if (typeof e[pageXY] !== 'undefined') {
         position = e[pageXY];
@@ -85,23 +83,23 @@
       return position;
     },
 
-    set_active_slider: function($handle) {
+    set_active_slider : function ($handle) {
       this.cache.active = $handle;
     },
 
-    remove_active_slider: function() {
+    remove_active_slider : function () {
       this.cache.active = null;
     },
 
-    calculate_position: function($handle, cursor_x) {
+    calculate_position : function ($handle, cursor_x) {
       var self = this,
-        settings = $.data($handle[0], 'settings'),
-        handle_l = $.data($handle[0], 'handle_l'),
-        handle_o = $.data($handle[0], 'handle_o'),
-        bar_l = $.data($handle[0], 'bar_l'),
-        bar_o = $.data($handle[0], 'bar_o');
+          settings = $.data($handle[0], 'settings'),
+          handle_l = $.data($handle[0], 'handle_l'),
+          handle_o = $.data($handle[0], 'handle_o'),
+          bar_l = $.data($handle[0], 'bar_l'),
+          bar_o = $.data($handle[0], 'bar_o');
 
-      requestAnimationFrame(function() {
+      requestAnimationFrame(function () {
         var pct;
 
         if (Foundation.rtl && !settings.vertical) {
@@ -118,15 +116,15 @@
       });
     },
 
-    set_ui: function($handle, value) {
+    set_ui : function ($handle, value) {
       var settings = $.data($handle[0], 'settings'),
-        handle_l = $.data($handle[0], 'handle_l'),
-        bar_l = $.data($handle[0], 'bar_l'),
-        norm_pct = this.normalized_percentage(value, settings.start, settings.end),
-        handle_offset = norm_pct * (bar_l - handle_l) - 1,
-        progress_bar_length = norm_pct * 100,
-        $handle_parent = $handle.parent(),
-        $hidden_inputs = $handle.parent().children('input[type=hidden]');
+          handle_l = $.data($handle[0], 'handle_l'),
+          bar_l = $.data($handle[0], 'bar_l'),
+          norm_pct = this.normalized_percentage(value, settings.start, settings.end),
+          handle_offset = norm_pct * (bar_l - handle_l) - 1,
+          progress_bar_length = norm_pct * 100,
+          $handle_parent = $handle.parent(),
+          $hidden_inputs = $handle.parent().children('input[type=hidden]');
 
       if (Foundation.rtl && !settings.vertical) {
         handle_offset = -handle_offset;
@@ -145,19 +143,19 @@
 
       $hidden_inputs.val(value);
       if (settings.trigger_input_change) {
-        $hidden_inputs.trigger('change');
+          $hidden_inputs.trigger('change');
       }
 
       if (!$handle[0].hasAttribute('aria-valuemin')) {
         $handle.attr({
-          'aria-valuemin': settings.start,
-          'aria-valuemax': settings.end
+          'aria-valuemin' : settings.start,
+          'aria-valuemax' : settings.end
         });
       }
       $handle.attr('aria-valuenow', value);
 
       if (settings.display_selector != '') {
-        $(settings.display_selector).each(function() {
+        $(settings.display_selector).each(function () {
           if (this.hasOwnProperty('value')) {
             $(this).val(value);
           } else {
@@ -168,20 +166,20 @@
 
     },
 
-    normalized_percentage: function(val, start, end) {
+    normalized_percentage : function (val, start, end) {
       return Math.min(1, (val - start) / (end - start));
     },
 
-    normalized_value: function(val, start, end, step, precision) {
+    normalized_value : function (val, start, end, step, precision) {
       var range = end - start,
-        point = val * range,
-        mod = (point - (point % step)) / step,
-        rem = point % step,
-        round = (rem >= step * 0.5 ? step : 0);
+          point = val * range,
+          mod = (point - (point % step)) / step,
+          rem = point % step,
+          round = ( rem >= step * 0.5 ? step : 0);
       return ((mod * step + round) + start).toFixed(precision);
     },
 
-    set_translate: function(ele, offset, vertical) {
+    set_translate : function (ele, offset, vertical) {
       if (vertical) {
         $(ele)
           .css('-webkit-transform', 'translateY(' + offset + 'px)')
@@ -199,13 +197,13 @@
       }
     },
 
-    limit_to: function(val, min, max) {
+    limit_to : function (val, min, max) {
       return Math.min(Math.max(val, min), max);
     },
 
-    initialize_settings: function(handle) {
+    initialize_settings : function (handle) {
       var settings = $.extend({}, this.settings, this.data_options($(handle).parent())),
-        decimal_places_match_result;
+          decimal_places_match_result;
 
       if (settings.precision === null) {
         decimal_places_match_result = ('' + settings.step).match(/\.([\d]*)/);
@@ -228,16 +226,16 @@
       $.data(handle, 'settings', settings);
     },
 
-    set_initial_position: function($ele) {
+    set_initial_position : function ($ele) {
       var settings = $.data($ele.children('.range-slider-handle')[0], 'settings'),
-        initial = ((typeof settings.initial == 'number' && !isNaN(settings.initial)) ? settings.initial : Math.floor((settings.end - settings.start) * 0.5 / settings.step) * settings.step + settings.start),
-        $handle = $ele.children('.range-slider-handle');
+          initial = ((typeof settings.initial == 'number' && !isNaN(settings.initial)) ? settings.initial : Math.floor((settings.end - settings.start) * 0.5 / settings.step) * settings.step + settings.start),
+          $handle = $ele.children('.range-slider-handle');
       this.set_ui($handle, initial);
     },
 
-    set_value: function(value) {
+    set_value : function (value) {
       var self = this;
-      $('[' + self.attr_name() + ']', this.scope).each(function() {
+      $('[' + self.attr_name() + ']', this.scope).each(function () {
         $(this).attr(self.attr_name(), value);
       });
       if (!!$(this.scope).attr(self.attr_name())) {
@@ -246,11 +244,11 @@
       self.reflow();
     },
 
-    reflow: function() {
+    reflow : function () {
       var self = this;
-      self.S('[' + this.attr_name() + ']').each(function() {
+      self.S('[' + this.attr_name() + ']').each(function () {
         var handle = $(this).children('.range-slider-handle')[0],
-          val = $(this).attr(self.attr_name());
+            val = $(this).attr(self.attr_name());
         self.initialize_settings(handle);
 
         if (val) {

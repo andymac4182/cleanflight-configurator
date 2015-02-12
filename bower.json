@@ -23,6 +23,7 @@
     "three.js": "*",
     "toastr": "~2.1.0",
     "angulartics": "~0.17.2",
-    "foundation-apps": "~1.0.2"
+    "foundation": "~5.5",
+    "responsive-nav": "~1.0.34"
   }
 }

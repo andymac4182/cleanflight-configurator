@@ -15,10 +15,7 @@
 
     var service = {
       portList: serialService.getPortList(),
-      portSpeedList: [1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400,
-        57600,
-        115200
-      ],
+      portSpeedList: [1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200],
       refreshPortList: refreshPortList,
       portDetails: portDetails,
 
@@ -34,8 +31,6 @@
     function connectToDevice() {
       serialService.openPort(portDetails.portName, portDetails.baudRate);
     }
-
-
 
     return service;
   }

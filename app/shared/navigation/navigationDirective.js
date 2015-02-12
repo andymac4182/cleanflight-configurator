@@ -25,11 +25,11 @@
             { name: "Sensors", url: "#/sensors", serial_required: false},
             { name: "Logging", url: "#/logging", serial_required: false},
             { name: "CLI", url: "#/cli", serial_required: false}
-          ]
+          ];
 
           scope.getPages = function () {
             return scope.pages;
-          }
+          };
         }
       };
     });
