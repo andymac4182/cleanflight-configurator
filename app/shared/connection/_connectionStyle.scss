@@ -1,10 +1,15 @@
+$container-height: 50px;
+$container-padding: 5px;
+
 .connection-container {
-  padding: 5px;
-  //width: 600px;
+  padding: $container-padding;
+  height: $container-height;
+
   select {
     margin-bottom: 0;
     margin-right: 5px;
     padding: 0.1rem;
+    height: 100%;
   }
 
   .float {
@@ -17,22 +22,28 @@
   #baud {
     width: 100px;
   }
+
   .connect-button {
     margin-bottom: 0;
     margin-right: 5px;
-    height: 25px;
+    height: $container-height - $container-padding*2;
     width: 100px;
-    line-height: 25px;
+    line-height: $container-height - $container-padding*2;
     color: white;
     text-align: center;
     cursor: pointer;
   }
+
   label {
     margin-bottom: 0;
     padding: 5px 0;
   }
-  .auto-connect {
-    width: 300px;
+
+  #auto-connect-checkbox {
+    height: 14px;
+    width: 14px;
+    margin: 0;
+    margin-top: $container-height/2 - 7px - $container-padding;
   }
   .disconnected {
     background-color: $color-bad-unselected;

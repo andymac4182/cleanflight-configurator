@@ -236,7 +236,6 @@ select {
  * 3. Improve usability and consistency of cursor style between image-type
  *    `input` and others.
  */
-/* 1 */
 button,
 html input[type="button"],
 input[type="reset"],

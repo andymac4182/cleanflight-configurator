@@ -4,12 +4,12 @@
  * Copyright 2014, ZURB
  * Free to use under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
- */
+*/
 
-(function($, window, document, undefined) {
+(function ($, window, document, undefined) {
   'use strict';
 
-  var header_helpers = function(class_array) {
+  var header_helpers = function (class_array) {
     var i = class_array.length;
     var head = $('head');
 
@@ -30,12 +30,11 @@
     'foundation-mq-xlarge',
     'foundation-mq-xlarge-only',
     'foundation-mq-xxlarge',
-    'foundation-data-attribute-namespace'
-  ]);
+    'foundation-data-attribute-namespace']);
 
   // Enable FastClick if present
 
-  $(function() {
+  $(function () {
     if (typeof FastClick !== 'undefined') {
       // Don't attach to body if undefined
       if (typeof document.body !== 'undefined') {
@@ -47,7 +46,7 @@
   // private Fast Selector wrapper,
   // returns jQuery object. Only use where
   // getElementById is not available.
-  var S = function(selector, context) {
+  var S = function (selector, context) {
     if (typeof selector === 'string') {
       if (context) {
         var cont;
@@ -70,7 +69,7 @@
 
   // Namespace functions.
 
-  var attr_name = function(init) {
+  var attr_name = function (init) {
     var arr = [];
     if (!init) {
       arr.push('data');
@@ -83,10 +82,10 @@
     return arr.join('-');
   };
 
-  var add_namespace = function(str) {
+  var add_namespace = function (str) {
     var parts = str.split('-'),
-      i = parts.length,
-      arr = [];
+        i = parts.length,
+        arr = [];
 
     while (i--) {
       if (i !== 0) {
@@ -105,22 +104,22 @@
 
   // Event binding and data-options updating.
 
-  var bindings = function(method, options) {
+  var bindings = function (method, options) {
     var self = this,
-      bind = function() {
-        var $this = S(this),
-          should_bind_events = !$this.data(self.attr_name(true) + '-init');
-        $this.data(self.attr_name(true) + '-init', $.extend({}, self.settings, (options || method), self.data_options($this)));
+        bind = function(){
+          var $this = S(this),
+              should_bind_events = !$this.data(self.attr_name(true) + '-init');
+          $this.data(self.attr_name(true) + '-init', $.extend({}, self.settings, (options || method), self.data_options($this)));
 
-        if (should_bind_events) {
-          self.events(this);
-        }
-      };
+          if (should_bind_events) {
+            self.events(this);
+          }
+        };
 
-    if (S(this.scope).is('[' + this.attr_name() + ']')) {
+    if (S(this.scope).is('[' + this.attr_name() +']')) {
       bind.call(this.scope);
     } else {
-      S('[' + this.attr_name() + ']', this.scope).each(bind);
+      S('[' + this.attr_name() +']', this.scope).each(bind);
     }
     // # Patch to fix #5043 to move this *after* the if/else clause in order for Backbone and similar frameworks to have improved control over event binding and data-options updating.
     if (typeof method === 'string') {
@@ -129,17 +128,17 @@
 
   };
 
-  var single_image_loaded = function(image, callback) {
-    function loaded() {
+  var single_image_loaded = function (image, callback) {
+    function loaded () {
       callback(image[0]);
     }
 
-    function bindLoad() {
+    function bindLoad () {
       this.one('load', loaded);
 
       if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
-        var src = this.attr('src'),
-          param = src.match(/\?/) ? '&' : '?';
+        var src = this.attr( 'src' ),
+            param = src.match( /\?/ ) ? '&' : '?';
 
         param += 'random=' + (new Date()).getTime();
         this.attr('src', src + param);
@@ -162,38 +161,38 @@
     https://github.com/paulirish/matchMedia.js
   */
 
-  window.matchMedia = window.matchMedia || (function(doc) {
+  window.matchMedia = window.matchMedia || (function ( doc ) {
 
     'use strict';
 
     var bool,
-      docElem = doc.documentElement,
-      refNode = docElem.firstElementChild || docElem.firstChild,
-      // fakeBody required for <FF4 when executed in <head>
-      fakeBody = doc.createElement('body'),
-      div = doc.createElement('div');
+        docElem = doc.documentElement,
+        refNode = docElem.firstElementChild || docElem.firstChild,
+        // fakeBody required for <FF4 when executed in <head>
+        fakeBody = doc.createElement( 'body' ),
+        div = doc.createElement( 'div' );
 
     div.id = 'mq-test-1';
     div.style.cssText = 'position:absolute;top:-100em';
     fakeBody.style.background = 'none';
     fakeBody.appendChild(div);
 
-    return function(q) {
+    return function (q) {
 
       div.innerHTML = '&shy;<style media="' + q + '"> #mq-test-1 { width: 42px; }</style>';
 
-      docElem.insertBefore(fakeBody, refNode);
+      docElem.insertBefore( fakeBody, refNode );
       bool = div.offsetWidth === 42;
-      docElem.removeChild(fakeBody);
+      docElem.removeChild( fakeBody );
 
       return {
-        matches: bool,
-        media: q
+        matches : bool,
+        media : q
       };
 
     };
 
-  }(document));
+  }( document ));
 
   /*
    * jquery.requestAnimationFrame
@@ -207,73 +206,73 @@
   (function(jQuery) {
 
 
-    // requestAnimationFrame polyfill adapted from Erik Möller
-    // fixes from Paul Irish and Tino Zijdel
-    // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-    // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+  // requestAnimationFrame polyfill adapted from Erik Möller
+  // fixes from Paul Irish and Tino Zijdel
+  // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+  // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 
-    var animating,
+  var animating,
       lastTime = 0,
       vendors = ['webkit', 'moz'],
       requestAnimationFrame = window.requestAnimationFrame,
       cancelAnimationFrame = window.cancelAnimationFrame,
       jqueryFxAvailable = 'undefined' !== typeof jQuery.fx;
 
-    for (; lastTime < vendors.length && !requestAnimationFrame; lastTime++) {
-      requestAnimationFrame = window[vendors[lastTime] + 'RequestAnimationFrame'];
-      cancelAnimationFrame = cancelAnimationFrame ||
-        window[vendors[lastTime] + 'CancelAnimationFrame'] ||
-        window[vendors[lastTime] + 'CancelRequestAnimationFrame'];
-    }
+  for (; lastTime < vendors.length && !requestAnimationFrame; lastTime++) {
+    requestAnimationFrame = window[ vendors[lastTime] + 'RequestAnimationFrame' ];
+    cancelAnimationFrame = cancelAnimationFrame ||
+      window[ vendors[lastTime] + 'CancelAnimationFrame' ] ||
+      window[ vendors[lastTime] + 'CancelRequestAnimationFrame' ];
+  }
 
-    function raf() {
-      if (animating) {
-        requestAnimationFrame(raf);
-
-        if (jqueryFxAvailable) {
-          jQuery.fx.tick();
-        }
-      }
-    }
-
-    if (requestAnimationFrame) {
-      // use rAF
-      window.requestAnimationFrame = requestAnimationFrame;
-      window.cancelAnimationFrame = cancelAnimationFrame;
+  function raf() {
+    if (animating) {
+      requestAnimationFrame(raf);
 
       if (jqueryFxAvailable) {
-        jQuery.fx.timer = function(timer) {
-          if (timer() && jQuery.timers.push(timer) && !animating) {
-            animating = true;
-            raf();
-          }
-        };
-
-        jQuery.fx.stop = function() {
-          animating = false;
-        };
+        jQuery.fx.tick();
       }
-    } else {
-      // polyfill
-      window.requestAnimationFrame = function(callback) {
-        var currTime = new Date().getTime(),
-          timeToCall = Math.max(0, 16 - (currTime - lastTime)),
-          id = window.setTimeout(function() {
-            callback(currTime + timeToCall);
-          }, timeToCall);
-        lastTime = currTime + timeToCall;
-        return id;
-      };
-
-      window.cancelAnimationFrame = function(id) {
-        clearTimeout(id);
-      };
-
     }
+  }
 
-  }($));
+  if (requestAnimationFrame) {
+    // use rAF
+    window.requestAnimationFrame = requestAnimationFrame;
+    window.cancelAnimationFrame = cancelAnimationFrame;
 
-  function removeQuotes(string) {
+    if (jqueryFxAvailable) {
+      jQuery.fx.timer = function (timer) {
+        if (timer() && jQuery.timers.push(timer) && !animating) {
+          animating = true;
+          raf();
+        }
+      };
+
+      jQuery.fx.stop = function () {
+        animating = false;
+      };
+    }
+  } else {
+    // polyfill
+    window.requestAnimationFrame = function (callback) {
+      var currTime = new Date().getTime(),
+        timeToCall = Math.max(0, 16 - (currTime - lastTime)),
+        id = window.setTimeout(function () {
+          callback(currTime + timeToCall);
+        }, timeToCall);
+      lastTime = currTime + timeToCall;
+      return id;
+    };
+
+    window.cancelAnimationFrame = function (id) {
+      clearTimeout(id);
+    };
+
+  }
+
+  }( $ ));
+
+  function removeQuotes (string) {
     if (typeof string === 'string' || string instanceof String) {
       string = string.replace(/^['\\/"]+|(;\s?})+|['\\/"]+$/g, '');
     }
@@ -282,31 +281,31 @@
   }
 
   window.Foundation = {
-    name: 'Foundation',
+    name : 'Foundation',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    media_queries: {
-      'small': S('.foundation-mq-small').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      'small-only': S('.foundation-mq-small-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      'medium': S('.foundation-mq-medium').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      'medium-only': S('.foundation-mq-medium-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      'large': S('.foundation-mq-large').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      'large-only': S('.foundation-mq-large-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      'xlarge': S('.foundation-mq-xlarge').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      'xlarge-only': S('.foundation-mq-xlarge-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      'xxlarge': S('.foundation-mq-xxlarge').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, '')
+    media_queries : {
+      'small'       : S('.foundation-mq-small').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'small-only'  : S('.foundation-mq-small-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'medium'      : S('.foundation-mq-medium').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'medium-only' : S('.foundation-mq-medium-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'large'       : S('.foundation-mq-large').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'large-only'  : S('.foundation-mq-large-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'xlarge'      : S('.foundation-mq-xlarge').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'xlarge-only' : S('.foundation-mq-xlarge-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'xxlarge'     : S('.foundation-mq-xxlarge').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, '')
     },
 
-    stylesheet: $('<style></style>').appendTo('head')[0].sheet,
+    stylesheet : $('<style></style>').appendTo('head')[0].sheet,
 
-    global: {
-      namespace: undefined
+    global : {
+      namespace : undefined
     },
 
-    init: function(scope, libraries, method, options, response) {
+    init : function (scope, libraries, method, options, response) {
       var args = [scope, method, options, response],
-        responses = [];
+          responses = [];
 
       // check RTL
       this.rtl = /rtl/i.test(S('html').attr('dir'));
@@ -326,7 +325,7 @@
         }
       }
 
-      S(window).load(function() {
+      S(window).load(function () {
         S(window)
           .trigger('resize.fndtn.clearing')
           .trigger('resize.fndtn.dropdown')
@@ -341,16 +340,16 @@
       return scope;
     },
 
-    init_lib: function(lib, args) {
+    init_lib : function (lib, args) {
       if (this.libs.hasOwnProperty(lib)) {
         this.patch(this.libs[lib]);
 
         if (args && args.hasOwnProperty(lib)) {
-          if (typeof this.libs[lib].settings !== 'undefined') {
-            $.extend(true, this.libs[lib].settings, args[lib]);
-          } else if (typeof this.libs[lib].defaults !== 'undefined') {
-            $.extend(true, this.libs[lib].defaults, args[lib]);
-          }
+            if (typeof this.libs[lib].settings !== 'undefined') {
+              $.extend(true, this.libs[lib].settings, args[lib]);
+            } else if (typeof this.libs[lib].defaults !== 'undefined') {
+              $.extend(true, this.libs[lib].defaults, args[lib]);
+            }
           return this.libs[lib].init.apply(this.libs[lib], [this.scope, args[lib]]);
         }
 
@@ -358,10 +357,10 @@
         return this.libs[lib].init.apply(this.libs[lib], args);
       }
 
-      return function() {};
+      return function () {};
     },
 
-    patch: function(lib) {
+    patch : function (lib) {
       lib.scope = this.scope;
       lib.namespace = this.global.namespace;
       lib.rtl = this.rtl;
@@ -372,9 +371,9 @@
       lib['S'] = this.utils.S;
     },
 
-    inherit: function(scope, methods) {
+    inherit : function (scope, methods) {
       var methods_arr = methods.split(' '),
-        i = methods_arr.length;
+          i = methods_arr.length;
 
       while (i--) {
         if (this.utils.hasOwnProperty(methods_arr[i])) {
@@ -383,7 +382,7 @@
       }
     },
 
-    set_namespace: function() {
+    set_namespace : function () {
 
       // Description:
       //    Don't bother reading the namespace out of the meta tag
@@ -398,17 +397,17 @@
 
       // If the namespace has not been set (is undefined), try to read it out of the meta element.
       // Otherwise use the globally defined namespace, even if it's empty ('')
-      var namespace = (this.global.namespace === undefined) ? $('.foundation-data-attribute-namespace').css('font-family') : this.global.namespace;
+      var namespace = ( this.global.namespace === undefined ) ? $('.foundation-data-attribute-namespace').css('font-family') : this.global.namespace;
 
       // Finally, if the namsepace is either undefined or false, set it to an empty string.
       // Otherwise use the namespace value.
-      this.global.namespace = (namespace === undefined || /false/i.test(namespace)) ? '' : namespace;
+      this.global.namespace = ( namespace === undefined || /false/i.test(namespace) ) ? '' : namespace;
     },
 
-    libs: {},
+    libs : {},
 
     // methods that can be inherited in libraries
-    utils: {
+    utils : {
 
       // Description:
       //    Fast Selector wrapper returns jQuery object. Only use where getElementById
@@ -424,7 +423,7 @@
       // Returns:
       //    Element (jQuery Object): jQuery object containing elements matching the
       //    selector within the scope.
-      S: S,
+      S : S,
 
       // Description:
       //    Executes a function a max of once every n milliseconds
@@ -436,15 +435,14 @@
       //
       // Returns:
       //    Lazy_function (Function): Function with throttling applied.
-      throttle: function(func, delay) {
+      throttle : function (func, delay) {
         var timer = null;
 
-        return function() {
-          var context = this,
-            args = arguments;
+        return function () {
+          var context = this, args = arguments;
 
           if (timer == null) {
-            timer = setTimeout(function() {
+            timer = setTimeout(function () {
               func.apply(context, args);
               timer = null;
             }, delay);
@@ -466,12 +464,11 @@
       //
       // Returns:
       //    Lazy_function (Function): Function with debouncing applied.
-      debounce: function(func, delay, immediate) {
+      debounce : function (func, delay, immediate) {
         var timeout, result;
-        return function() {
-          var context = this,
-            args = arguments;
-          var later = function() {
+        return function () {
+          var context = this, args = arguments;
+          var later = function () {
             timeout = null;
             if (!immediate) {
               result = func.apply(context, args);
@@ -496,19 +493,18 @@
       // Returns:
       //    Options (Javascript Object): Contents of the element's data-options
       //    attribute.
-      data_options: function(el, data_attr_name) {
+      data_options : function (el, data_attr_name) {
         data_attr_name = data_attr_name || 'options';
-        var opts = {},
-          ii, p, opts_arr,
-          data_options = function(el) {
-            var namespace = Foundation.global.namespace;
+        var opts = {}, ii, p, opts_arr,
+            data_options = function (el) {
+              var namespace = Foundation.global.namespace;
 
-            if (namespace.length > 0) {
-              return el.data(namespace + '-' + data_attr_name);
-            }
+              if (namespace.length > 0) {
+                return el.data(namespace + '-' + data_attr_name);
+              }
 
-            return el.data(data_attr_name);
-          };
+              return el.data(data_attr_name);
+            };
 
         var cached_options = data_options(el);
 
@@ -519,11 +515,11 @@
         opts_arr = (cached_options || ':').split(';');
         ii = opts_arr.length;
 
-        function isNumber(o) {
-          return !isNaN(o - 0) && o !== null && o !== '' && o !== false && o !== true;
+        function isNumber (o) {
+          return !isNaN (o - 0) && o !== null && o !== '' && o !== false && o !== true;
         }
 
-        function trim(str) {
+        function trim (str) {
           if (typeof str === 'string') {
             return $.trim(str);
           }
@@ -564,7 +560,7 @@
       //    Foundation.media_queries
       //
       //    Class (String): Class name for the generated <meta> tag
-      register_media: function(media, media_class) {
+      register_media : function (media, media_class) {
         if (Foundation.media_queries[media] === undefined) {
           $('head').append('<meta class="' + media_class + '"/>');
           Foundation.media_queries[media] = removeQuotes($('.' + media_class).css('font-family'));
@@ -579,7 +575,7 @@
       //
       //    Media (String): Optional media query string for the CSS rule to be
       //    nested under.
-      add_custom_rule: function(rule, media) {
+      add_custom_rule : function (rule, media) {
         if (media === undefined && Foundation.stylesheet) {
           Foundation.stylesheet.insertRule(rule, Foundation.stylesheet.cssRules.length);
         } else {
@@ -599,16 +595,16 @@
       //    Image (jQuery Object): Image(s) to check if loaded.
       //
       //    Callback (Function): Function to execute when image is fully loaded.
-      image_loaded: function(images, callback) {
+      image_loaded : function (images, callback) {
         var self = this,
-          unloaded = images.length;
+            unloaded = images.length;
 
         if (unloaded === 0) {
           callback(images);
         }
 
-        images.each(function() {
-          single_image_loaded(self.S(this), function() {
+        images.each(function () {
+          single_image_loaded(self.S(this), function () {
             unloaded -= 1;
             if (unloaded === 0) {
               callback(images);
@@ -626,7 +622,7 @@
       //
       // Returns:
       //    Rand (String): Pseudo-random, alphanumeric string.
-      random_str: function() {
+      random_str : function () {
         if (!this.fidx) {
           this.fidx = 0;
         }
@@ -643,7 +639,7 @@
       //
       // Returns:
       //    (Boolean): Whether the media query passes or not
-      match: function(mq) {
+      match : function (mq) {
         return window.matchMedia(mq).matches;
       },
 
@@ -653,52 +649,52 @@
       // Returns:
       //    (Boolean): Whether the media query passes or not
 
-      is_small_up: function() {
+      is_small_up : function () {
         return this.match(Foundation.media_queries.small);
       },
 
-      is_medium_up: function() {
+      is_medium_up : function () {
         return this.match(Foundation.media_queries.medium);
       },
 
-      is_large_up: function() {
+      is_large_up : function () {
         return this.match(Foundation.media_queries.large);
       },
 
-      is_xlarge_up: function() {
+      is_xlarge_up : function () {
         return this.match(Foundation.media_queries.xlarge);
       },
 
-      is_xxlarge_up: function() {
+      is_xxlarge_up : function () {
         return this.match(Foundation.media_queries.xxlarge);
       },
 
-      is_small_only: function() {
+      is_small_only : function () {
         return !this.is_medium_up() && !this.is_large_up() && !this.is_xlarge_up() && !this.is_xxlarge_up();
       },
 
-      is_medium_only: function() {
+      is_medium_only : function () {
         return this.is_medium_up() && !this.is_large_up() && !this.is_xlarge_up() && !this.is_xxlarge_up();
       },
 
-      is_large_only: function() {
+      is_large_only : function () {
         return this.is_medium_up() && this.is_large_up() && !this.is_xlarge_up() && !this.is_xxlarge_up();
       },
 
-      is_xlarge_only: function() {
+      is_xlarge_only : function () {
         return this.is_medium_up() && this.is_large_up() && this.is_xlarge_up() && !this.is_xxlarge_up();
       },
 
-      is_xxlarge_only: function() {
+      is_xxlarge_only : function () {
         return this.is_medium_up() && this.is_large_up() && this.is_xlarge_up() && this.is_xxlarge_up();
       }
     }
   };
 
-  $.fn.foundation = function() {
+  $.fn.foundation = function () {
     var args = Array.prototype.slice.call(arguments, 0);
 
-    return this.each(function() {
+    return this.each(function () {
       Foundation.init.apply(Foundation, [this].concat(args));
       return this;
     });
@@ -706,114 +702,113 @@
 
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.abide = {
-    name: 'abide',
+    name : 'abide',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      live_validate: true,
-      validate_on_blur: true,
-      focus_on_invalid: true,
-      error_labels: true, // labels with a for="inputId" will recieve an `error` class
-      error_class: 'error',
-      timeout: 1000,
-      patterns: {
-        alpha: /^[a-zA-Z]+$/,
-        alpha_numeric: /^[a-zA-Z0-9]+$/,
-        integer: /^[-+]?\d+$/,
-        number: /^[-+]?\d*(?:[\.\,]\d+)?$/,
+    settings : {
+      live_validate : true,
+      validate_on_blur : true,
+      focus_on_invalid : true,
+      error_labels : true, // labels with a for="inputId" will recieve an `error` class
+      error_class : 'error',
+      timeout : 1000,
+      patterns : {
+        alpha : /^[a-zA-Z]+$/,
+        alpha_numeric : /^[a-zA-Z0-9]+$/,
+        integer : /^[-+]?\d+$/,
+        number : /^[-+]?\d*(?:[\.\,]\d+)?$/,
 
         // amex, visa, diners
-        card: /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/,
-        cvv: /^([0-9]){3,4}$/,
+        card : /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/,
+        cvv : /^([0-9]){3,4}$/,
 
         // http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#valid-e-mail-address
-        email: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/,
+        email : /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/,
 
-        url: /^(https?|ftp|file|ssh):\/\/(((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/,
+        url : /^(https?|ftp|file|ssh):\/\/(((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/,
         // abc.de
-        domain: /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,8}$/,
+        domain : /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,8}$/,
 
-        datetime: /^([0-2][0-9]{3})\-([0-1][0-9])\-([0-3][0-9])T([0-5][0-9])\:([0-5][0-9])\:([0-5][0-9])(Z|([\-\+]([0-1][0-9])\:00))$/,
+        datetime : /^([0-2][0-9]{3})\-([0-1][0-9])\-([0-3][0-9])T([0-5][0-9])\:([0-5][0-9])\:([0-5][0-9])(Z|([\-\+]([0-1][0-9])\:00))$/,
         // YYYY-MM-DD
-        date: /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))$/,
+        date : /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))$/,
         // HH:MM:SS
-        time: /^(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}$/,
-        dateISO: /^\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}$/,
+        time : /^(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}$/,
+        dateISO : /^\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}$/,
         // MM/DD/YYYY
-        month_day_year: /^(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.]\d{4}$/,
+        month_day_year : /^(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.]\d{4}$/,
         // DD/MM/YYYY
-        day_month_year: /^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.]\d{4}$/,
+        day_month_year : /^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.]\d{4}$/,
 
         // #FFF or #FFFFFF
-        color: /^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/
+        color : /^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/
       },
-      validators: {
-        equalTo: function(el, required, parent) {
-          var from = document.getElementById(el.getAttribute(this.add_namespace('data-equalto'))).value,
-            to = el.value,
-            valid = (from === to);
+      validators : {
+        equalTo : function (el, required, parent) {
+          var from  = document.getElementById(el.getAttribute(this.add_namespace('data-equalto'))).value,
+              to    = el.value,
+              valid = (from === to);
 
           return valid;
         }
       }
     },
 
-    timer: null,
+    timer : null,
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       this.bindings(method, options);
     },
 
-    events: function(scope) {
+    events : function (scope) {
       var self = this,
-        form = self.S(scope).attr('novalidate', 'novalidate'),
-        settings = form.data(this.attr_name(true) + '-init') || {};
+          form = self.S(scope).attr('novalidate', 'novalidate'),
+          settings = form.data(this.attr_name(true) + '-init') || {};
 
       this.invalid_attr = this.add_namespace('data-invalid');
 
       form
         .off('.abide')
-        .on('submit.fndtn.abide validate.fndtn.abide', function(e) {
+        .on('submit.fndtn.abide validate.fndtn.abide', function (e) {
           var is_ajax = /ajax/i.test(self.S(this).attr(self.attr_name()));
           return self.validate(self.S(this).find('input, textarea, select').get(), e, is_ajax);
         })
-        .on('reset', function() {
+        .on('reset', function () {
           return self.reset($(this));
         })
         .find('input, textarea, select')
-        .off('.abide')
-        .on('blur.fndtn.abide change.fndtn.abide', function(e) {
-          if (settings.validate_on_blur === true) {
-            self.validate([this], e);
-          }
-        })
-        .on('keydown.fndtn.abide', function(e) {
-          if (settings.live_validate === true && e.which != 9) {
-            clearTimeout(self.timer);
-            self.timer = setTimeout(function() {
+          .off('.abide')
+          .on('blur.fndtn.abide change.fndtn.abide', function (e) {
+            if (settings.validate_on_blur === true) {
               self.validate([this], e);
-            }.bind(this), settings.timeout);
-          }
-        });
+            }
+          })
+          .on('keydown.fndtn.abide', function (e) {
+            if (settings.live_validate === true && e.which != 9) {
+              clearTimeout(self.timer);
+              self.timer = setTimeout(function () {
+                self.validate([this], e);
+              }.bind(this), settings.timeout);
+            }
+          });
     },
 
-    reset: function(form) {
+    reset : function (form) {
       form.removeAttr(this.invalid_attr);
       $(this.invalid_attr, form).removeAttr(this.invalid_attr);
       $('.' + this.settings.error_class, form).not('small').removeClass(this.settings.error_class);
     },
 
-    validate: function(els, e, is_ajax) {
+    validate : function (els, e, is_ajax) {
       var validations = this.parse_patterns(els),
-        validation_count = validations.length,
-        form = this.S(els[0]).closest('form'),
-        submit_event = /submit/.test(e.type);
+          validation_count = validations.length,
+          form = this.S(els[0]).closest('form'),
+          submit_event = /submit/.test(e.type);
 
       // Has to count up to make sure the focus gets applied to the top error
       for (var i = 0; i < validation_count; i++) {
@@ -840,9 +835,9 @@
       return true;
     },
 
-    parse_patterns: function(els) {
+    parse_patterns : function (els) {
       var i = els.length,
-        el_patterns = [];
+          el_patterns = [];
 
       while (i--) {
         el_patterns.push(this.pattern(els[i]));
@@ -851,9 +846,9 @@
       return this.check_validation_and_apply_styles(el_patterns);
     },
 
-    pattern: function(el) {
+    pattern : function (el) {
       var type = el.getAttribute('type'),
-        required = typeof el.getAttribute('required') === 'string';
+          required = typeof el.getAttribute('required') === 'string';
 
       var pattern = el.getAttribute('pattern') || '';
 
@@ -873,29 +868,27 @@
     },
 
     // TODO: Break this up into smaller methods, getting hard to read.
-    check_validation_and_apply_styles: function(el_patterns) {
+    check_validation_and_apply_styles : function (el_patterns) {
       var i = el_patterns.length,
-        validations = [],
-        form = this.S(el_patterns[0][0]).closest('[data-' + this.attr_name(true) + ']'),
-        settings = form.data(this.attr_name(true) + '-init') || {};
+          validations = [],
+          form = this.S(el_patterns[0][0]).closest('[data-' + this.attr_name(true) + ']'),
+          settings = form.data(this.attr_name(true) + '-init') || {};
       while (i--) {
         var el = el_patterns[i][0],
-          required = el_patterns[i][2],
-          value = el.value.trim(),
-          direct_parent = this.S(el).parent(),
-          validator = el.getAttribute(this.add_namespace('data-abide-validator')),
-          is_radio = el.type === 'radio',
-          is_checkbox = el.type === 'checkbox',
-          label = this.S('label[for="' + el.getAttribute('id') + '"]'),
-          valid_length = (required) ? (el.value.length > 0) : true,
-          el_validations = [];
+            required = el_patterns[i][2],
+            value = el.value.trim(),
+            direct_parent = this.S(el).parent(),
+            validator = el.getAttribute(this.add_namespace('data-abide-validator')),
+            is_radio = el.type === 'radio',
+            is_checkbox = el.type === 'checkbox',
+            label = this.S('label[for="' + el.getAttribute('id') + '"]'),
+            valid_length = (required) ? (el.value.length > 0) : true,
+            el_validations = [];
 
         var parent, valid;
 
         // support old way to do equalTo validations
-        if (el.getAttribute(this.add_namespace('data-equalto'))) {
-          validator = 'equalTo'
-        }
+        if (el.getAttribute(this.add_namespace('data-equalto'))) { validator = 'equalTo' }
 
         if (!direct_parent.is('label')) {
           parent = direct_parent;
@@ -921,9 +914,7 @@
             el_validations.push(false);
           }
 
-          el_validations = [el_validations.every(function(valid) {
-            return valid;
-          })];
+          el_validations = [el_validations.every(function (valid) {return valid;})];
 
           if (el_validations[0]) {
             this.S(el).removeAttr(this.invalid_attr);
@@ -955,15 +946,13 @@
         }
         validations.push(el_validations[0]);
       }
-      validations = [validations.every(function(valid) {
-        return valid;
-      })];
+      validations = [validations.every(function (valid) {return valid;})];
       return validations;
     },
 
-    valid_checkbox: function(el, required) {
+    valid_checkbox : function (el, required) {
       var el = this.S(el),
-        valid = (el.is(':checked') || !required || el.get(0).getAttribute('disabled'));
+          valid = (el.is(':checked') || !required || el.get(0).getAttribute('disabled'));
 
       if (valid) {
         el.removeAttr(this.invalid_attr).parent().removeClass(this.settings.error_class);
@@ -974,28 +963,28 @@
       return valid;
     },
 
-    valid_radio: function(el, required) {
+    valid_radio : function (el, required) {
       var name = el.getAttribute('name'),
-        group = this.S(el).closest('[data-' + this.attr_name(true) + ']').find("[name='" + name + "']"),
-        count = group.length,
-        valid = false,
-        disabled = false;
+          group = this.S(el).closest('[data-' + this.attr_name(true) + ']').find("[name='" + name + "']"),
+          count = group.length,
+          valid = false,
+          disabled = false;
 
       // Has to count up to make sure the focus gets applied to the top error
-      for (var i = 0; i < count; i++) {
-        if (group[i].getAttribute('disabled')) {
-          disabled = true;
-          valid = true;
-        } else {
-          if (group[i].checked) {
-            valid = true;
-          } else {
-            if (disabled) {
-              valid = false;
+        for (var i=0; i < count; i++) {
+            if( group[i].getAttribute('disabled') ){
+                disabled=true;
+                valid=true;
+            } else {
+                if (group[i].checked){
+                    valid = true;
+                } else {
+                    if( disabled ){
+                        valid = false;
+                    }
+                }
             }
-          }
         }
-      }
 
       // Has to count up to make sure the focus gets applied to the top error
       for (var i = 0; i < count; i++) {
@@ -1009,10 +998,10 @@
       return valid;
     },
 
-    valid_equal: function(el, required, parent) {
-      var from = document.getElementById(el.getAttribute(this.add_namespace('data-equalto'))).value,
-        to = el.value,
-        valid = (from === to);
+    valid_equal : function (el, required, parent) {
+      var from  = document.getElementById(el.getAttribute(this.add_namespace('data-equalto'))).value,
+          to    = el.value,
+          valid = (from === to);
 
       if (valid) {
         this.S(el).removeAttr(this.invalid_attr);
@@ -1031,7 +1020,7 @@
       return valid;
     },
 
-    valid_oneof: function(el, required, parent, doNotValidateOthers) {
+    valid_oneof : function (el, required, parent, doNotValidateOthers) {
       var el = this.S(el),
         others = this.S('[' + this.add_namespace('data-oneof') + ']'),
         valid = others.filter(':checked').length > 0;
@@ -1044,7 +1033,7 @@
 
       if (!doNotValidateOthers) {
         var _this = this;
-        others.each(function() {
+        others.each(function () {
           _this.valid_oneof.call(_this, this, null, null, true);
         });
       }
@@ -1054,34 +1043,33 @@
   };
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.accordion = {
-    name: 'accordion',
+    name : 'accordion',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      content_class: 'content',
-      active_class: 'active',
-      multi_expand: false,
-      toggleable: true,
-      callback: function() {}
+    settings : {
+      content_class : 'content',
+      active_class : 'active',
+      multi_expand : false,
+      toggleable : true,
+      callback : function () {}
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       this.bindings(method, options);
     },
 
-    events: function() {
+    events : function () {
       var self = this;
       var S = this.S;
       S(this.scope)
-        .off('.fndtn.accordion')
-        .on('click.fndtn.accordion', '[' + this.attr_name() + '] > .accordion-navigation > a', function(e) {
-          var accordion = S(this).closest('[' + self.attr_name() + ']'),
+      .off('.fndtn.accordion')
+      .on('click.fndtn.accordion', '[' + this.attr_name() + '] > .accordion-navigation > a', function (e) {
+        var accordion = S(this).closest('[' + self.attr_name() + ']'),
             groupSelector = self.attr_name() + '=' + accordion.attr(self.attr_name()),
             settings = accordion.data(self.attr_name(true) + '-init') || self.settings,
             target = S('#' + this.href.split('#')[1]),
@@ -1089,74 +1077,73 @@
             siblings = aunts.children('.' + settings.content_class),
             active_content = siblings.filter('.' + settings.active_class);
 
-          e.preventDefault();
+        e.preventDefault();
 
-          if (accordion.attr(self.attr_name())) {
-            siblings = siblings.add('[' + groupSelector + '] dd > ' + '.' + settings.content_class);
-            aunts = aunts.add('[' + groupSelector + '] .accordion-navigation');
-          }
+        if (accordion.attr(self.attr_name())) {
+          siblings = siblings.add('[' + groupSelector + '] dd > ' + '.' + settings.content_class);
+          aunts = aunts.add('[' + groupSelector + '] .accordion-navigation');
+        }
 
-          if (settings.toggleable && target.is(active_content)) {
-            target.parent('.accordion-navigation').toggleClass(settings.active_class, false);
-            target.toggleClass(settings.active_class, false);
-            settings.callback(target);
-            target.triggerHandler('toggled', [accordion]);
-            accordion.triggerHandler('toggled', [target]);
-            return;
-          }
-
-          if (!settings.multi_expand) {
-            siblings.removeClass(settings.active_class);
-            aunts.removeClass(settings.active_class);
-          }
-
-          target.addClass(settings.active_class).parent().addClass(settings.active_class);
+        if (settings.toggleable && target.is(active_content)) {
+          target.parent('.accordion-navigation').toggleClass(settings.active_class, false);
+          target.toggleClass(settings.active_class, false);
           settings.callback(target);
           target.triggerHandler('toggled', [accordion]);
           accordion.triggerHandler('toggled', [target]);
-        });
+          return;
+        }
+
+        if (!settings.multi_expand) {
+          siblings.removeClass(settings.active_class);
+          aunts.removeClass(settings.active_class);
+        }
+
+        target.addClass(settings.active_class).parent().addClass(settings.active_class);
+        settings.callback(target);
+        target.triggerHandler('toggled', [accordion]);
+        accordion.triggerHandler('toggled', [target]);
+      });
     },
 
-    off: function() {},
+    off : function () {},
 
-    reflow: function() {}
+    reflow : function () {}
   };
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.alert = {
-    name: 'alert',
+    name : 'alert',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      callback: function() {}
+    settings : {
+      callback : function () {}
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       this.bindings(method, options);
     },
 
-    events: function() {
+    events : function () {
       var self = this,
-        S = this.S;
+          S = this.S;
 
-      $(this.scope).off('.alert').on('click.fndtn.alert', '[' + this.attr_name() + '] .close', function(e) {
+      $(this.scope).off('.alert').on('click.fndtn.alert', '[' + this.attr_name() + '] .close', function (e) {
         var alertBox = S(this).closest('[' + self.attr_name() + ']'),
-          settings = alertBox.data(self.attr_name(true) + '-init') || self.settings;
+            settings = alertBox.data(self.attr_name(true) + '-init') || self.settings;
 
         e.preventDefault();
         if (Modernizr.csstransitions) {
           alertBox.addClass('alert-close');
-          alertBox.on('transitionend webkitTransitionEnd oTransitionEnd', function(e) {
+          alertBox.on('transitionend webkitTransitionEnd oTransitionEnd', function (e) {
             S(this).trigger('close').trigger('close.fndtn.alert').remove();
             settings.callback();
           });
         } else {
-          alertBox.fadeOut(300, function() {
+          alertBox.fadeOut(300, function () {
             S(this).trigger('close').trigger('close.fndtn.alert').remove();
             settings.callback();
           });
@@ -1164,22 +1151,21 @@
       });
     },
 
-    reflow: function() {}
+    reflow : function () {}
   };
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.clearing = {
-    name: 'clearing',
+    name : 'clearing',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      templates: {
-        viewing: '<a href="#" class="clearing-close">&times;</a>' +
+    settings : {
+      templates : {
+        viewing : '<a href="#" class="clearing-close">&times;</a>' +
           '<div class="visible-img" style="display: none"><div class="clearing-touch-label"></div><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" alt="" />' +
           '<p class="clearing-caption"></p><a href="#" class="clearing-main-prev"><span></span></a>' +
           '<a href="#" class="clearing-main-next"><span></span></a></div>'
@@ -1187,22 +1173,22 @@
 
       // comma delimited list of selectors that, on click, will close clearing,
       // add 'div.clearing-blackout, div.visible-img' to close on background click
-      close_selectors: '.clearing-close, div.clearing-blackout',
+      close_selectors : '.clearing-close, div.clearing-blackout',
 
       // Default to the entire li element.
-      open_selectors: '',
+      open_selectors : '',
 
       // Image will be skipped in carousel.
-      skip_selector: '',
+      skip_selector : '',
 
-      touch_label: '',
+      touch_label : '',
 
       // event initializers and locks
-      init: false,
-      locked: false
+      init : false,
+      locked : false
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       var self = this;
       Foundation.inherit(this, 'throttle image_loaded');
 
@@ -1211,16 +1197,16 @@
       if (self.S(this.scope).is('[' + this.attr_name() + ']')) {
         this.assemble(self.S('li', this.scope));
       } else {
-        self.S('[' + this.attr_name() + ']', this.scope).each(function() {
+        self.S('[' + this.attr_name() + ']', this.scope).each(function () {
           self.assemble(self.S('li', this));
         });
       }
     },
 
-    events: function(scope) {
+    events : function (scope) {
       var self = this,
-        S = self.S,
-        $scroll_container = $('.scroll-container');
+          S = self.S,
+          $scroll_container = $('.scroll-container');
 
       if ($scroll_container.length > 0) {
         this.scope = $scroll_container;
@@ -1229,12 +1215,12 @@
       S(this.scope)
         .off('.clearing')
         .on('click.fndtn.clearing', 'ul[' + this.attr_name() + '] li ' + this.settings.open_selectors,
-          function(e, current, target) {
+          function (e, current, target) {
             var current = current || S(this),
-              target = target || current,
-              next = current.next('li'),
-              settings = current.closest('[' + self.attr_name() + ']').data(self.attr_name(true) + '-init'),
-              image = S(e.target);
+                target = target || current,
+                next = current.next('li'),
+                settings = current.closest('[' + self.attr_name() + ']').data(self.attr_name(true) + '-init'),
+                image = S(e.target);
 
             e.preventDefault();
 
@@ -1257,53 +1243,41 @@
             self.update_paddles(target);
           })
 
-      .on('click.fndtn.clearing', '.clearing-main-next',
-          function(e) {
-            self.nav(e, 'next')
-          })
+        .on('click.fndtn.clearing', '.clearing-main-next',
+          function (e) { self.nav(e, 'next') })
         .on('click.fndtn.clearing', '.clearing-main-prev',
-          function(e) {
-            self.nav(e, 'prev')
-          })
+          function (e) { self.nav(e, 'prev') })
         .on('click.fndtn.clearing', this.settings.close_selectors,
-          function(e) {
-            Foundation.libs.clearing.close(e, this)
-          });
+          function (e) { Foundation.libs.clearing.close(e, this) });
 
       $(document).on('keydown.fndtn.clearing',
-        function(e) {
-          self.keydown(e)
-        });
+          function (e) { self.keydown(e) });
 
       S(window).off('.clearing').on('resize.fndtn.clearing',
-        function() {
-          self.resize()
-        });
+        function () { self.resize() });
 
       this.swipe_events(scope);
     },
 
-    swipe_events: function(scope) {
+    swipe_events : function (scope) {
       var self = this,
-        S = self.S;
+      S = self.S;
 
       S(this.scope)
-        .on('touchstart.fndtn.clearing', '.visible-img', function(e) {
-          if (!e.touches) {
-            e = e.originalEvent;
-          }
+        .on('touchstart.fndtn.clearing', '.visible-img', function (e) {
+          if (!e.touches) { e = e.originalEvent; }
           var data = {
-            start_page_x: e.touches[0].pageX,
-            start_page_y: e.touches[0].pageY,
-            start_time: (new Date()).getTime(),
-            delta_x: 0,
-            is_scrolling: undefined
-          };
+                start_page_x : e.touches[0].pageX,
+                start_page_y : e.touches[0].pageY,
+                start_time : (new Date()).getTime(),
+                delta_x : 0,
+                is_scrolling : undefined
+              };
 
           S(this).data('swipe-transition', data);
           e.stopPropagation();
         })
-        .on('touchmove.fndtn.clearing', '.visible-img', function(e) {
+        .on('touchmove.fndtn.clearing', '.visible-img', function (e) {
           if (!e.touches) {
             e = e.originalEvent;
           }
@@ -1325,7 +1299,7 @@
           }
 
           if (typeof data.is_scrolling === 'undefined') {
-            data.is_scrolling = !!(data.is_scrolling || Math.abs(data.delta_x) < Math.abs(e.touches[0].pageY - data.start_page_y));
+            data.is_scrolling = !!( data.is_scrolling || Math.abs(data.delta_x) < Math.abs(e.touches[0].pageY - data.start_page_y) );
           }
 
           if (!data.is_scrolling && !data.active) {
@@ -1335,13 +1309,13 @@
             self.nav(e, direction);
           }
         })
-        .on('touchend.fndtn.clearing', '.visible-img', function(e) {
+        .on('touchend.fndtn.clearing', '.visible-img', function (e) {
           S(this).data('swipe-transition', {});
           e.stopPropagation();
         });
     },
 
-    assemble: function($li) {
+    assemble : function ($li) {
       var $el = $li.parent();
 
       if ($el.parent().hasClass('carousel')) {
@@ -1351,7 +1325,7 @@
       $el.after('<div id="foundationClearingHolder"></div>');
 
       var grid = $el.detach(),
-        grid_outerHTML = '';
+          grid_outerHTML = '';
 
       if (grid[0] == null) {
         return;
@@ -1360,14 +1334,14 @@
       }
 
       var holder = this.S('#foundationClearingHolder'),
-        settings = $el.data(this.attr_name(true) + '-init'),
-        data = {
-          grid: '<div class="carousel">' + grid_outerHTML + '</div>',
-          viewing: settings.templates.viewing
-        },
-        wrapper = '<div class="clearing-assembled"><div>' + data.viewing +
-        data.grid + '</div></div>',
-        touch_label = this.settings.touch_label;
+          settings = $el.data(this.attr_name(true) + '-init'),
+          data = {
+            grid : '<div class="carousel">' + grid_outerHTML + '</div>',
+            viewing : settings.templates.viewing
+          },
+          wrapper = '<div class="clearing-assembled"><div>' + data.viewing +
+            data.grid + '</div></div>',
+          touch_label = this.settings.touch_label;
 
       if (Modernizr.touch) {
         wrapper = $(wrapper).find('.clearing-touch-label').html(touch_label).end();
@@ -1376,28 +1350,28 @@
       holder.after(wrapper).remove();
     },
 
-    open: function($image, current, target) {
+    open : function ($image, current, target) {
       var self = this,
-        body = $(document.body),
-        root = target.closest('.clearing-assembled'),
-        container = self.S('div', root).first(),
-        visible_image = self.S('.visible-img', container),
-        image = self.S('img', visible_image).not($image),
-        label = self.S('.clearing-touch-label', container),
-        error = false;
+          body = $(document.body),
+          root = target.closest('.clearing-assembled'),
+          container = self.S('div', root).first(),
+          visible_image = self.S('.visible-img', container),
+          image = self.S('img', visible_image).not($image),
+          label = self.S('.clearing-touch-label', container),
+          error = false;
 
       // Event to disable scrolling on touch devices when Clearing is activated
-      $('body').on('touchmove', function(e) {
+      $('body').on('touchmove', function (e) {
         e.preventDefault();
       });
 
-      image.error(function() {
+      image.error(function () {
         error = true;
       });
 
       function startLoad() {
-        setTimeout(function() {
-          this.image_loaded(image, function() {
+        setTimeout(function () {
+          this.image_loaded(image, function () {
             if (image.outerWidth() === 1 && !error) {
               startLoad.call(this);
             } else {
@@ -1407,7 +1381,7 @@
         }.bind(this), 100);
       }
 
-      function cb(image) {
+      function cb (image) {
         var $image = $(image);
         $image.css('visibility', 'visible');
         // toggle the gallery
@@ -1418,7 +1392,7 @@
         this.fix_height(target)
           .caption(self.S('.clearing-caption', visible_image), self.S('img', target))
           .center_and_label(image, label)
-          .shift(current, target, function() {
+          .shift(current, target, function () {
             target.closest('li').siblings().removeClass('visible');
             target.closest('li').addClass('visible');
           });
@@ -1436,18 +1410,17 @@
       }
     },
 
-    close: function(e, el) {
+    close : function (e, el) {
       e.preventDefault();
 
-      var root = (function(target) {
-          if (/blackout/.test(target.selector)) {
-            return target;
-          } else {
-            return target.closest('.clearing-blackout');
-          }
-        }($(el))),
-        body = $(document.body),
-        container, visible_image;
+      var root = (function (target) {
+            if (/blackout/.test(target.selector)) {
+              return target;
+            } else {
+              return target.closest('.clearing-blackout');
+            }
+          }($(el))),
+          body = $(document.body), container, visible_image;
 
       if (el === e.target && root) {
         body.css('overflow', '');
@@ -1469,15 +1442,15 @@
       return false;
     },
 
-    is_open: function(current) {
+    is_open : function (current) {
       return current.parent().prop('style').length > 0;
     },
 
-    keydown: function(e) {
+    keydown : function (e) {
       var clearing = $('.clearing-blackout ul[' + this.attr_name() + ']'),
-        NEXT_KEY = this.rtl ? 37 : 39,
-        PREV_KEY = this.rtl ? 39 : 37,
-        ESC_KEY = 27;
+          NEXT_KEY = this.rtl ? 37 : 39,
+          PREV_KEY = this.rtl ? 39 : 37,
+          ESC_KEY = 27;
 
       if (e.which === NEXT_KEY) {
         this.go(clearing, 'next');
@@ -1490,16 +1463,16 @@
       }
     },
 
-    nav: function(e, direction) {
+    nav : function (e, direction) {
       var clearing = $('ul[' + this.attr_name() + ']', '.clearing-blackout');
 
       e.preventDefault();
       this.go(clearing, direction);
     },
 
-    resize: function() {
+    resize : function () {
       var image = $('img', '.clearing-blackout .visible-img'),
-        label = $('.clearing-touch-label', '.clearing-blackout');
+          label = $('.clearing-touch-label', '.clearing-blackout');
 
       if (image.length) {
         this.center_and_label(image, label);
@@ -1508,25 +1481,25 @@
     },
 
     // visual adjustments
-    fix_height: function(target) {
+    fix_height : function (target) {
       var lis = target.parent().children(),
-        self = this;
+          self = this;
 
-      lis.each(function() {
-          var li = self.S(this),
+      lis.each(function () {
+        var li = self.S(this),
             image = li.find('img');
 
-          if (li.height() > image.outerHeight()) {
-            li.addClass('fix-height');
-          }
-        })
-        .closest('ul')
-        .width(lis.length * 100 + '%');
+        if (li.height() > image.outerHeight()) {
+          li.addClass('fix-height');
+        }
+      })
+      .closest('ul')
+      .width(lis.length * 100 + '%');
 
       return this;
     },
 
-    update_paddles: function(target) {
+    update_paddles : function (target) {
       target = target.closest('li');
       var visible_image = target
         .closest('.carousel')
@@ -1545,16 +1518,16 @@
       }
     },
 
-    center_and_label: function(target, label) {
+    center_and_label : function (target, label) {
       if (!this.rtl && label.length > 0) {
         label.css({
-          marginLeft: -(label.outerWidth() / 2),
-          marginTop: -(target.outerHeight() / 2) - label.outerHeight() - 10
+          marginLeft : -(label.outerWidth() / 2),
+          marginTop : -(target.outerHeight() / 2)-label.outerHeight()-10
         });
       } else {
         label.css({
-          marginRight: -(label.outerWidth() / 2),
-          marginTop: -(target.outerHeight() / 2) - label.outerHeight() - 10,
+          marginRight : -(label.outerWidth() / 2),
+          marginTop : -(target.outerHeight() / 2)-label.outerHeight()-10,
           left: 'auto',
           right: '50%'
         });
@@ -1564,7 +1537,7 @@
 
     // image loading and preloading
 
-    load: function($image) {
+    load : function ($image) {
       var href;
 
       if ($image[0].nodeName === 'A') {
@@ -1581,16 +1554,16 @@
       return $image.attr('src');
     },
 
-    preload: function($image) {
+    preload : function ($image) {
       this
         .img($image.closest('li').next())
         .img($image.closest('li').prev());
     },
 
-    img: function(img) {
+    img : function (img) {
       if (img.length) {
         var new_img = new Image(),
-          new_a = this.S('a', img);
+            new_a = this.S('a', img);
 
         if (new_a.length) {
           new_img.src = new_a.attr('href');
@@ -1603,7 +1576,7 @@
 
     // image caption
 
-    caption: function(container, $image) {
+    caption : function (container, $image) {
       var caption = $image.attr('data-caption');
 
       if (caption) {
@@ -1620,9 +1593,9 @@
 
     // directional methods
 
-    go: function($ul, direction) {
+    go : function ($ul, direction) {
       var current = this.S('.visible', $ul),
-        target = current[direction]();
+          target = current[direction]();
 
       // Check for skip selector.
       if (this.settings.skip_selector && target.find(this.settings.skip_selector).length != 0) {
@@ -1636,14 +1609,14 @@
       }
     },
 
-    shift: function(current, target, callback) {
+    shift : function (current, target, callback) {
       var clearing = target.parent(),
-        old_index = this.settings.prev_index || target.index(),
-        direction = this.direction(clearing, current, target),
-        dir = this.rtl ? 'right' : 'left',
-        left = parseInt(clearing.css('left'), 10),
-        width = target.outerWidth(),
-        skip_shift;
+          old_index = this.settings.prev_index || target.index(),
+          direction = this.direction(clearing, current, target),
+          dir = this.rtl ? 'right' : 'left',
+          left = parseInt(clearing.css('left'), 10),
+          width = target.outerWidth(),
+          skip_shift;
 
       var dir_obj = {};
 
@@ -1678,12 +1651,12 @@
       callback();
     },
 
-    direction: function($el, current, target) {
+    direction : function ($el, current, target) {
       var lis = this.S('li', $el),
-        li_width = lis.outerWidth() + (lis.outerWidth() / 4),
-        up_count = Math.floor(this.S('.clearing-container').outerWidth() / li_width) - 1,
-        target_index = lis.index(target),
-        response;
+          li_width = lis.outerWidth() + (lis.outerWidth() / 4),
+          up_count = Math.floor(this.S('.clearing-container').outerWidth() / li_width) - 1,
+          target_index = lis.index(target),
+          response;
 
       this.settings.up_count = up_count;
 
@@ -1704,7 +1677,7 @@
       return response;
     },
 
-    adjacent: function(current_index, target_index) {
+    adjacent : function (current_index, target_index) {
       for (var i = target_index + 1; i >= target_index - 1; i--) {
         if (i === current_index) {
           return true;
@@ -1715,64 +1688,63 @@
 
     // lock management
 
-    lock: function() {
+    lock : function () {
       this.settings.locked = true;
     },
 
-    unlock: function() {
+    unlock : function () {
       this.settings.locked = false;
     },
 
-    locked: function() {
+    locked : function () {
       return this.settings.locked;
     },
 
-    off: function() {
+    off : function () {
       this.S(this.scope).off('.fndtn.clearing');
       this.S(window).off('.fndtn.clearing');
     },
 
-    reflow: function() {
+    reflow : function () {
       this.init();
     }
   };
 
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.dropdown = {
-    name: 'dropdown',
+    name : 'dropdown',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      active_class: 'open',
-      disabled_class: 'disabled',
-      mega_class: 'mega',
-      align: 'bottom',
-      is_hover: false,
-      hover_timeout: 150,
-      opened: function() {},
-      closed: function() {}
+    settings : {
+      active_class : 'open',
+      disabled_class : 'disabled',
+      mega_class : 'mega',
+      align : 'bottom',
+      is_hover : false,
+      hover_timeout : 150,
+      opened : function () {},
+      closed : function () {}
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       Foundation.inherit(this, 'throttle');
 
       $.extend(true, this.settings, method, options);
       this.bindings(method, options);
     },
 
-    events: function(scope) {
+    events : function (scope) {
       var self = this,
-        S = self.S;
+          S = self.S;
 
       S(this.scope)
         .off('.dropdown')
-        .on('click.fndtn.dropdown', '[' + this.attr_name() + ']', function(e) {
+        .on('click.fndtn.dropdown', '[' + this.attr_name() + ']', function (e) {
           var settings = S(this).data(self.attr_name(true) + '-init') || self.settings;
           if (!settings.is_hover || Modernizr.touch) {
             e.preventDefault();
@@ -1782,10 +1754,10 @@
             self.toggle($(this));
           }
         })
-        .on('mouseenter.fndtn.dropdown', '[' + this.attr_name() + '], [' + this.attr_name() + '-content]', function(e) {
+        .on('mouseenter.fndtn.dropdown', '[' + this.attr_name() + '], [' + this.attr_name() + '-content]', function (e) {
           var $this = S(this),
-            dropdown,
-            target;
+              dropdown,
+              target;
 
           clearTimeout(self.timeout);
 
@@ -1807,18 +1779,18 @@
             self.open.apply(self, [dropdown, target]);
           }
         })
-        .on('mouseleave.fndtn.dropdown', '[' + this.attr_name() + '], [' + this.attr_name() + '-content]', function(e) {
+        .on('mouseleave.fndtn.dropdown', '[' + this.attr_name() + '], [' + this.attr_name() + '-content]', function (e) {
           var $this = S(this);
           var settings;
 
           if ($this.data(self.data_attr())) {
-            settings = $this.data(self.data_attr(true) + '-init') || self.settings;
+              settings = $this.data(self.data_attr(true) + '-init') || self.settings;
           } else {
-            var target = S('[' + self.attr_name() + '="' + S(this).attr('id') + '"]'),
-              settings = target.data(self.attr_name(true) + '-init') || self.settings;
+              var target   = S('[' + self.attr_name() + '="' + S(this).attr('id') + '"]'),
+                  settings = target.data(self.attr_name(true) + '-init') || self.settings;
           }
 
-          self.timeout = setTimeout(function() {
+          self.timeout = setTimeout(function () {
             if ($this.data(self.data_attr())) {
               if (settings.is_hover) {
                 self.close.call(self, S('#' + $this.data(self.data_attr())));
@@ -1830,12 +1802,12 @@
             }
           }.bind(this), settings.hover_timeout);
         })
-        .on('click.fndtn.dropdown', function(e) {
+        .on('click.fndtn.dropdown', function (e) {
           var parent = S(e.target).closest('[' + self.attr_name() + '-content]');
-          var links = parent.find('a');
+          var links  = parent.find('a');
 
           if (links.length > 0 && parent.attr('aria-autoclose') !== 'false') {
-            self.close.call(self, S('[' + self.attr_name() + '-content]'));
+              self.close.call(self, S('[' + self.attr_name() + '-content]'));
           }
 
           if (e.target !== document && !$.contains(document.documentElement, e.target)) {
@@ -1855,25 +1827,25 @@
 
           self.close.call(self, S('[' + self.attr_name() + '-content]'));
         })
-        .on('opened.fndtn.dropdown', '[' + self.attr_name() + '-content]', function() {
+        .on('opened.fndtn.dropdown', '[' + self.attr_name() + '-content]', function () {
           self.settings.opened.call(this);
         })
-        .on('closed.fndtn.dropdown', '[' + self.attr_name() + '-content]', function() {
+        .on('closed.fndtn.dropdown', '[' + self.attr_name() + '-content]', function () {
           self.settings.closed.call(this);
         });
 
       S(window)
         .off('.dropdown')
-        .on('resize.fndtn.dropdown', self.throttle(function() {
+        .on('resize.fndtn.dropdown', self.throttle(function () {
           self.resize.call(self);
         }, 50));
 
       this.resize();
     },
 
-    close: function(dropdown) {
+    close : function (dropdown) {
       var self = this;
-      dropdown.each(function() {
+      dropdown.each(function () {
         var original_target = $('[' + self.attr_name() + '=' + dropdown[0].id + ']') || $('aria-controls=' + dropdown[0].id + ']');
         original_target.attr('aria-expanded', 'false');
         if (self.S(this).hasClass(self.settings.active_class)) {
@@ -1891,17 +1863,17 @@
       dropdown.removeClass('f-open-' + this.attr_name(true));
     },
 
-    closeall: function() {
+    closeall : function () {
       var self = this;
-      $.each(self.S('.f-open-' + this.attr_name(true)), function() {
+      $.each(self.S('.f-open-' + this.attr_name(true)), function () {
         self.close.call(self, self.S(this));
       });
     },
 
-    open: function(dropdown, target) {
+    open : function (dropdown, target) {
       this
         .css(dropdown
-          .addClass(this.settings.active_class), target);
+        .addClass(this.settings.active_class), target);
       dropdown.prev('[' + this.attr_name() + ']').addClass(this.settings.active_class);
       dropdown.data('target', target.get(0)).trigger('opened').trigger('opened.fndtn.dropdown', [dropdown, target]);
       dropdown.attr('aria-hidden', 'false');
@@ -1910,7 +1882,7 @@
       dropdown.addClass('f-open-' + this.attr_name(true));
     },
 
-    data_attr: function() {
+    data_attr : function () {
       if (this.namespace.length > 0) {
         return this.namespace + '-' + this.name;
       }
@@ -1918,7 +1890,7 @@
       return this.name;
     },
 
-    toggle: function(target) {
+    toggle : function (target) {
       if (target.hasClass(this.settings.disabled_class)) {
         return;
       }
@@ -1940,7 +1912,7 @@
       }
     },
 
-    resize: function() {
+    resize : function () {
       var dropdown = this.S('[' + this.attr_name() + '-content].open');
       var target = $(dropdown.data("target"));
 
@@ -1949,9 +1921,9 @@
       }
     },
 
-    css: function(dropdown, target) {
+    css : function (dropdown, target) {
       var left_offset = Math.max((target.width() - dropdown.width()) / 2, 8),
-        settings = target.data(this.attr_name(true) + '-init') || this.settings;
+          settings = target.data(this.attr_name(true) + '-init') || this.settings;
 
       this.clear_idx();
 
@@ -1959,10 +1931,10 @@
         var p = this.dirs.bottom.call(dropdown, target, settings);
 
         dropdown.attr('style', '').removeClass('drop-left drop-right drop-top').css({
-          position: 'absolute',
-          width: '95%',
-          'max-width': 'none',
-          top: p.top
+          position : 'absolute',
+          width : '95%',
+          'max-width' : 'none',
+          top : p.top
         });
 
         dropdown.css(Foundation.rtl ? 'right' : 'left', left_offset);
@@ -1974,10 +1946,8 @@
       return dropdown;
     },
 
-    style: function(dropdown, target, settings) {
-      var css = $.extend({
-          position: 'absolute'
-        },
+    style : function (dropdown, target, settings) {
+      var css = $.extend({position : 'absolute'},
         this.dirs[settings.align].call(dropdown, target, settings));
 
       dropdown.attr('style', '').css(css);
@@ -1985,12 +1955,12 @@
 
     // return CSS property object
     // `this` is the dropdown
-    dirs: {
+    dirs : {
       // Calculate target offset
-      _base: function(t) {
+      _base : function (t) {
         var o_p = this.offsetParent(),
-          o = o_p.offset(),
-          p = t.offset();
+            o = o_p.offset(),
+            p = t.offset();
 
         p.top -= o.top;
         p.left -= o.left;
@@ -2037,9 +2007,9 @@
         return p;
       },
 
-      top: function(t, s) {
+      top : function (t, s) {
         var self = Foundation.libs.dropdown,
-          p = self.dirs._base.call(this, t);
+            p = self.dirs._base.call(this, t);
 
         this.addClass('drop-top');
 
@@ -2057,21 +2027,16 @@
         }
 
         if (Foundation.rtl) {
-          return {
-            left: p.left - this.outerWidth() + t.outerWidth(),
-            top: p.top - this.outerHeight()
-          };
+          return {left : p.left - this.outerWidth() + t.outerWidth(),
+            top : p.top - this.outerHeight()};
         }
 
-        return {
-          left: p.left,
-          top: p.top - this.outerHeight()
-        };
+        return {left : p.left, top : p.top - this.outerHeight()};
       },
 
-      bottom: function(t, s) {
+      bottom : function (t, s) {
         var self = Foundation.libs.dropdown,
-          p = self.dirs._base.call(this, t);
+            p = self.dirs._base.call(this, t);
 
         if (p.missRight == true) {
           p.left = p.left - this.outerWidth() + t.outerWidth();
@@ -2082,36 +2047,27 @@
         }
 
         if (self.rtl) {
-          return {
-            left: p.left - this.outerWidth() + t.outerWidth(),
-            top: p.top + t.outerHeight()
-          };
+          return {left : p.left - this.outerWidth() + t.outerWidth(), top : p.top + t.outerHeight()};
         }
 
-        return {
-          left: p.left,
-          top: p.top + t.outerHeight()
-        };
+        return {left : p.left, top : p.top + t.outerHeight()};
       },
 
-      left: function(t, s) {
+      left : function (t, s) {
         var p = Foundation.libs.dropdown.dirs._base.call(this, t);
 
         this.addClass('drop-left');
 
         if (p.missLeft == true) {
-          p.left = p.left + this.outerWidth();
+          p.left =  p.left + this.outerWidth();
           p.top = p.top + t.outerHeight();
           this.removeClass('drop-left');
         }
 
-        return {
-          left: p.left - this.outerWidth(),
-          top: p.top
-        };
+        return {left : p.left - this.outerWidth(), top : p.top};
       },
 
-      right: function(t, s) {
+      right : function (t, s) {
         var p = Foundation.libs.dropdown.dirs._base.call(this, t);
 
         this.addClass('drop-right');
@@ -2130,17 +2086,14 @@
           self.adjust_pip(this, t, s, p);
         }
 
-        return {
-          left: p.left + t.outerWidth(),
-          top: p.top
-        };
+        return {left : p.left + t.outerWidth(), top : p.top};
       }
     },
 
     // Insert rule to style psuedo elements
-    adjust_pip: function(dropdown, target, settings, position) {
+    adjust_pip : function (dropdown, target, settings, position) {
       var sheet = Foundation.stylesheet,
-        pip_offset_base = 8;
+          pip_offset_base = 8;
 
       if (dropdown.hasClass(settings.mega_class)) {
         pip_offset_base = position.left + (target.outerWidth() / 2) - 8;
@@ -2152,24 +2105,24 @@
 
       //default
       var sel_before = '.f-dropdown.open:before',
-        sel_after = '.f-dropdown.open:after',
-        css_before = 'left: ' + pip_offset_base + 'px;',
-        css_after = 'left: ' + (pip_offset_base - 1) + 'px;';
+          sel_after  = '.f-dropdown.open:after',
+          css_before = 'left: ' + pip_offset_base + 'px;',
+          css_after  = 'left: ' + (pip_offset_base - 1) + 'px;';
 
       if (position.missRight == true) {
         pip_offset_base = dropdown.outerWidth() - 23;
         sel_before = '.f-dropdown.open:before',
-          sel_after = '.f-dropdown.open:after',
-          css_before = 'left: ' + pip_offset_base + 'px;',
-          css_after = 'left: ' + (pip_offset_base - 1) + 'px;';
+        sel_after  = '.f-dropdown.open:after',
+        css_before = 'left: ' + pip_offset_base + 'px;',
+        css_after  = 'left: ' + (pip_offset_base - 1) + 'px;';
       }
 
       //just a case where right is fired, but its not missing right
       if (position.triggeredRight == true) {
         sel_before = '.f-dropdown.open:before',
-          sel_after = '.f-dropdown.open:after',
-          css_before = 'left:-12px;',
-          css_after = 'left:-14px;';
+        sel_after  = '.f-dropdown.open:after',
+        css_before = 'left:-12px;',
+        css_after  = 'left:-14px;';
       }
 
       if (sheet.insertRule) {
@@ -2182,7 +2135,7 @@
     },
 
     // Remove old dropdown rule index
-    clear_idx: function() {
+    clear_idx : function () {
       var sheet = Foundation.stylesheet;
 
       if (typeof this.rule_idx !== 'undefined') {
@@ -2192,54 +2145,53 @@
       }
     },
 
-    small: function() {
+    small : function () {
       return matchMedia(Foundation.media_queries.small).matches &&
         !matchMedia(Foundation.media_queries.medium).matches;
     },
 
-    off: function() {
+    off : function () {
       this.S(this.scope).off('.fndtn.dropdown');
       this.S('html, body').off('.fndtn.dropdown');
       this.S(window).off('.fndtn.dropdown');
       this.S('[data-dropdown-content]').off('.fndtn.dropdown');
     },
 
-    reflow: function() {}
+    reflow : function () {}
   };
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.equalizer = {
-    name: 'equalizer',
+    name : 'equalizer',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      use_tallest: true,
-      before_height_change: $.noop,
-      after_height_change: $.noop,
-      equalize_on_stack: false
+    settings : {
+      use_tallest : true,
+      before_height_change : $.noop,
+      after_height_change : $.noop,
+      equalize_on_stack : false
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       Foundation.inherit(this, 'image_loaded');
       this.bindings(method, options);
       this.reflow();
     },
 
-    events: function() {
-      this.S(window).off('.equalizer').on('resize.fndtn.equalizer', function(e) {
+    events : function () {
+      this.S(window).off('.equalizer').on('resize.fndtn.equalizer', function (e) {
         this.reflow();
       }.bind(this));
     },
 
-    equalize: function(equalizer) {
+    equalize : function (equalizer) {
       var isStacked = false,
-        vals = equalizer.find('[' + this.attr_name() + '-watch]:visible'),
-        settings = equalizer.data(this.attr_name(true) + '-init');
+          vals = equalizer.find('[' + this.attr_name() + '-watch]:visible'),
+          settings = equalizer.data(this.attr_name(true) + '-init');
 
       if (vals.length === 0) {
         return;
@@ -2248,7 +2200,7 @@
       settings.before_height_change();
       equalizer.trigger('before-height-change').trigger('before-height-change.fndth.equalizer');
       vals.height('inherit');
-      vals.each(function() {
+      vals.each(function () {
         var el = $(this);
         if (el.offset().top !== firstTopOffset) {
           isStacked = true;
@@ -2261,9 +2213,7 @@
         }
       };
 
-      var heights = vals.map(function() {
-        return $(this).outerHeight(false)
-      }).get();
+      var heights = vals.map(function () { return $(this).outerHeight(false) }).get();
 
       if (settings.use_tallest) {
         var max = Math.max.apply(null, heights);
@@ -2276,12 +2226,12 @@
       equalizer.trigger('after-height-change').trigger('after-height-change.fndtn.equalizer');
     },
 
-    reflow: function() {
+    reflow : function () {
       var self = this;
 
-      this.S('[' + this.attr_name() + ']', this.scope).each(function() {
+      this.S('[' + this.attr_name() + ']', this.scope).each(function () {
         var $eq_target = $(this);
-        self.image_loaded(self.S('img', this), function() {
+        self.image_loaded(self.S('img', this), function () {
           self.equalize($eq_target)
         });
       });
@@ -2289,37 +2239,36 @@
   };
 })(jQuery, window, window.document);
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.interchange = {
-    name: 'interchange',
+    name : 'interchange',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    cache: {},
+    cache : {},
 
-    images_loaded: false,
-    nodes_loaded: false,
+    images_loaded : false,
+    nodes_loaded : false,
 
-    settings: {
-      load_attr: 'interchange',
+    settings : {
+      load_attr : 'interchange',
 
-      named_queries: {
-        'default': 'only screen',
-        'small': Foundation.media_queries['small'],
-        'small-only': Foundation.media_queries['small-only'],
-        'medium': Foundation.media_queries['medium'],
-        'medium-only': Foundation.media_queries['medium-only'],
-        'large': Foundation.media_queries['large'],
-        'large-only': Foundation.media_queries['large-only'],
-        'xlarge': Foundation.media_queries['xlarge'],
-        'xlarge-only': Foundation.media_queries['xlarge-only'],
-        'xxlarge': Foundation.media_queries['xxlarge'],
-        'landscape': 'only screen and (orientation: landscape)',
-        'portrait': 'only screen and (orientation: portrait)',
-        'retina': 'only screen and (-webkit-min-device-pixel-ratio: 2),' +
+      named_queries : {
+        'default'     : 'only screen',
+        'small'       : Foundation.media_queries['small'],
+        'small-only'  : Foundation.media_queries['small-only'],
+        'medium'      : Foundation.media_queries['medium'],
+        'medium-only' : Foundation.media_queries['medium-only'],
+        'large'       : Foundation.media_queries['large'],
+        'large-only'  : Foundation.media_queries['large-only'],
+        'xlarge'      : Foundation.media_queries['xlarge'],
+        'xlarge-only' : Foundation.media_queries['xlarge-only'],
+        'xxlarge'     : Foundation.media_queries['xxlarge'],
+        'landscape'   : 'only screen and (orientation: landscape)',
+        'portrait'    : 'only screen and (orientation: portrait)',
+        'retina'      : 'only screen and (-webkit-min-device-pixel-ratio: 2),' +
           'only screen and (min--moz-device-pixel-ratio: 2),' +
           'only screen and (-o-min-device-pixel-ratio: 2/1),' +
           'only screen and (min-device-pixel-ratio: 2),' +
@@ -2327,8 +2276,8 @@
           'only screen and (min-resolution: 2dppx)'
       },
 
-      directives: {
-        replace: function(el, path, trigger) {
+      directives : {
+        replace : function (el, path, trigger) {
           // The trigger argument, if called within the directive, fires
           // an event named after the directive on the element, passing
           // any parameters along to the event that you pass to trigger.
@@ -2352,7 +2301,7 @@
             return trigger(el[0].src);
           }
           var last_path = el.data(this.data_attr + '-last-path'),
-            self = this;
+              self = this;
 
           if (last_path == path) {
             return;
@@ -2364,7 +2313,7 @@
             return trigger(path);
           }
 
-          return $.get(path, function(response) {
+          return $.get(path, function (response) {
             el.html(response);
             el.data(self.data_attr + '-last-path', path);
             trigger();
@@ -2374,7 +2323,7 @@
       }
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       Foundation.inherit(this, 'throttle random_str');
 
       this.data_attr = this.set_data_attr();
@@ -2384,32 +2333,31 @@
       this.load('nodes');
     },
 
-    get_media_hash: function() {
-      var mediaHash = '';
-      for (var queryName in this.settings.named_queries) {
-        mediaHash += matchMedia(this.settings.named_queries[queryName]).matches.toString();
-      }
-      return mediaHash;
+    get_media_hash : function () {
+        var mediaHash = '';
+        for (var queryName in this.settings.named_queries ) {
+            mediaHash += matchMedia(this.settings.named_queries[queryName]).matches.toString();
+        }
+        return mediaHash;
     },
 
-    events: function() {
-      var self = this,
-        prevMediaHash;
+    events : function () {
+      var self = this, prevMediaHash;
 
       $(window)
         .off('.interchange')
-        .on('resize.fndtn.interchange', self.throttle(function() {
-          var currMediaHash = self.get_media_hash();
-          if (currMediaHash !== prevMediaHash) {
-            self.resize();
-          }
-          prevMediaHash = currMediaHash;
+        .on('resize.fndtn.interchange', self.throttle(function () {
+            var currMediaHash = self.get_media_hash();
+            if (currMediaHash !== prevMediaHash) {
+                self.resize();
+            }
+            prevMediaHash = currMediaHash;
         }, 50));
 
       return this;
     },
 
-    resize: function() {
+    resize : function () {
       var cache = this.cache;
 
       if (!this.images_loaded || !this.nodes_loaded) {
@@ -2423,24 +2371,24 @@
 
           if (passed) {
             this.settings.directives[passed
-              .scenario[1]].call(this, passed.el, passed.scenario[0], (function(passed) {
-              if (arguments[0] instanceof Array) {
-                var args = arguments[0];
-              } else {
-                var args = Array.prototype.slice.call(arguments, 0);
-              }
+              .scenario[1]].call(this, passed.el, passed.scenario[0], (function (passed) {
+                if (arguments[0] instanceof Array) { 
+                  var args = arguments[0];
+                } else {
+                  var args = Array.prototype.slice.call(arguments, 0);
+                }
 
-              return function() {
-                passed.el.trigger(passed.scenario[1], args);
-              }
-            }(passed)));
+                return function() {
+                  passed.el.trigger(passed.scenario[1], args);
+                }
+              }(passed)));
           }
         }
       }
 
     },
 
-    results: function(uuid, scenarios) {
+    results : function (uuid, scenarios) {
       var count = scenarios.length;
 
       if (count > 0) {
@@ -2454,10 +2402,7 @@
             mq = matchMedia(rule);
           }
           if (mq.matches) {
-            return {
-              el: el,
-              scenario: scenarios[count]
-            };
+            return {el : el, scenario : scenarios[count]};
           }
         }
       }
@@ -2465,7 +2410,7 @@
       return false;
     },
 
-    load: function(type, force_update) {
+    load : function (type, force_update) {
       if (typeof this['cached_' + type] === 'undefined' || force_update) {
         this['update_' + type]();
       }
@@ -2473,12 +2418,12 @@
       return this['cached_' + type];
     },
 
-    update_images: function() {
+    update_images : function () {
       var images = this.S('img[' + this.data_attr + ']'),
-        count = images.length,
-        i = count,
-        loaded_count = 0,
-        data_attr = this.data_attr;
+          count = images.length,
+          i = count,
+          loaded_count = 0,
+          data_attr = this.data_attr;
 
       this.cache = {};
       this.cached_images = [];
@@ -2503,12 +2448,12 @@
       return this;
     },
 
-    update_nodes: function() {
+    update_nodes : function () {
       var nodes = this.S('[' + this.data_attr + ']').not('img'),
-        count = nodes.length,
-        i = count,
-        loaded_count = 0,
-        data_attr = this.data_attr;
+          count = nodes.length,
+          i = count,
+          loaded_count = 0,
+          data_attr = this.data_attr;
 
       this.cached_nodes = [];
       this.nodes_loaded = (count === 0);
@@ -2530,7 +2475,7 @@
       return this;
     },
 
-    enhance: function(type) {
+    enhance : function (type) {
       var i = this['cached_' + type].length;
 
       while (i--) {
@@ -2540,7 +2485,7 @@
       return $(window).trigger('resize').trigger('resize.fndtn.interchange');
     },
 
-    convert_directive: function(directive) {
+    convert_directive : function (directive) {
 
       var trimmed = this.trim(directive);
 
@@ -2551,28 +2496,28 @@
       return 'replace';
     },
 
-    parse_scenario: function(scenario) {
+    parse_scenario : function (scenario) {
       // This logic had to be made more complex since some users were using commas in the url path
       // So we cannot simply just split on a comma
       var directive_match = scenario[0].match(/(.+),\s*(\w+)\s*$/),
-        media_query = scenario[1];
+      media_query         = scenario[1];
 
       if (directive_match) {
-        var path = directive_match[1],
-          directive = directive_match[2];
+        var path  = directive_match[1],
+        directive = directive_match[2];
       } else {
         var cached_split = scenario[0].split(/,\s*$/),
-          path = cached_split[0],
-          directive = '';
+        path             = cached_split[0],
+        directive        = '';
       }
 
       return [this.trim(path), this.convert_directive(directive), this.trim(media_query)];
     },
 
-    object: function(el) {
+    object : function (el) {
       var raw_arr = this.parse_data_attr(el),
-        scenarios = [],
-        i = raw_arr.length;
+          scenarios = [],
+          i = raw_arr.length;
 
       if (i > 0) {
         while (i--) {
@@ -2588,9 +2533,9 @@
       return this.store(el, scenarios);
     },
 
-    store: function(el, scenarios) {
+    store : function (el, scenarios) {
       var uuid = this.random_str(),
-        current_uuid = el.data(this.add_namespace('uuid', true));
+          current_uuid = el.data(this.add_namespace('uuid', true));
 
       if (this.cache[current_uuid]) {
         return this.cache[current_uuid];
@@ -2601,7 +2546,7 @@
       return this.cache[uuid] = scenarios;
     },
 
-    trim: function(str) {
+    trim : function (str) {
 
       if (typeof str === 'string') {
         return $.trim(str);
@@ -2610,7 +2555,7 @@
       return str;
     },
 
-    set_data_attr: function(init) {
+    set_data_attr : function (init) {
       if (init) {
         if (this.namespace.length > 0) {
           return this.namespace + '-' + this.settings.load_attr;
@@ -2626,10 +2571,10 @@
       return 'data-' + this.settings.load_attr;
     },
 
-    parse_data_attr: function(el) {
+    parse_data_attr : function (el) {
       var raw = el.attr(this.attr_name()).split(/\[(.*?)\]/),
-        i = raw.length,
-        output = [];
+          i = raw.length,
+          output = [];
 
       while (i--) {
         if (raw[i].replace(/[\W\d]+/, '').length > 4) {
@@ -2640,7 +2585,7 @@
       return output;
     },
 
-    reflow: function() {
+    reflow : function () {
       this.load('images', true);
       this.load('nodes', true);
     }
@@ -2649,66 +2594,65 @@
 
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   var Modernizr = Modernizr || false;
 
   Foundation.libs.joyride = {
-    name: 'joyride',
+    name : 'joyride',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    defaults: {
-      expose: false, // turn on or off the expose feature
-      modal: true, // Whether to cover page with modal during the tour
-      keyboard: true, // enable left, right and esc keystrokes
-      tip_location: 'bottom', // 'top' or 'bottom' in relation to parent
-      nub_position: 'auto', // override on a per tooltip bases
-      scroll_speed: 1500, // Page scrolling speed in milliseconds, 0 = no scroll animation
-      scroll_animation: 'linear', // supports 'swing' and 'linear', extend with jQuery UI.
-      timer: 0, // 0 = no timer , all other numbers = timer in milliseconds
-      start_timer_on_click: true, // true or false - true requires clicking the first button start the timer
-      start_offset: 0, // the index of the tooltip you want to start on (index of the li)
-      next_button: true, // true or false to control whether a next button is used
-      prev_button: true, // true or false to control whether a prev button is used
-      tip_animation: 'fade', // 'pop' or 'fade' in each tip
-      pause_after: [], // array of indexes where to pause the tour after
-      exposed: [], // array of expose elements
-      tip_animation_fade_speed: 300, // when tipAnimation = 'fade' this is speed in milliseconds for the transition
-      cookie_monster: false, // true or false to control whether cookies are used
-      cookie_name: 'joyride', // Name the cookie you'll use
-      cookie_domain: false, // Will this cookie be attached to a domain, ie. '.notableapp.com'
-      cookie_expires: 365, // set when you would like the cookie to expire.
-      tip_container: 'body', // Where will the tip be attached
-      abort_on_close: true, // When true, the close event will not fire any callback
-      tip_location_patterns: {
-        top: ['bottom'],
-        bottom: [], // bottom should not need to be repositioned
-        left: ['right', 'top', 'bottom'],
-        right: ['left', 'top', 'bottom']
+    defaults : {
+      expose                   : false,     // turn on or off the expose feature
+      modal                    : true,      // Whether to cover page with modal during the tour
+      keyboard                 : true,      // enable left, right and esc keystrokes
+      tip_location             : 'bottom',  // 'top' or 'bottom' in relation to parent
+      nub_position             : 'auto',    // override on a per tooltip bases
+      scroll_speed             : 1500,      // Page scrolling speed in milliseconds, 0 = no scroll animation
+      scroll_animation         : 'linear',  // supports 'swing' and 'linear', extend with jQuery UI.
+      timer                    : 0,         // 0 = no timer , all other numbers = timer in milliseconds
+      start_timer_on_click     : true,      // true or false - true requires clicking the first button start the timer
+      start_offset             : 0,         // the index of the tooltip you want to start on (index of the li)
+      next_button              : true,      // true or false to control whether a next button is used
+      prev_button              : true,      // true or false to control whether a prev button is used
+      tip_animation            : 'fade',    // 'pop' or 'fade' in each tip
+      pause_after              : [],        // array of indexes where to pause the tour after
+      exposed                  : [],        // array of expose elements
+      tip_animation_fade_speed : 300,       // when tipAnimation = 'fade' this is speed in milliseconds for the transition
+      cookie_monster           : false,     // true or false to control whether cookies are used
+      cookie_name              : 'joyride', // Name the cookie you'll use
+      cookie_domain            : false,     // Will this cookie be attached to a domain, ie. '.notableapp.com'
+      cookie_expires           : 365,       // set when you would like the cookie to expire.
+      tip_container            : 'body',    // Where will the tip be attached
+      abort_on_close           : true,      // When true, the close event will not fire any callback
+      tip_location_patterns    : {
+        top : ['bottom'],
+        bottom : [], // bottom should not need to be repositioned
+        left : ['right', 'top', 'bottom'],
+        right : ['left', 'top', 'bottom']
       },
-      post_ride_callback: function() {}, // A method to call once the tour closes (canceled or complete)
-      post_step_callback: function() {}, // A method to call after each step
-      pre_step_callback: function() {}, // A method to call before each step
-      pre_ride_callback: function() {}, // A method to call before the tour starts (passed index, tip, and cloned exposed element)
-      post_expose_callback: function() {}, // A method to call after an element has been exposed
-      template: { // HTML segments for tip layout
-        link: '<a href="#close" class="joyride-close-tip">&times;</a>',
-        timer: '<div class="joyride-timer-indicator-wrap"><span class="joyride-timer-indicator"></span></div>',
-        tip: '<div class="joyride-tip-guide"><span class="joyride-nub"></span></div>',
-        wrapper: '<div class="joyride-content-wrapper"></div>',
-        button: '<a href="#" class="small button joyride-next-tip"></a>',
-        prev_button: '<a href="#" class="small button joyride-prev-tip"></a>',
-        modal: '<div class="joyride-modal-bg"></div>',
-        expose: '<div class="joyride-expose-wrapper"></div>',
-        expose_cover: '<div class="joyride-expose-cover"></div>'
+      post_ride_callback     : function () {},    // A method to call once the tour closes (canceled or complete)
+      post_step_callback     : function () {},    // A method to call after each step
+      pre_step_callback      : function () {},    // A method to call before each step
+      pre_ride_callback      : function () {},    // A method to call before the tour starts (passed index, tip, and cloned exposed element)
+      post_expose_callback   : function () {},    // A method to call after an element has been exposed
+      template : { // HTML segments for tip layout
+        link          : '<a href="#close" class="joyride-close-tip">&times;</a>',
+        timer         : '<div class="joyride-timer-indicator-wrap"><span class="joyride-timer-indicator"></span></div>',
+        tip           : '<div class="joyride-tip-guide"><span class="joyride-nub"></span></div>',
+        wrapper       : '<div class="joyride-content-wrapper"></div>',
+        button        : '<a href="#" class="small button joyride-next-tip"></a>',
+        prev_button   : '<a href="#" class="small button joyride-prev-tip"></a>',
+        modal         : '<div class="joyride-modal-bg"></div>',
+        expose        : '<div class="joyride-expose-wrapper"></div>',
+        expose_cover  : '<div class="joyride-expose-cover"></div>'
       },
-      expose_add_class: '' // One or more space-separated class names to be added to exposed element
+      expose_add_class : '' // One or more space-separated class names to be added to exposed element
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       Foundation.inherit(this, 'throttle random_str');
 
       this.settings = this.settings || $.extend({}, this.defaults, (options || method));
@@ -2716,7 +2660,7 @@
       this.bindings(method, options)
     },
 
-    go_next: function() {
+    go_next : function () {
       if (this.settings.$li.next().length < 1) {
         this.end();
       } else if (this.settings.timer > 0) {
@@ -2730,7 +2674,7 @@
       }
     },
 
-    go_prev: function() {
+    go_prev : function () {
       if (this.settings.$li.prev().length < 1) {
         // Do nothing if there are no prev element
       } else if (this.settings.timer > 0) {
@@ -2744,55 +2688,55 @@
       }
     },
 
-    events: function() {
+    events : function () {
       var self = this;
 
       $(this.scope)
         .off('.joyride')
-        .on('click.fndtn.joyride', '.joyride-next-tip, .joyride-modal-bg', function(e) {
+        .on('click.fndtn.joyride', '.joyride-next-tip, .joyride-modal-bg', function (e) {
           e.preventDefault();
           this.go_next()
         }.bind(this))
-        .on('click.fndtn.joyride', '.joyride-prev-tip', function(e) {
+        .on('click.fndtn.joyride', '.joyride-prev-tip', function (e) {
           e.preventDefault();
           this.go_prev();
         }.bind(this))
 
-      .on('click.fndtn.joyride', '.joyride-close-tip', function(e) {
-        e.preventDefault();
-        this.end(this.settings.abort_on_close);
-      }.bind(this))
+        .on('click.fndtn.joyride', '.joyride-close-tip', function (e) {
+          e.preventDefault();
+          this.end(this.settings.abort_on_close);
+        }.bind(this))
 
-      .on('keyup.fndtn.joyride', function(e) {
-        // Don't do anything if keystrokes are disabled
-        // or if the joyride is not being shown
-        if (!this.settings.keyboard || !this.settings.riding) {
-          return;
-        }
+        .on('keyup.fndtn.joyride', function (e) {
+          // Don't do anything if keystrokes are disabled
+          // or if the joyride is not being shown
+          if (!this.settings.keyboard || !this.settings.riding) {
+            return;
+          }
 
-        switch (e.which) {
-          case 39: // right arrow
-            e.preventDefault();
-            this.go_next();
-            break;
-          case 37: // left arrow
-            e.preventDefault();
-            this.go_prev();
-            break;
-          case 27: // escape
-            e.preventDefault();
-            this.end(this.settings.abort_on_close);
-        }
-      }.bind(this));
+          switch (e.which) {
+            case 39: // right arrow
+              e.preventDefault();
+              this.go_next();
+              break;
+            case 37: // left arrow
+              e.preventDefault();
+              this.go_prev();
+              break;
+            case 27: // escape
+              e.preventDefault();
+              this.end(this.settings.abort_on_close);
+          }
+        }.bind(this));
 
       $(window)
         .off('.joyride')
-        .on('resize.fndtn.joyride', self.throttle(function() {
+        .on('resize.fndtn.joyride', self.throttle(function () {
           if ($('[' + self.attr_name() + ']').length > 0 && self.settings.$next_tip && self.settings.riding) {
             if (self.settings.exposed.length > 0) {
               var $els = $(self.settings.exposed);
 
-              $els.each(function() {
+              $els.each(function () {
                 var $this = $(this);
                 self.un_expose($this);
                 self.expose($this);
@@ -2808,11 +2752,11 @@
         }, 100));
     },
 
-    start: function() {
+    start : function () {
       var self = this,
-        $this = $('[' + this.attr_name() + ']', this.scope),
-        integer_settings = ['timer', 'scrollSpeed', 'startOffset', 'tipAnimationFadeSpeed', 'cookieExpires'],
-        int_settings_count = integer_settings.length;
+          $this = $('[' + this.attr_name() + ']', this.scope),
+          integer_settings = ['timer', 'scrollSpeed', 'startOffset', 'tipAnimationFadeSpeed', 'cookieExpires'],
+          int_settings_count = integer_settings.length;
 
       if (!$this.length > 0) {
         return;
@@ -2840,7 +2784,7 @@
 
       // generate the tips and insert into dom.
       if (!this.settings.cookie_monster || this.settings.cookie_monster && !$.cookie(this.settings.cookie_name)) {
-        this.settings.$tip_content.each(function(index) {
+        this.settings.$tip_content.each(function (index) {
           var $this = $(this);
           this.settings = $.extend({}, self.defaults, self.data_options($this));
 
@@ -2849,10 +2793,7 @@
           while (i--) {
             self.settings[integer_settings[i]] = parseInt(self.settings[integer_settings[i]], 10);
           }
-          self.create({
-            $li: $this,
-            index: index
-          });
+          self.create({$li : $this, index : index});
         });
 
         // show first tip
@@ -2866,12 +2807,12 @@
       }
     },
 
-    resume: function() {
+    resume : function () {
       this.set_li();
       this.show();
     },
 
-    tip_template: function(opts) {
+    tip_template : function (opts) {
       var $blank, content;
 
       opts.tip_class = opts.tip_class || '';
@@ -2890,7 +2831,7 @@
       return $blank[0];
     },
 
-    timer_instance: function(index) {
+    timer_instance : function (index) {
       var txt;
 
       if ((index === 0 && this.settings.start_timer_on_click && this.settings.timer > 0) || this.settings.timer === 0) {
@@ -2901,7 +2842,7 @@
       return txt;
     },
 
-    button_text: function(txt) {
+    button_text : function (txt) {
       if (this.settings.tip_settings.next_button) {
         txt = $.trim(txt) || 'Next';
         txt = $(this.settings.template.button).append(txt)[0].outerHTML;
@@ -2911,7 +2852,7 @@
       return txt;
     },
 
-    prev_button_text: function(txt, idx) {
+    prev_button_text : function (txt, idx) {
       if (this.settings.tip_settings.prev_button) {
         txt = $.trim(txt) || 'Previous';
 
@@ -2927,23 +2868,23 @@
       return txt;
     },
 
-    create: function(opts) {
+    create : function (opts) {
       this.settings.tip_settings = $.extend({}, this.settings, this.data_options(opts.$li));
       var buttonText = opts.$li.attr(this.add_namespace('data-button')) || opts.$li.attr(this.add_namespace('data-text')),
-        prevButtonText = opts.$li.attr(this.add_namespace('data-button-prev')) || opts.$li.attr(this.add_namespace('data-prev-text')),
+          prevButtonText = opts.$li.attr(this.add_namespace('data-button-prev')) || opts.$li.attr(this.add_namespace('data-prev-text')),
         tipClass = opts.$li.attr('class'),
         $tip_content = $(this.tip_template({
-          tip_class: tipClass,
-          index: opts.index,
-          button_text: buttonText,
-          prev_button_text: prevButtonText,
-          li: opts.$li
+          tip_class : tipClass,
+          index : opts.index,
+          button_text : buttonText,
+          prev_button_text : prevButtonText,
+          li : opts.$li
         }));
 
       $(this.settings.tip_container).append($tip_content);
     },
 
-    show: function(init, is_prev) {
+    show : function (init, is_prev) {
       var $timer = null;
 
       // are we paused?
@@ -2982,9 +2923,9 @@
           if (!/body/i.test(this.settings.$target.selector)) {
             var joyridemodalbg = $('.joyride-modal-bg');
             if (/pop/i.test(this.settings.tipAnimation)) {
-              joyridemodalbg.hide();
+                joyridemodalbg.hide();
             } else {
-              joyridemodalbg.fadeOut(this.settings.tipAnimationFadeSpeed);
+                joyridemodalbg.fadeOut(this.settings.tipAnimationFadeSpeed);
             }
             this.scroll_to();
           }
@@ -3005,9 +2946,9 @@
 
               this.settings.$next_tip.show();
 
-              setTimeout(function() {
+              setTimeout(function () {
                 $timer.animate({
-                  width: $timer.parent().width()
+                  width : $timer.parent().width()
                 }, this.settings.timer, 'linear');
               }.bind(this), this.settings.tip_animation_fade_speed);
 
@@ -3026,9 +2967,9 @@
                 .fadeIn(this.settings.tip_animation_fade_speed)
                 .show();
 
-              setTimeout(function() {
+              setTimeout(function () {
                 $timer.animate({
-                  width: $timer.parent().width()
+                  width : $timer.parent().width()
                 }, this.settings.timer, 'linear');
               }.bind(this), this.settings.tip_animation_fade_speed);
 
@@ -3039,7 +2980,7 @@
 
           this.settings.$current_tip = this.settings.$next_tip;
 
-          // skip non-existant targets
+        // skip non-existant targets
         } else if (this.settings.$li && this.settings.$target.length < 1) {
 
           this.show(init, is_prev);
@@ -3057,12 +2998,12 @@
 
     },
 
-    is_phone: function() {
+    is_phone : function () {
       return matchMedia(Foundation.media_queries.small).matches &&
         !matchMedia(Foundation.media_queries.medium).matches;
     },
 
-    hide: function() {
+    hide : function () {
       if (this.settings.modal && this.settings.expose) {
         this.un_expose();
       }
@@ -3073,7 +3014,7 @@
 
       // Prevent scroll bouncing...wait to remove from layout
       this.settings.$current_tip.css('visibility', 'hidden');
-      setTimeout($.proxy(function() {
+      setTimeout($.proxy(function () {
         this.hide();
         this.css('visibility', 'visible');
       }, this.settings.$current_tip), 0);
@@ -3081,7 +3022,7 @@
         this.settings.$current_tip);
     },
 
-    set_li: function(init, is_prev) {
+    set_li : function (init, is_prev) {
       if (init) {
         this.settings.$li = this.settings.$tip_content.eq(this.settings.start_offset);
         this.set_next_tip();
@@ -3098,28 +3039,28 @@
       this.set_target();
     },
 
-    set_next_tip: function() {
+    set_next_tip : function () {
       this.settings.$next_tip = $('.joyride-tip-guide').eq(this.settings.$li.index());
       this.settings.$next_tip.data('closed', '');
     },
 
-    set_target: function() {
+    set_target : function () {
       var cl = this.settings.$li.attr(this.add_namespace('data-class')),
-        id = this.settings.$li.attr(this.add_namespace('data-id')),
-        $sel = function() {
-          if (id) {
-            return $(document.getElementById(id));
-          } else if (cl) {
-            return $('.' + cl).first();
-          } else {
-            return $('body');
-          }
-        };
+          id = this.settings.$li.attr(this.add_namespace('data-id')),
+          $sel = function () {
+            if (id) {
+              return $(document.getElementById(id));
+            } else if (cl) {
+              return $('.' + cl).first();
+            } else {
+              return $('body');
+            }
+          };
 
       this.settings.$target = $sel();
     },
 
-    scroll_to: function() {
+    scroll_to : function () {
       var window_half, tipOffset;
 
       window_half = $(window).height() / 2;
@@ -3127,26 +3068,26 @@
 
       if (tipOffset != 0) {
         $('html, body').stop().animate({
-          scrollTop: tipOffset
+          scrollTop : tipOffset
         }, this.settings.scroll_speed, 'swing');
       }
     },
 
-    paused: function() {
+    paused : function () {
       return ($.inArray((this.settings.$li.index() + 1), this.settings.pause_after) === -1);
     },
 
-    restart: function() {
+    restart : function () {
       this.hide();
       this.settings.$li = undefined;
       this.show('init');
     },
 
-    pos_default: function(init) {
+    pos_default : function (init) {
       var $nub = this.settings.$next_tip.find('.joyride-nub'),
-        nub_width = Math.ceil($nub.outerWidth() / 2),
-        nub_height = Math.ceil($nub.outerHeight() / 2),
-        toggle = init || false;
+          nub_width = Math.ceil($nub.outerWidth() / 2),
+          nub_height = Math.ceil($nub.outerHeight() / 2),
+          toggle = init || false;
 
       // tip must not be "display: none" to calculate position
       if (toggle) {
@@ -3155,73 +3096,67 @@
       }
 
       if (!/body/i.test(this.settings.$target.selector)) {
-        var topAdjustment = this.settings.tip_settings.tipAdjustmentY ? parseInt(this.settings.tip_settings.tipAdjustmentY) : 0,
-          leftAdjustment = this.settings.tip_settings.tipAdjustmentX ? parseInt(this.settings.tip_settings.tipAdjustmentX) : 0;
+          var topAdjustment = this.settings.tip_settings.tipAdjustmentY ? parseInt(this.settings.tip_settings.tipAdjustmentY) : 0,
+              leftAdjustment = this.settings.tip_settings.tipAdjustmentX ? parseInt(this.settings.tip_settings.tipAdjustmentX) : 0;
 
-        if (this.bottom()) {
-          if (this.rtl) {
+          if (this.bottom()) {
+            if (this.rtl) {
+              this.settings.$next_tip.css({
+                top : (this.settings.$target.offset().top + nub_height + this.settings.$target.outerHeight() + topAdjustment),
+                left : this.settings.$target.offset().left + this.settings.$target.outerWidth() - this.settings.$next_tip.outerWidth() + leftAdjustment});
+            } else {
+              this.settings.$next_tip.css({
+                top : (this.settings.$target.offset().top + nub_height + this.settings.$target.outerHeight() + topAdjustment),
+                left : this.settings.$target.offset().left + leftAdjustment});
+            }
+
+            this.nub_position($nub, this.settings.tip_settings.nub_position, 'top');
+
+          } else if (this.top()) {
+            if (this.rtl) {
+              this.settings.$next_tip.css({
+                top : (this.settings.$target.offset().top - this.settings.$next_tip.outerHeight() - nub_height + topAdjustment),
+                left : this.settings.$target.offset().left + this.settings.$target.outerWidth() - this.settings.$next_tip.outerWidth()});
+            } else {
+              this.settings.$next_tip.css({
+                top : (this.settings.$target.offset().top - this.settings.$next_tip.outerHeight() - nub_height + topAdjustment),
+                left : this.settings.$target.offset().left + leftAdjustment});
+            }
+
+            this.nub_position($nub, this.settings.tip_settings.nub_position, 'bottom');
+
+          } else if (this.right()) {
+
             this.settings.$next_tip.css({
-              top: (this.settings.$target.offset().top + nub_height + this.settings.$target.outerHeight() + topAdjustment),
-              left: this.settings.$target.offset().left + this.settings.$target.outerWidth() - this.settings.$next_tip.outerWidth() + leftAdjustment
-            });
-          } else {
+              top : this.settings.$target.offset().top + topAdjustment,
+              left : (this.settings.$target.outerWidth() + this.settings.$target.offset().left + nub_width + leftAdjustment)});
+
+            this.nub_position($nub, this.settings.tip_settings.nub_position, 'left');
+
+          } else if (this.left()) {
+
             this.settings.$next_tip.css({
-              top: (this.settings.$target.offset().top + nub_height + this.settings.$target.outerHeight() + topAdjustment),
-              left: this.settings.$target.offset().left + leftAdjustment
-            });
+              top : this.settings.$target.offset().top + topAdjustment,
+              left : (this.settings.$target.offset().left - this.settings.$next_tip.outerWidth() - nub_width + leftAdjustment)});
+
+            this.nub_position($nub, this.settings.tip_settings.nub_position, 'right');
+
           }
 
-          this.nub_position($nub, this.settings.tip_settings.nub_position, 'top');
+          if (!this.visible(this.corners(this.settings.$next_tip)) && this.settings.attempts < this.settings.tip_settings.tip_location_pattern.length) {
 
-        } else if (this.top()) {
-          if (this.rtl) {
-            this.settings.$next_tip.css({
-              top: (this.settings.$target.offset().top - this.settings.$next_tip.outerHeight() - nub_height + topAdjustment),
-              left: this.settings.$target.offset().left + this.settings.$target.outerWidth() - this.settings.$next_tip.outerWidth()
-            });
-          } else {
-            this.settings.$next_tip.css({
-              top: (this.settings.$target.offset().top - this.settings.$next_tip.outerHeight() - nub_height + topAdjustment),
-              left: this.settings.$target.offset().left + leftAdjustment
-            });
+            $nub.removeClass('bottom')
+              .removeClass('top')
+              .removeClass('right')
+              .removeClass('left');
+
+            this.settings.tip_settings.tip_location = this.settings.tip_settings.tip_location_pattern[this.settings.attempts];
+
+            this.settings.attempts++;
+
+            this.pos_default();
+
           }
-
-          this.nub_position($nub, this.settings.tip_settings.nub_position, 'bottom');
-
-        } else if (this.right()) {
-
-          this.settings.$next_tip.css({
-            top: this.settings.$target.offset().top + topAdjustment,
-            left: (this.settings.$target.outerWidth() + this.settings.$target.offset().left + nub_width + leftAdjustment)
-          });
-
-          this.nub_position($nub, this.settings.tip_settings.nub_position, 'left');
-
-        } else if (this.left()) {
-
-          this.settings.$next_tip.css({
-            top: this.settings.$target.offset().top + topAdjustment,
-            left: (this.settings.$target.offset().left - this.settings.$next_tip.outerWidth() - nub_width + leftAdjustment)
-          });
-
-          this.nub_position($nub, this.settings.tip_settings.nub_position, 'right');
-
-        }
-
-        if (!this.visible(this.corners(this.settings.$next_tip)) && this.settings.attempts < this.settings.tip_settings.tip_location_pattern.length) {
-
-          $nub.removeClass('bottom')
-            .removeClass('top')
-            .removeClass('right')
-            .removeClass('left');
-
-          this.settings.tip_settings.tip_location = this.settings.tip_settings.tip_location_pattern[this.settings.attempts];
-
-          this.settings.attempts++;
-
-          this.pos_default();
-
-        }
 
       } else if (this.settings.$li.length) {
 
@@ -3236,13 +3171,13 @@
 
     },
 
-    pos_phone: function(init) {
+    pos_phone : function (init) {
       var tip_height = this.settings.$next_tip.outerHeight(),
-        tip_offset = this.settings.$next_tip.offset(),
-        target_height = this.settings.$target.outerHeight(),
-        $nub = $('.joyride-nub', this.settings.$next_tip),
-        nub_height = Math.ceil($nub.outerHeight() / 2),
-        toggle = init || false;
+          tip_offset = this.settings.$next_tip.offset(),
+          target_height = this.settings.$target.outerHeight(),
+          $nub = $('.joyride-nub', this.settings.$next_tip),
+          nub_height = Math.ceil($nub.outerHeight() / 2),
+          toggle = init || false;
 
       $nub.removeClass('bottom')
         .removeClass('top')
@@ -3258,16 +3193,12 @@
 
         if (this.top()) {
 
-          this.settings.$next_tip.offset({
-            top: this.settings.$target.offset().top - tip_height - nub_height
-          });
-          $nub.addClass('bottom');
+            this.settings.$next_tip.offset({top : this.settings.$target.offset().top - tip_height - nub_height});
+            $nub.addClass('bottom');
 
         } else {
 
-          this.settings.$next_tip.offset({
-            top: this.settings.$target.offset().top + target_height + nub_height
-          });
+          this.settings.$next_tip.offset({top : this.settings.$target.offset().top + target_height + nub_height});
           $nub.addClass('top');
 
         }
@@ -3282,36 +3213,36 @@
       }
     },
 
-    pos_modal: function($nub) {
+    pos_modal : function ($nub) {
       this.center();
       $nub.hide();
 
       this.show_modal();
     },
 
-    show_modal: function() {
+    show_modal : function () {
       if (!this.settings.$next_tip.data('closed')) {
-        var joyridemodalbg = $('.joyride-modal-bg');
+        var joyridemodalbg =  $('.joyride-modal-bg');
         if (joyridemodalbg.length < 1) {
           var joyridemodalbg = $(this.settings.template.modal);
           joyridemodalbg.appendTo('body');
         }
 
         if (/pop/i.test(this.settings.tip_animation)) {
-          joyridemodalbg.show();
+            joyridemodalbg.show();
         } else {
-          joyridemodalbg.fadeIn(this.settings.tip_animation_fade_speed);
+            joyridemodalbg.fadeIn(this.settings.tip_animation_fade_speed);
         }
       }
     },
 
-    expose: function() {
+    expose : function () {
       var expose,
-        exposeCover,
-        el,
-        origCSS,
-        origClasses,
-        randId = 'expose-' + this.random_str(6);
+          exposeCover,
+          el,
+          origCSS,
+          origClasses,
+          randId = 'expose-' + this.random_str(6);
 
       if (arguments.length > 0 && arguments[0] instanceof $) {
         el = arguments[0];
@@ -3331,17 +3262,17 @@
       expose = $(this.settings.template.expose);
       this.settings.$body.append(expose);
       expose.css({
-        top: el.offset().top,
-        left: el.offset().left,
-        width: el.outerWidth(true),
-        height: el.outerHeight(true)
+        top : el.offset().top,
+        left : el.offset().left,
+        width : el.outerWidth(true),
+        height : el.outerHeight(true)
       });
 
       exposeCover = $(this.settings.template.expose_cover);
 
       origCSS = {
-        zIndex: el.css('z-index'),
-        position: el.css('position')
+        zIndex : el.css('z-index'),
+        position : el.css('position')
       };
 
       origClasses = el.attr('class') == null ? '' : el.attr('class');
@@ -3357,10 +3288,10 @@
       el.attr('class', origClasses + ' ' + this.settings.expose_add_class);
 
       exposeCover.css({
-        top: el.offset().top,
-        left: el.offset().left,
-        width: el.outerWidth(true),
-        height: el.outerHeight(true)
+        top : el.offset().top,
+        left : el.offset().left,
+        width : el.outerWidth(true),
+        height : el.outerHeight(true)
       });
 
       if (this.settings.modal) {
@@ -3375,13 +3306,13 @@
       this.add_exposed(el);
     },
 
-    un_expose: function() {
+    un_expose : function () {
       var exposeId,
-        el,
-        expose,
-        origCSS,
-        origClasses,
-        clearAll = false;
+          el,
+          expose,
+          origCSS,
+          origClasses,
+          clearAll = false;
 
       if (arguments.length > 0 && arguments[0] instanceof $) {
         el = arguments[0];
@@ -3420,7 +3351,7 @@
       }
 
       if (origCSS.position != el.css('position')) {
-        if (origCSS.position == 'static') { // this is default, no need to set it.
+        if (origCSS.position == 'static') {// this is default, no need to set it.
           el.css('position', '');
         } else {
           el.css('position', origCSS.position);
@@ -3436,7 +3367,7 @@
       this.remove_exposed(el);
     },
 
-    add_exposed: function(el) {
+    add_exposed : function (el) {
       this.settings.exposed = this.settings.exposed || [];
       if (el instanceof $ || typeof el === 'object') {
         this.settings.exposed.push(el[0]);
@@ -3445,7 +3376,7 @@
       }
     },
 
-    remove_exposed: function(el) {
+    remove_exposed : function (el) {
       var search, i;
       if (el instanceof $) {
         search = el[0]
@@ -3464,42 +3395,42 @@
       }
     },
 
-    center: function() {
+    center : function () {
       var $w = $(window);
 
       this.settings.$next_tip.css({
-        top: ((($w.height() - this.settings.$next_tip.outerHeight()) / 2) + $w.scrollTop()),
-        left: ((($w.width() - this.settings.$next_tip.outerWidth()) / 2) + $w.scrollLeft())
+        top : ((($w.height() - this.settings.$next_tip.outerHeight()) / 2) + $w.scrollTop()),
+        left : ((($w.width() - this.settings.$next_tip.outerWidth()) / 2) + $w.scrollLeft())
       });
 
       return true;
     },
 
-    bottom: function() {
+    bottom : function () {
       return /bottom/i.test(this.settings.tip_settings.tip_location);
     },
 
-    top: function() {
+    top : function () {
       return /top/i.test(this.settings.tip_settings.tip_location);
     },
 
-    right: function() {
+    right : function () {
       return /right/i.test(this.settings.tip_settings.tip_location);
     },
 
-    left: function() {
+    left : function () {
       return /left/i.test(this.settings.tip_settings.tip_location);
     },
 
-    corners: function(el) {
+    corners : function (el) {
       var w = $(window),
-        window_half = w.height() / 2,
-        //using this to calculate since scroll may not have finished yet.
-        tipOffset = Math.ceil(this.settings.$target.offset().top - window_half + this.settings.$next_tip.outerHeight()),
-        right = w.width() + w.scrollLeft(),
-        offsetBottom = w.height() + tipOffset,
-        bottom = w.height() + w.scrollTop(),
-        top = w.scrollTop();
+          window_half = w.height() / 2,
+          //using this to calculate since scroll may not have finished yet.
+          tipOffset = Math.ceil(this.settings.$target.offset().top - window_half + this.settings.$next_tip.outerHeight()),
+          right = w.width() + w.scrollLeft(),
+          offsetBottom =  w.height() + tipOffset,
+          bottom = w.height() + w.scrollTop(),
+          top = w.scrollTop();
 
       if (tipOffset < top) {
         if (tipOffset < 0) {
@@ -3521,7 +3452,7 @@
       ];
     },
 
-    visible: function(hidden_corners) {
+    visible : function (hidden_corners) {
       var i = hidden_corners.length;
 
       while (i--) {
@@ -3533,7 +3464,7 @@
       return true;
     },
 
-    nub_position: function(nub, pos, def) {
+    nub_position : function (nub, pos, def) {
       if (pos === 'auto') {
         nub.addClass(def);
       } else {
@@ -3541,9 +3472,9 @@
       }
     },
 
-    startTimer: function() {
+    startTimer : function () {
       if (this.settings.$li.length) {
-        this.settings.automate = setTimeout(function() {
+        this.settings.automate = setTimeout(function () {
           this.hide();
           this.show();
           this.startTimer();
@@ -3553,12 +3484,9 @@
       }
     },
 
-    end: function(abort) {
+    end : function (abort) {
       if (this.settings.cookie_monster) {
-        $.cookie(this.settings.cookie_name, 'ridden', {
-          expires: this.settings.cookie_expires,
-          domain: this.settings.cookie_domain
-        });
+        $.cookie(this.settings.cookie_name, 'ridden', {expires : this.settings.cookie_expires, domain : this.settings.cookie_domain});
       }
 
       if (this.settings.timer > 0) {
@@ -3586,7 +3514,7 @@
       $('.joyride-tip-guide').remove();
     },
 
-    off: function() {
+    off : function () {
       $(this.scope).off('.joyride');
       $(window).off('.joyride');
       $('.joyride-close-tip, .joyride-next-tip, .joyride-modal-bg').off('.joyride');
@@ -3595,51 +3523,50 @@
       this.settings = {};
     },
 
-    reflow: function() {}
+    reflow : function () {}
   };
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs['magellan-expedition'] = {
-    name: 'magellan-expedition',
+    name : 'magellan-expedition',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      active_class: 'active',
-      threshold: 0, // pixels from the top of the expedition for it to become fixes
-      destination_threshold: 20, // pixels from the top of destination for it to be considered active
-      throttle_delay: 30, // calculation throttling to increase framerate
-      fixed_top: 0, // top distance in pixels assigend to the fixed element on scroll
-      offset_by_height: true, // whether to offset the destination by the expedition height. Usually you want this to be true, unless your expedition is on the side.
-      duration: 700, // animation duration time
-      easing: 'swing' // animation easing
+    settings : {
+      active_class : 'active',
+      threshold : 0, // pixels from the top of the expedition for it to become fixes
+      destination_threshold : 20, // pixels from the top of destination for it to be considered active
+      throttle_delay : 30, // calculation throttling to increase framerate
+      fixed_top : 0, // top distance in pixels assigend to the fixed element on scroll
+      offset_by_height : true,  // whether to offset the destination by the expedition height. Usually you want this to be true, unless your expedition is on the side.
+      duration : 700, // animation duration time
+      easing : 'swing' // animation easing
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       Foundation.inherit(this, 'throttle');
       this.bindings(method, options);
     },
 
-    events: function() {
+    events : function () {
       var self = this,
-        S = self.S,
-        settings = self.settings;
+          S = self.S,
+          settings = self.settings;
 
       // initialize expedition offset
       self.set_expedition_position();
 
       S(self.scope)
         .off('.magellan')
-        .on('click.fndtn.magellan', '[' + self.add_namespace('data-magellan-arrival') + '] a[href^="#"]', function(e) {
+        .on('click.fndtn.magellan', '[' + self.add_namespace('data-magellan-arrival') + '] a[href^="#"]', function (e) {
           e.preventDefault();
           var expedition = $(this).closest('[' + self.attr_name() + ']'),
-            settings = expedition.data('magellan-expedition-init'),
-            hash = this.hash.split('#').join(''),
-            target = $('a[name="' + hash + '"]');
+              settings = expedition.data('magellan-expedition-init'),
+              hash = this.hash.split('#').join(''),
+              target = $('a[name="' + hash + '"]');
 
           if (target.length === 0) {
             target = $('#' + hash);
@@ -3653,8 +3580,8 @@
           }
 
           $('html, body').stop().animate({
-            'scrollTop': scroll_top
-          }, settings.duration, settings.easing, function() {
+            'scrollTop' : scroll_top
+          }, settings.duration, settings.easing, function () {
             if (history.pushState) {
               history.pushState(null, null, '#' + hash);
             } else {
@@ -3668,19 +3595,19 @@
         .on('resize.fndtn.magellan', self.throttle(this.set_expedition_position.bind(this), settings.throttle_delay));
     },
 
-    check_for_arrivals: function() {
+    check_for_arrivals : function () {
       var self = this;
       self.update_arrivals();
       self.update_expedition_positions();
     },
 
-    set_expedition_position: function() {
+    set_expedition_position : function () {
       var self = this;
-      $('[' + this.attr_name() + '=fixed]', self.scope).each(function(idx, el) {
+      $('[' + this.attr_name() + '=fixed]', self.scope).each(function (idx, el) {
         var expedition = $(this),
-          settings = expedition.data('magellan-expedition-init'),
-          styles = expedition.attr('styles'), // save styles
-          top_offset, fixed_top;
+            settings = expedition.data('magellan-expedition-init'),
+            styles = expedition.attr('styles'), // save styles
+            top_offset, fixed_top;
 
         expedition.attr('style', '');
         top_offset = expedition.offset().top + settings.threshold;
@@ -3696,15 +3623,15 @@
       });
     },
 
-    update_expedition_positions: function() {
+    update_expedition_positions : function () {
       var self = this,
-        window_top_offset = $(window).scrollTop();
+          window_top_offset = $(window).scrollTop();
 
-      $('[' + this.attr_name() + '=fixed]', self.scope).each(function() {
+      $('[' + this.attr_name() + '=fixed]', self.scope).each(function () {
         var expedition = $(this),
-          settings = expedition.data('magellan-expedition-init'),
-          styles = expedition.attr('style'), // save styles
-          top_offset = expedition.data('magellan-top-offset');
+            settings = expedition.data('magellan-expedition-init'),
+            styles = expedition.attr('style'), // save styles
+            top_offset = expedition.data('magellan-top-offset');
 
         //scroll to the top distance
         if (window_top_offset + self.settings.fixed_top >= top_offset) {
@@ -3717,10 +3644,7 @@
             placeholder.attr(self.add_namespace('data-magellan-expedition-clone'), '');
             expedition.before(placeholder);
           }
-          expedition.css({
-            position: 'fixed',
-            top: settings.fixed_top
-          }).addClass('fixed');
+          expedition.css({position :'fixed', top : settings.fixed_top}).addClass('fixed');
         } else {
           expedition.prev('[' + self.add_namespace('data-magellan-expedition-clone') + ']').remove();
           expedition.attr('style', styles).css('position', '').css('top', '').removeClass('fixed');
@@ -3728,17 +3652,17 @@
       });
     },
 
-    update_arrivals: function() {
+    update_arrivals : function () {
       var self = this,
-        window_top_offset = $(window).scrollTop();
+          window_top_offset = $(window).scrollTop();
 
-      $('[' + this.attr_name() + ']', self.scope).each(function() {
+      $('[' + this.attr_name() + ']', self.scope).each(function () {
         var expedition = $(this),
-          settings = expedition.data(self.attr_name(true) + '-init'),
-          offsets = self.offsets(expedition, window_top_offset),
-          arrivals = expedition.find('[' + self.add_namespace('data-magellan-arrival') + ']'),
-          active_item = false;
-        offsets.each(function(idx, item) {
+            settings = expedition.data(self.attr_name(true) + '-init'),
+            offsets = self.offsets(expedition, window_top_offset),
+            arrivals = expedition.find('[' + self.add_namespace('data-magellan-arrival') + ']'),
+            active_item = false;
+        offsets.each(function (idx, item) {
           if (item.viewport_offset >= item.top_offset) {
             var arrivals = expedition.find('[' + self.add_namespace('data-magellan-arrival') + ']');
             arrivals.not(item.arrival).removeClass(settings.active_class);
@@ -3754,14 +3678,14 @@
       });
     },
 
-    offsets: function(expedition, window_offset) {
+    offsets : function (expedition, window_offset) {
       var self = this,
-        settings = expedition.data(self.attr_name(true) + '-init'),
-        viewport_offset = window_offset;
+          settings = expedition.data(self.attr_name(true) + '-init'),
+          viewport_offset = window_offset;
 
-      return expedition.find('[' + self.add_namespace('data-magellan-arrival') + ']').map(function(idx, el) {
+      return expedition.find('[' + self.add_namespace('data-magellan-arrival') + ']').map(function (idx, el) {
         var name = $(this).data(self.data_attr('magellan-arrival')),
-          dest = $('[' + self.add_namespace('data-magellan-destination') + '=' + name + ']');
+            dest = $('[' + self.add_namespace('data-magellan-destination') + '=' + name + ']');
         if (dest.length > 0) {
           var top_offset = dest.offset().top - settings.destination_threshold;
           if (settings.offset_by_height) {
@@ -3769,13 +3693,13 @@
           }
           top_offset = Math.floor(top_offset);
           return {
-            destination: dest,
-            arrival: $(this),
-            top_offset: top_offset,
-            viewport_offset: viewport_offset
+            destination : dest,
+            arrival : $(this),
+            top_offset : top_offset,
+            viewport_offset : viewport_offset
           }
         }
-      }).sort(function(a, b) {
+      }).sort(function (a, b) {
         if (a.top_offset < b.top_offset) {
           return -1;
         }
@@ -3786,7 +3710,7 @@
       });
     },
 
-    data_attr: function(str) {
+    data_attr : function (str) {
       if (this.namespace.length > 0) {
         return this.namespace + '-' + str;
       }
@@ -3794,12 +3718,12 @@
       return str;
     },
 
-    off: function() {
+    off : function () {
       this.S(this.scope).off('.magellan');
       this.S(window).off('.magellan');
     },
 
-    reflow: function() {
+    reflow : function () {
       var self = this;
       // remove placeholder expeditions used for height calculation purposes
       $('[' + self.add_namespace('data-magellan-expedition-clone') + ']', self.scope).remove();
@@ -3807,30 +3731,29 @@
   };
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.offcanvas = {
-    name: 'offcanvas',
+    name : 'offcanvas',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      open_method: 'move',
-      close_on_click: false
+    settings : {
+      open_method : 'move',
+      close_on_click : false
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       this.bindings(method, options);
     },
 
-    events: function() {
+    events : function () {
       var self = this,
-        S = self.S,
-        move_class = '',
-        right_postfix = '',
-        left_postfix = '';
+          S = self.S,
+          move_class = '',
+          right_postfix = '',
+          left_postfix = '';
 
       if (this.settings.open_method === 'move') {
         move_class = 'move-';
@@ -3845,14 +3768,14 @@
       }
 
       S(this.scope).off('.offcanvas')
-        .on('click.fndtn.offcanvas', '.left-off-canvas-toggle', function(e) {
+        .on('click.fndtn.offcanvas', '.left-off-canvas-toggle', function (e) {
           self.click_toggle_class(e, move_class + right_postfix);
           if (self.settings.open_method !== 'overlap') {
             S('.left-submenu').removeClass(move_class + right_postfix);
           }
           $('.left-off-canvas-toggle').attr('aria-expanded', 'true');
         })
-        .on('click.fndtn.offcanvas', '.left-off-canvas-menu a', function(e) {
+        .on('click.fndtn.offcanvas', '.left-off-canvas-menu a', function (e) {
           var settings = self.get_settings(e);
           var parent = S(this).parent();
 
@@ -3868,14 +3791,14 @@
           }
           $('.left-off-canvas-toggle').attr('aria-expanded', 'true');
         })
-        .on('click.fndtn.offcanvas', '.right-off-canvas-toggle', function(e) {
+        .on('click.fndtn.offcanvas', '.right-off-canvas-toggle', function (e) {
           self.click_toggle_class(e, move_class + left_postfix);
           if (self.settings.open_method !== 'overlap') {
             S('.right-submenu').removeClass(move_class + left_postfix);
           }
           $('.right-off-canvas-toggle').attr('aria-expanded', 'true');
         })
-        .on('click.fndtn.offcanvas', '.right-off-canvas-menu a', function(e) {
+        .on('click.fndtn.offcanvas', '.right-off-canvas-menu a', function (e) {
           var settings = self.get_settings(e);
           var parent = S(this).parent();
 
@@ -3891,7 +3814,7 @@
           }
           $('.right-off-canvas-toggle').attr('aria-expanded', 'true');
         })
-        .on('click.fndtn.offcanvas', '.exit-off-canvas', function(e) {
+        .on('click.fndtn.offcanvas', '.exit-off-canvas', function (e) {
           self.click_remove_class(e, move_class + left_postfix);
           S('.right-submenu').removeClass(move_class + left_postfix);
           if (right_postfix) {
@@ -3900,7 +3823,7 @@
           }
           $('.right-off-canvas-toggle').attr('aria-expanded', 'true');
         })
-        .on('click.fndtn.offcanvas', '.exit-off-canvas', function(e) {
+        .on('click.fndtn.offcanvas', '.exit-off-canvas', function (e) {
           self.click_remove_class(e, move_class + left_postfix);
           $('.left-off-canvas-toggle').attr('aria-expanded', 'false');
           if (right_postfix) {
@@ -3910,7 +3833,7 @@
         });
     },
 
-    toggle: function(class_name, $off_canvas) {
+    toggle : function (class_name, $off_canvas) {
       $off_canvas = $off_canvas || this.get_wrapper();
       if ($off_canvas.is('.' + class_name)) {
         this.hide(class_name, $off_canvas);
@@ -3919,36 +3842,36 @@
       }
     },
 
-    show: function(class_name, $off_canvas) {
+    show : function (class_name, $off_canvas) {
       $off_canvas = $off_canvas || this.get_wrapper();
       $off_canvas.trigger('open').trigger('open.fndtn.offcanvas');
       $off_canvas.addClass(class_name);
     },
 
-    hide: function(class_name, $off_canvas) {
+    hide : function (class_name, $off_canvas) {
       $off_canvas = $off_canvas || this.get_wrapper();
       $off_canvas.trigger('close').trigger('close.fndtn.offcanvas');
       $off_canvas.removeClass(class_name);
     },
 
-    click_toggle_class: function(e, class_name) {
+    click_toggle_class : function (e, class_name) {
       e.preventDefault();
       var $off_canvas = this.get_wrapper(e);
       this.toggle(class_name, $off_canvas);
     },
 
-    click_remove_class: function(e, class_name) {
+    click_remove_class : function (e, class_name) {
       e.preventDefault();
       var $off_canvas = this.get_wrapper(e);
       this.hide(class_name, $off_canvas);
     },
 
-    get_settings: function(e) {
-      var offcanvas = this.S(e.target).closest('[' + this.attr_name() + ']');
+    get_settings : function (e) {
+      var offcanvas  = this.S(e.target).closest('[' + this.attr_name() + ']');
       return offcanvas.data(this.attr_name(true) + '-init') || this.settings;
     },
 
-    get_wrapper: function(e) {
+    get_wrapper : function (e) {
       var $off_canvas = this.S(e ? e.target : this.scope).closest('.off-canvas-wrap');
 
       if ($off_canvas.length === 0) {
@@ -3957,41 +3880,40 @@
       return $off_canvas;
     },
 
-    reflow: function() {}
+    reflow : function () {}
   };
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
-  var noop = function() {};
+  var noop = function () {};
 
-  var Orbit = function(el, settings) {
+  var Orbit = function (el, settings) {
     // Don't reinitialize plugin
     if (el.hasClass(settings.slides_container_class)) {
       return this;
     }
 
     var self = this,
-      container,
-      slides_container = el,
-      number_container,
-      bullets_container,
-      timer_container,
-      idx = 0,
-      animate,
-      timer,
-      locked = false,
-      adjust_height_after = false;
+        container,
+        slides_container = el,
+        number_container,
+        bullets_container,
+        timer_container,
+        idx = 0,
+        animate,
+        timer,
+        locked = false,
+        adjust_height_after = false;
 
-    self.slides = function() {
+    self.slides = function () {
       return slides_container.children(settings.slide_selector);
     };
 
     self.slides().first().addClass(settings.active_slide_class);
 
-    self.update_slide_number = function(index) {
+    self.update_slide_number = function (index) {
       if (settings.slide_number) {
         number_container.find('span:first').text(parseInt(index) + 1);
         number_container.find('span:last').text(self.slides().length);
@@ -4002,13 +3924,13 @@
       }
     };
 
-    self.update_active_link = function(index) {
+    self.update_active_link = function (index) {
       var link = $('[data-orbit-link="' + self.slides().eq(index).attr('data-orbit-slide') + '"]');
       link.siblings().removeClass(settings.bullets_active_class);
       link.addClass(settings.bullets_active_class);
     };
 
-    self.build_markup = function() {
+    self.build_markup = function () {
       slides_container.wrap('<div class="' + settings.container_class + '"></div>');
       container = slides_container.parent();
       slides_container.addClass(settings.slides_container_class);
@@ -4040,7 +3962,7 @@
         bullets_container = $('<ol>').addClass(settings.bullets_container_class);
         container.append(bullets_container);
         bullets_container.wrap('<div class="orbit-bullets-container"></div>');
-        self.slides().each(function(idx, el) {
+        self.slides().each(function (idx, el) {
           var bullet = $('<li>').attr('data-orbit-slide', idx).on('click', self.link_bullet);;
           bullets_container.append(bullet);
         });
@@ -4048,21 +3970,15 @@
 
     };
 
-    self._goto = function(next_idx, start_timer) {
+    self._goto = function (next_idx, start_timer) {
       // if (locked) {return false;}
-      if (next_idx === idx) {
-        return false;
-      }
-      if (typeof timer === 'object') {
-        timer.restart();
-      }
+      if (next_idx === idx) {return false;}
+      if (typeof timer === 'object') {timer.restart();}
       var slides = self.slides();
 
       var dir = 'next';
       locked = true;
-      if (next_idx < idx) {
-        dir = 'prev';
-      }
+      if (next_idx < idx) {dir = 'prev';}
       if (next_idx >= slides.length) {
         if (!settings.circular) {
           return false;
@@ -4086,84 +4002,63 @@
       settings.before_slide_change();
       self.update_active_link(next_idx);
 
-      var callback = function() {
-        var unlock = function() {
+      var callback = function () {
+        var unlock = function () {
           idx = next_idx;
           locked = false;
-          if (start_timer === true) {
-            timer = self.create_timer();
-            timer.start();
-          }
+          if (start_timer === true) {timer = self.create_timer(); timer.start();}
           self.update_slide_number(idx);
-          slides_container.trigger('after-slide-change.fndtn.orbit', [{
-            slide_number: idx,
-            total_slides: slides.length
-          }]);
+          slides_container.trigger('after-slide-change.fndtn.orbit', [{slide_number : idx, total_slides : slides.length}]);
           settings.after_slide_change(idx, slides.length);
         };
         if (slides_container.outerHeight() != next.outerHeight() && settings.variable_height) {
-          slides_container.animate({
-            'height': next.outerHeight()
-          }, 250, 'linear', unlock);
+          slides_container.animate({'height': next.outerHeight()}, 250, 'linear', unlock);
         } else {
           unlock();
         }
       };
 
-      if (slides.length === 1) {
-        callback();
-        return false;
-      }
+      if (slides.length === 1) {callback(); return false;}
 
-      var start_animation = function() {
-        if (dir === 'next') {
-          animate.next(current, next, callback);
-        }
-        if (dir === 'prev') {
-          animate.prev(current, next, callback);
-        }
+      var start_animation = function () {
+        if (dir === 'next') {animate.next(current, next, callback);}
+        if (dir === 'prev') {animate.prev(current, next, callback);}
       };
 
       if (next.outerHeight() > slides_container.outerHeight() && settings.variable_height) {
-        slides_container.animate({
-          'height': next.outerHeight()
-        }, 250, 'linear', start_animation);
+        slides_container.animate({'height': next.outerHeight()}, 250, 'linear', start_animation);
       } else {
         start_animation();
       }
     };
 
-    self.next = function(e) {
+    self.next = function (e) {
       e.stopImmediatePropagation();
       e.preventDefault();
       self._goto(idx + 1);
     };
 
-    self.prev = function(e) {
+    self.prev = function (e) {
       e.stopImmediatePropagation();
       e.preventDefault();
       self._goto(idx - 1);
     };
 
-    self.link_custom = function(e) {
+    self.link_custom = function (e) {
       e.preventDefault();
       var link = $(this).attr('data-orbit-link');
       if ((typeof link === 'string') && (link = $.trim(link)) != '') {
         var slide = container.find('[data-orbit-slide=' + link + ']');
-        if (slide.index() != -1) {
-          self._goto(slide.index());
-        }
+        if (slide.index() != -1) {self._goto(slide.index());}
       }
     };
 
-    self.link_bullet = function(e) {
+    self.link_bullet = function (e) {
       var index = $(this).attr('data-orbit-slide');
       if ((typeof index === 'string') && (index = $.trim(index)) != '') {
         if (isNaN(parseInt(index))) {
           var slide = container.find('[data-orbit-slide=' + index + ']');
-          if (slide.index() != -1) {
-            self._goto(slide.index() + 1);
-          }
+          if (slide.index() != -1) {self._goto(slide.index() + 1);}
         } else {
           self._goto(parseInt(index));
         }
@@ -4171,24 +4066,22 @@
 
     }
 
-    self.timer_callback = function() {
+    self.timer_callback = function () {
       self._goto(idx + 1, true);
     }
 
-    self.compute_dimensions = function() {
+    self.compute_dimensions = function () {
       var current = $(self.slides().get(idx));
       var h = current.outerHeight();
       if (!settings.variable_height) {
-        self.slides().each(function() {
-          if ($(this).outerHeight() > h) {
-            h = $(this).outerHeight();
-          }
+        self.slides().each(function(){
+          if ($(this).outerHeight() > h) { h = $(this).outerHeight(); }
         });
       }
       slides_container.height(h);
     };
 
-    self.create_timer = function() {
+    self.create_timer = function () {
       var t = new Timer(
         container.find('.' + settings.timer_container_class),
         settings,
@@ -4197,27 +4090,23 @@
       return t;
     };
 
-    self.stop_timer = function() {
+    self.stop_timer = function () {
       if (typeof timer === 'object') {
         timer.stop();
       }
     };
 
-    self.toggle_timer = function() {
+    self.toggle_timer = function () {
       var t = container.find('.' + settings.timer_container_class);
       if (t.hasClass(settings.timer_paused_class)) {
-        if (typeof timer === 'undefined') {
-          timer = self.create_timer();
-        }
+        if (typeof timer === 'undefined') {timer = self.create_timer();}
         timer.start();
       } else {
-        if (typeof timer === 'object') {
-          timer.stop();
-        }
+        if (typeof timer === 'object') {timer.stop();}
       }
     };
 
-    self.init = function() {
+    self.init = function () {
       self.build_markup();
       if (settings.timer) {
         timer = self.create_timer();
@@ -4237,67 +4126,63 @@
 
       container.on('click', self.toggle_timer);
       if (settings.swipe) {
-        container.on('touchstart.fndtn.orbit', function(e) {
-            if (!e.touches) {
-              e = e.originalEvent;
-            }
-            var data = {
-              start_page_x: e.touches[0].pageX,
-              start_page_y: e.touches[0].pageY,
-              start_time: (new Date()).getTime(),
-              delta_x: 0,
-              is_scrolling: undefined
-            };
-            container.data('swipe-transition', data);
-            e.stopPropagation();
-          })
-          .on('touchmove.fndtn.orbit', function(e) {
-            if (!e.touches) {
-              e = e.originalEvent;
-            }
-            // Ignore pinch/zoom events
-            if (e.touches.length > 1 || e.scale && e.scale !== 1) {
-              return;
-            }
+        container.on('touchstart.fndtn.orbit', function (e) {
+          if (!e.touches) {e = e.originalEvent;}
+          var data = {
+            start_page_x : e.touches[0].pageX,
+            start_page_y : e.touches[0].pageY,
+            start_time : (new Date()).getTime(),
+            delta_x : 0,
+            is_scrolling : undefined
+          };
+          container.data('swipe-transition', data);
+          e.stopPropagation();
+        })
+        .on('touchmove.fndtn.orbit', function (e) {
+          if (!e.touches) {
+            e = e.originalEvent;
+          }
+          // Ignore pinch/zoom events
+          if (e.touches.length > 1 || e.scale && e.scale !== 1) {
+            return;
+          }
 
-            var data = container.data('swipe-transition');
-            if (typeof data === 'undefined') {
-              data = {};
-            }
+          var data = container.data('swipe-transition');
+          if (typeof data === 'undefined') {data = {};}
 
-            data.delta_x = e.touches[0].pageX - data.start_page_x;
+          data.delta_x = e.touches[0].pageX - data.start_page_x;
 
-            if (typeof data.is_scrolling === 'undefined') {
-              data.is_scrolling = !!(data.is_scrolling || Math.abs(data.delta_x) < Math.abs(e.touches[0].pageY - data.start_page_y));
-            }
+          if ( typeof data.is_scrolling === 'undefined') {
+            data.is_scrolling = !!( data.is_scrolling || Math.abs(data.delta_x) < Math.abs(e.touches[0].pageY - data.start_page_y) );
+          }
 
-            if (!data.is_scrolling && !data.active) {
-              e.preventDefault();
-              var direction = (data.delta_x < 0) ? (idx + 1) : (idx - 1);
-              data.active = true;
-              self._goto(direction);
-            }
-          })
-          .on('touchend.fndtn.orbit', function(e) {
-            container.data('swipe-transition', {});
-            e.stopPropagation();
-          })
-      }
-      container.on('mouseenter.fndtn.orbit', function(e) {
-          if (settings.timer && settings.pause_on_hover) {
-            self.stop_timer();
+          if (!data.is_scrolling && !data.active) {
+            e.preventDefault();
+            var direction = (data.delta_x < 0) ? (idx + 1) : (idx - 1);
+            data.active = true;
+            self._goto(direction);
           }
         })
-        .on('mouseleave.fndtn.orbit', function(e) {
-          if (settings.timer && settings.resume_on_mouseout) {
-            timer.start();
-          }
-        });
+        .on('touchend.fndtn.orbit', function (e) {
+          container.data('swipe-transition', {});
+          e.stopPropagation();
+        })
+      }
+      container.on('mouseenter.fndtn.orbit', function (e) {
+        if (settings.timer && settings.pause_on_hover) {
+          self.stop_timer();
+        }
+      })
+      .on('mouseleave.fndtn.orbit', function (e) {
+        if (settings.timer && settings.resume_on_mouseout) {
+          timer.start();
+        }
+      });
 
       $(document).on('click', '[data-orbit-link]', self.link_custom);
       $(window).on('load resize', self.compute_dimensions);
       Foundation.utils.image_loaded(this.slides().children('img'), self.compute_dimensions);
-      Foundation.utils.image_loaded(this.slides().children('img'), function() {
+      Foundation.utils.image_loaded(this.slides().children('img'), function () {
         container.prev('.' + settings.preloader_class).css('display', 'none');
         self.update_slide_number(0);
         self.update_active_link(0);
@@ -4308,15 +4193,15 @@
     self.init();
   };
 
-  var Timer = function(el, settings, callback) {
+  var Timer = function (el, settings, callback) {
     var self = this,
-      duration = settings.timer_speed,
-      progress = el.find('.' + settings.timer_progress_class),
-      start,
-      timeout,
-      left = -1;
+        duration = settings.timer_speed,
+        progress = el.find('.' + settings.timer_progress_class),
+        start,
+        timeout,
+        left = -1;
 
-    this.update_progress = function(w) {
+    this.update_progress = function (w) {
       var new_progress = progress.clone();
       new_progress.attr('style', '');
       new_progress.css('width', w + '%');
@@ -4324,34 +4209,28 @@
       progress = new_progress;
     };
 
-    this.restart = function() {
+    this.restart = function () {
       clearTimeout(timeout);
       el.addClass(settings.timer_paused_class);
       left = -1;
       self.update_progress(0);
     };
 
-    this.start = function() {
-      if (!el.hasClass(settings.timer_paused_class)) {
-        return true;
-      }
+    this.start = function () {
+      if (!el.hasClass(settings.timer_paused_class)) {return true;}
       left = (left === -1) ? duration : left;
       el.removeClass(settings.timer_paused_class);
       start = new Date().getTime();
-      progress.animate({
-        'width': '100%'
-      }, left, 'linear');
-      timeout = setTimeout(function() {
+      progress.animate({'width' : '100%'}, left, 'linear');
+      timeout = setTimeout(function () {
         self.restart();
         callback();
       }, left);
       el.trigger('timer-started.fndtn.orbit')
     };
 
-    this.stop = function() {
-      if (el.hasClass(settings.timer_paused_class)) {
-        return true;
-      }
+    this.stop = function () {
+      if (el.hasClass(settings.timer_paused_class)) {return true;}
       clearTimeout(timeout);
       el.addClass(settings.timer_paused_class);
       var end = new Date().getTime();
@@ -4362,61 +4241,47 @@
     };
   };
 
-  var SlideAnimation = function(settings, container) {
+  var SlideAnimation = function (settings, container) {
     var duration = settings.animation_speed;
     var is_rtl = ($('html[dir=rtl]').length === 1);
     var margin = is_rtl ? 'marginRight' : 'marginLeft';
     var animMargin = {};
     animMargin[margin] = '0%';
 
-    this.next = function(current, next, callback) {
-      current.animate({
-        marginLeft: '-100%'
-      }, duration);
-      next.animate(animMargin, duration, function() {
+    this.next = function (current, next, callback) {
+      current.animate({marginLeft : '-100%'}, duration);
+      next.animate(animMargin, duration, function () {
         current.css(margin, '100%');
         callback();
       });
     };
 
-    this.prev = function(current, prev, callback) {
-      current.animate({
-        marginLeft: '100%'
-      }, duration);
+    this.prev = function (current, prev, callback) {
+      current.animate({marginLeft : '100%'}, duration);
       prev.css(margin, '-100%');
-      prev.animate(animMargin, duration, function() {
+      prev.animate(animMargin, duration, function () {
         current.css(margin, '100%');
         callback();
       });
     };
   };
 
-  var FadeAnimation = function(settings, container) {
+  var FadeAnimation = function (settings, container) {
     var duration = settings.animation_speed;
     var is_rtl = ($('html[dir=rtl]').length === 1);
     var margin = is_rtl ? 'marginRight' : 'marginLeft';
 
-    this.next = function(current, next, callback) {
-      next.css({
-        'margin': '0%',
-        'opacity': '0.01'
-      });
-      next.animate({
-        'opacity': '1'
-      }, duration, 'linear', function() {
+    this.next = function (current, next, callback) {
+      next.css({'margin' : '0%', 'opacity' : '0.01'});
+      next.animate({'opacity' :'1'}, duration, 'linear', function () {
         current.css('margin', '100%');
         callback();
       });
     };
 
-    this.prev = function(current, prev, callback) {
-      prev.css({
-        'margin': '0%',
-        'opacity': '0.01'
-      });
-      prev.animate({
-        'opacity': '1'
-      }, duration, 'linear', function() {
+    this.prev = function (current, prev, callback) {
+      prev.css({'margin' : '0%', 'opacity' : '0.01'});
+      prev.animate({'opacity' : '1'}, duration, 'linear', function () {
         current.css('margin', '100%');
         callback();
       });
@@ -4426,57 +4291,57 @@
   Foundation.libs = Foundation.libs || {};
 
   Foundation.libs.orbit = {
-    name: 'orbit',
+    name : 'orbit',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      animation: 'slide',
-      timer_speed: 10000,
-      pause_on_hover: true,
-      resume_on_mouseout: false,
-      next_on_click: true,
-      animation_speed: 500,
-      stack_on_small: false,
-      navigation_arrows: true,
-      slide_number: true,
-      slide_number_text: 'of',
-      container_class: 'orbit-container',
-      stack_on_small_class: 'orbit-stack-on-small',
-      next_class: 'orbit-next',
-      prev_class: 'orbit-prev',
-      timer_container_class: 'orbit-timer',
-      timer_paused_class: 'paused',
-      timer_progress_class: 'orbit-progress',
-      slides_container_class: 'orbit-slides-container',
-      preloader_class: 'preloader',
-      slide_selector: '*',
-      bullets_container_class: 'orbit-bullets',
-      bullets_active_class: 'active',
-      slide_number_class: 'orbit-slide-number',
-      caption_class: 'orbit-caption',
-      active_slide_class: 'active',
-      orbit_transition_class: 'orbit-transitioning',
-      bullets: true,
-      circular: true,
-      timer: true,
-      variable_height: false,
-      swipe: true,
-      before_slide_change: noop,
-      after_slide_change: noop
+    settings : {
+      animation : 'slide',
+      timer_speed : 10000,
+      pause_on_hover : true,
+      resume_on_mouseout : false,
+      next_on_click : true,
+      animation_speed : 500,
+      stack_on_small : false,
+      navigation_arrows : true,
+      slide_number : true,
+      slide_number_text : 'of',
+      container_class : 'orbit-container',
+      stack_on_small_class : 'orbit-stack-on-small',
+      next_class : 'orbit-next',
+      prev_class : 'orbit-prev',
+      timer_container_class : 'orbit-timer',
+      timer_paused_class : 'paused',
+      timer_progress_class : 'orbit-progress',
+      slides_container_class : 'orbit-slides-container',
+      preloader_class : 'preloader',
+      slide_selector : '*',
+      bullets_container_class : 'orbit-bullets',
+      bullets_active_class : 'active',
+      slide_number_class : 'orbit-slide-number',
+      caption_class : 'orbit-caption',
+      active_slide_class : 'active',
+      orbit_transition_class : 'orbit-transitioning',
+      bullets : true,
+      circular : true,
+      timer : true,
+      variable_height : false,
+      swipe : true,
+      before_slide_change : noop,
+      after_slide_change : noop
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       var self = this;
       this.bindings(method, options);
     },
 
-    events: function(instance) {
+    events : function (instance) {
       var orbit_instance = new Orbit(this.S(instance), this.S(instance).data('orbit-init'));
       this.S(instance).data(this.name + '-instance', orbit_instance);
     },
 
-    reflow: function() {
+    reflow : function () {
       var self = this;
 
       if (self.S(self.scope).is('[data-orbit]')) {
@@ -4484,7 +4349,7 @@
         var instance = $el.data(self.name + '-instance');
         instance.compute_dimensions();
       } else {
-        self.S('[data-orbit]', self.scope).each(function(idx, el) {
+        self.S('[data-orbit]', self.scope).each(function (idx, el) {
           var $el = self.S(el);
           var opts = self.data_options($el);
           var instance = $el.data(self.name + '-instance');
@@ -4496,62 +4361,61 @@
 
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.reveal = {
-    name: 'reveal',
+    name : 'reveal',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    locked: false,
+    locked : false,
 
-    settings: {
-      animation: 'fadeAndPop',
-      animation_speed: 250,
-      close_on_background_click: true,
-      close_on_esc: true,
-      dismiss_modal_class: 'close-reveal-modal',
-      multiple_opened: false,
-      bg_class: 'reveal-modal-bg',
-      root_element: 'body',
-      open: function() {},
-      opened: function() {},
-      close: function() {},
-      closed: function() {},
-      bg: $('.reveal-modal-bg'),
-      css: {
-        open: {
-          'opacity': 0,
-          'visibility': 'visible',
-          'display': 'block'
+    settings : {
+      animation : 'fadeAndPop',
+      animation_speed : 250,
+      close_on_background_click : true,
+      close_on_esc : true,
+      dismiss_modal_class : 'close-reveal-modal',
+      multiple_opened : false,
+      bg_class : 'reveal-modal-bg',
+      root_element : 'body',
+      open : function(){},
+      opened : function(){},
+      close : function(){},
+      closed : function(){},
+      bg : $('.reveal-modal-bg'),
+      css : {
+        open : {
+          'opacity' : 0,
+          'visibility' : 'visible',
+          'display' : 'block'
         },
-        close: {
-          'opacity': 1,
-          'visibility': 'hidden',
-          'display': 'none'
+        close : {
+          'opacity' : 1,
+          'visibility' : 'hidden',
+          'display' : 'none'
         }
       }
     },
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       $.extend(true, this.settings, method, options);
       this.bindings(method, options);
     },
 
-    events: function(scope) {
+    events : function (scope) {
       var self = this,
-        S = self.S;
+          S = self.S;
 
       S(this.scope)
         .off('.reveal')
-        .on('click.fndtn.reveal', '[' + this.add_namespace('data-reveal-id') + ']:not([disabled])', function(e) {
+        .on('click.fndtn.reveal', '[' + this.add_namespace('data-reveal-id') + ']:not([disabled])', function (e) {
           e.preventDefault();
 
           if (!self.locked) {
             var element = S(this),
-              ajax = element.data(self.data_attr('reveal-ajax'));
+                ajax = element.data(self.data_attr('reveal-ajax'));
 
             self.locked = true;
 
@@ -4560,19 +4424,17 @@
             } else {
               var url = ajax === true ? element.attr('href') : ajax;
 
-              self.open.call(self, element, {
-                url: url
-              });
+              self.open.call(self, element, {url : url});
             }
           }
         });
 
       S(document)
-        .on('click.fndtn.reveal', this.close_targets(), function(e) {
+        .on('click.fndtn.reveal', this.close_targets(), function (e) {
           e.preventDefault();
           if (!self.locked) {
             var settings = S('[' + self.attr_name() + '].open').data(self.attr_name(true) + '-init') || self.settings,
-              bg_clicked = S(e.target)[0] === S('.' + settings.bg_class)[0];
+                bg_clicked = S(e.target)[0] === S('.' + settings.bg_class)[0];
 
             if (bg_clicked) {
               if (settings.close_on_background_click) {
@@ -4611,16 +4473,16 @@
     },
 
     // PATCH #3: turning on key up capture only when a reveal window is open
-    key_up_on: function(scope) {
+    key_up_on : function (scope) {
       var self = this;
 
       // PATCH #1: fixing multiple keyup event trigger from single key press
-      self.S('body').off('keyup.fndtn.reveal').on('keyup.fndtn.reveal', function(event) {
+      self.S('body').off('keyup.fndtn.reveal').on('keyup.fndtn.reveal', function ( event ) {
         var open_modal = self.S('[' + self.attr_name() + '].open'),
-          settings = open_modal.data(self.attr_name(true) + '-init') || self.settings;
+            settings = open_modal.data(self.attr_name(true) + '-init') || self.settings ;
         // PATCH #2: making sure that the close event can be called only while unlocked,
         //           so that multiple keyup.fndtn.reveal events don't prevent clean closing of the reveal window.
-        if (settings && event.which === 27 && settings.close_on_esc && !self.locked) { // 27 is the keycode for the Escape key
+        if ( settings && event.which === 27  && settings.close_on_esc && !self.locked) { // 27 is the keycode for the Escape key
           self.close.call(self, open_modal);
         }
       });
@@ -4629,14 +4491,14 @@
     },
 
     // PATCH #3: turning on key up capture only when a reveal window is open
-    key_up_off: function(scope) {
+    key_up_off : function (scope) {
       this.S('body').off('keyup.fndtn.reveal');
       return true;
     },
 
-    open: function(target, ajax_settings) {
+    open : function (target, ajax_settings) {
       var self = this,
-        modal;
+          modal;
 
       if (target) {
         if (typeof target.selector !== 'undefined') {
@@ -4666,7 +4528,7 @@
             .data('offset', this.cache_offset(modal));
         }
 
-        this.key_up_on(modal); // PATCH #3: turning on key up capture only when a reveal window is open
+        this.key_up_on(modal);    // PATCH #3: turning on key up capture only when a reveal window is open
 
         modal.on('open.fndtn.reveal').trigger('open.fndtn.reveal');
 
@@ -4676,7 +4538,7 @@
 
         if (typeof ajax_settings === 'string') {
           ajax_settings = {
-            url: ajax_settings
+            url : ajax_settings
           };
         }
 
@@ -4694,8 +4556,8 @@
           var old_success = typeof ajax_settings.success !== 'undefined' ? ajax_settings.success : null;
 
           $.extend(ajax_settings, {
-            success: function(data, textStatus, jqXHR) {
-              if ($.isFunction(old_success)) {
+            success : function (data, textStatus, jqXHR) {
+              if ( $.isFunction(old_success) ) {
                 var result = old_success(data, textStatus, jqXHR);
                 if (typeof result == 'string') {
                   data = result;
@@ -4723,21 +4585,21 @@
       self.S(window).trigger('resize');
     },
 
-    close: function(modal) {
+    close : function (modal) {
       var modal = modal && modal.length ? modal : this.S(this.scope),
-        open_modals = this.S('[' + this.attr_name() + '].open'),
-        settings = modal.data(this.attr_name(true) + '-init') || this.settings;
+          open_modals = this.S('[' + this.attr_name() + '].open'),
+          settings = modal.data(this.attr_name(true) + '-init') || this.settings;
 
       if (open_modals.length > 0) {
         this.locked = true;
-        this.key_up_off(modal); // PATCH #3: turning on key up capture only when a reveal window is open
+        this.key_up_off(modal);   // PATCH #3: turning on key up capture only when a reveal window is open
         modal.trigger('close').trigger('close.fndtn.reveal');
-
+        
         if ((settings.multiple_opened && open_modals.length === 1) || !settings.multiple_opened || modal.length > 1) {
           this.toggle_bg(modal, false);
           this.to_front(modal);
         }
-
+        
         if (settings.multiple_opened) {
           this.hide(modal, settings.css.close, settings);
           this.to_front($($.makeArray(open_modals).reverse()[1]));
@@ -4747,7 +4609,7 @@
       }
     },
 
-    close_targets: function() {
+    close_targets : function () {
       var base = '.' + this.settings.dismiss_modal_class;
 
       if (this.settings.close_on_background_click) {
@@ -4757,17 +4619,15 @@
       return base;
     },
 
-    toggle_bg: function(modal, state) {
+    toggle_bg : function (modal, state) {
       if (this.S('.' + this.settings.bg_class).length === 0) {
-        this.settings.bg = $('<div />', {
-            'class': this.settings.bg_class
-          })
+        this.settings.bg = $('<div />', {'class': this.settings.bg_class})
           .appendTo('body').hide();
       }
 
       var visible = this.settings.bg.filter(':visible').length > 0;
-      if (state != visible) {
-        if (state == undefined ? visible : !state) {
+      if ( state != visible ) {
+        if ( state == undefined ? visible : !state ) {
           this.hide(this.settings.bg);
         } else {
           this.show(this.settings.bg);
@@ -4775,16 +4635,16 @@
       }
     },
 
-    show: function(el, css) {
+    show : function (el, css) {
       // is modal
       if (css) {
         var settings = el.data(this.attr_name(true) + '-init') || this.settings,
-          root_element = settings.root_element;
+            root_element = settings.root_element;
 
         if (el.parent(root_element).length === 0) {
           var placeholder = el.wrap('<div style="display: none;" />').parent();
 
-          el.on('closed.fndtn.reveal.wrapped', function() {
+          el.on('closed.fndtn.reveal.wrapped', function () {
             el.detach().appendTo(placeholder);
             el.unwrap().unbind('closed.fndtn.reveal.wrapped');
           });
@@ -4803,10 +4663,10 @@
             opacity: 1
           };
 
-          return setTimeout(function() {
+          return setTimeout(function () {
             return el
               .css(css)
-              .animate(end_css, settings.animation_speed, 'linear', function() {
+              .animate(end_css, settings.animation_speed, 'linear', function () {
                 this.locked = false;
                 el.trigger('opened').trigger('opened.fndtn.reveal');
               }.bind(this))
@@ -4816,14 +4676,12 @@
 
         if (animData.fade) {
           css.top = $(window).scrollTop() + el.data('css-top') + 'px';
-          var end_css = {
-            opacity: 1
-          };
+          var end_css = {opacity: 1};
 
-          return setTimeout(function() {
+          return setTimeout(function () {
             return el
               .css(css)
-              .animate(end_css, settings.animation_speed, 'linear', function() {
+              .animate(end_css, settings.animation_speed, 'linear', function () {
                 this.locked = false;
                 el.trigger('opened').trigger('opened.fndtn.reveal');
               }.bind(this))
@@ -4831,9 +4689,7 @@
           }.bind(this), settings.animation_speed / 2);
         }
 
-        return el.css(css).show().css({
-          opacity: 1
-        }).addClass('open').trigger('opened').trigger('opened.fndtn.reveal');
+        return el.css(css).show().css({opacity : 1}).addClass('open').trigger('opened').trigger('opened.fndtn.reveal');
       }
 
       var settings = this.settings;
@@ -4847,16 +4703,16 @@
 
       return el.show();
     },
-
-    to_back: function(el) {
+    
+    to_back : function(el) {
       el.addClass('toback');
     },
-
-    to_front: function(el) {
+    
+    to_front : function(el) {
       el.removeClass('toback');
     },
 
-    hide: function(el, css) {
+    hide : function (el, css) {
       // is modal
       if (css) {
         var settings = el.data(this.attr_name(true) + '-init');
@@ -4868,13 +4724,13 @@
         }
         if (animData.pop) {
           var end_css = {
-            top: -$(window).scrollTop() - el.data('offset') + 'px',
+            top: - $(window).scrollTop() - el.data('offset') + 'px',
             opacity: 0
           };
 
-          return setTimeout(function() {
+          return setTimeout(function () {
             return el
-              .animate(end_css, settings.animation_speed, 'linear', function() {
+              .animate(end_css, settings.animation_speed, 'linear', function () {
                 this.locked = false;
                 el.css(css).trigger('closed').trigger('closed.fndtn.reveal');
               }.bind(this))
@@ -4883,13 +4739,11 @@
         }
 
         if (animData.fade) {
-          var end_css = {
-            opacity: 0
-          };
+          var end_css = {opacity : 0};
 
-          return setTimeout(function() {
+          return setTimeout(function () {
             return el
-              .animate(end_css, settings.animation_speed, 'linear', function() {
+              .animate(end_css, settings.animation_speed, 'linear', function () {
                 this.locked = false;
                 el.css(css).trigger('closed').trigger('closed.fndtn.reveal');
               }.bind(this))
@@ -4910,9 +4764,9 @@
       return el.hide();
     },
 
-    close_video: function(e) {
+    close_video : function (e) {
       var video = $('.flex-video', e.target),
-        iframe = $('iframe', video);
+          iframe = $('iframe', video);
 
       if (iframe.length > 0) {
         iframe.attr('data-src', iframe[0].src);
@@ -4921,9 +4775,9 @@
       }
     },
 
-    open_video: function(e) {
+    open_video : function (e) {
       var video = $('.flex-video', e.target),
-        iframe = video.find('iframe');
+          iframe = video.find('iframe');
 
       if (iframe.length > 0) {
         var data_src = iframe.attr('data-src');
@@ -4938,7 +4792,7 @@
       }
     },
 
-    data_attr: function(str) {
+    data_attr : function (str) {
       if (this.namespace.length > 0) {
         return this.namespace + '-' + str;
       }
@@ -4946,7 +4800,7 @@
       return str;
     },
 
-    cache_offset: function(modal) {
+    cache_offset : function (modal) {
       var offset = modal.show().height() + parseInt(modal.css('top'), 10);
 
       modal.hide();
@@ -4954,11 +4808,11 @@
       return offset;
     },
 
-    off: function() {
+    off : function () {
       $(this.scope).off('.fndtn.reveal');
     },
 
-    reflow: function() {}
+    reflow : function () {}
   };
 
   /*
@@ -4972,56 +4826,54 @@
     var fade = /fade/i.test(str);
     var pop = /pop/i.test(str);
     return {
-      animate: fade || pop,
-      pop: pop,
-      fade: fade
+      animate : fade || pop,
+      pop : pop,
+      fade : fade
     };
   }
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.slider = {
-    name: 'slider',
+    name : 'slider',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      start: 0,
-      end: 100,
-      step: 1,
-      precision: null,
-      initial: null,
-      display_selector: '',
-      vertical: false,
-      trigger_input_change: false,
-      on_change: function() {}
+    settings : {
+      start : 0,
+      end : 100,
+      step : 1,
+      precision : null,
+      initial : null,
+      display_selector : '',
+      vertical : false,
+      trigger_input_change : false,
+      on_change : function () {}
     },
 
-    cache: {},
+    cache : {},
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       Foundation.inherit(this, 'throttle');
       this.bindings(method, options);
       this.reflow();
     },
 
-    events: function() {
+    events : function () {
       var self = this;
 
       $(this.scope)
         .off('.slider')
         .on('mousedown.fndtn.slider touchstart.fndtn.slider pointerdown.fndtn.slider',
-          '[' + self.attr_name() + ']:not(.disabled, [disabled]) .range-slider-handle',
-          function(e) {
-            if (!self.cache.active) {
-              e.preventDefault();
-              self.set_active_slider($(e.target));
-            }
-          })
-        .on('mousemove.fndtn.slider touchmove.fndtn.slider pointermove.fndtn.slider', function(e) {
+        '[' + self.attr_name() + ']:not(.disabled, [disabled]) .range-slider-handle', function (e) {
+          if (!self.cache.active) {
+            e.preventDefault();
+            self.set_active_slider($(e.target));
+          }
+        })
+        .on('mousemove.fndtn.slider touchmove.fndtn.slider pointermove.fndtn.slider', function (e) {
           if (!!self.cache.active) {
             e.preventDefault();
             if ($.data(self.cache.active[0], 'settings').vertical) {
@@ -5035,23 +4887,23 @@
             }
           }
         })
-        .on('mouseup.fndtn.slider touchend.fndtn.slider pointerup.fndtn.slider', function(e) {
+        .on('mouseup.fndtn.slider touchend.fndtn.slider pointerup.fndtn.slider', function (e) {
           self.remove_active_slider();
         })
-        .on('change.fndtn.slider', function(e) {
+        .on('change.fndtn.slider', function (e) {
           self.settings.on_change();
         });
 
       self.S(window)
-        .on('resize.fndtn.slider', self.throttle(function(e) {
+        .on('resize.fndtn.slider', self.throttle(function (e) {
           self.reflow();
         }, 300));
     },
 
-    get_cursor_position: function(e, xy) {
+    get_cursor_position : function (e, xy) {
       var pageXY = 'page' + xy.toUpperCase(),
-        clientXY = 'client' + xy.toUpperCase(),
-        position;
+          clientXY = 'client' + xy.toUpperCase(),
+          position;
 
       if (typeof e[pageXY] !== 'undefined') {
         position = e[pageXY];
@@ -5066,23 +4918,23 @@
       return position;
     },
 
-    set_active_slider: function($handle) {
+    set_active_slider : function ($handle) {
       this.cache.active = $handle;
     },
 
-    remove_active_slider: function() {
+    remove_active_slider : function () {
       this.cache.active = null;
     },
 
-    calculate_position: function($handle, cursor_x) {
+    calculate_position : function ($handle, cursor_x) {
       var self = this,
-        settings = $.data($handle[0], 'settings'),
-        handle_l = $.data($handle[0], 'handle_l'),
-        handle_o = $.data($handle[0], 'handle_o'),
-        bar_l = $.data($handle[0], 'bar_l'),
-        bar_o = $.data($handle[0], 'bar_o');
+          settings = $.data($handle[0], 'settings'),
+          handle_l = $.data($handle[0], 'handle_l'),
+          handle_o = $.data($handle[0], 'handle_o'),
+          bar_l = $.data($handle[0], 'bar_l'),
+          bar_o = $.data($handle[0], 'bar_o');
 
-      requestAnimationFrame(function() {
+      requestAnimationFrame(function () {
         var pct;
 
         if (Foundation.rtl && !settings.vertical) {
@@ -5099,15 +4951,15 @@
       });
     },
 
-    set_ui: function($handle, value) {
+    set_ui : function ($handle, value) {
       var settings = $.data($handle[0], 'settings'),
-        handle_l = $.data($handle[0], 'handle_l'),
-        bar_l = $.data($handle[0], 'bar_l'),
-        norm_pct = this.normalized_percentage(value, settings.start, settings.end),
-        handle_offset = norm_pct * (bar_l - handle_l) - 1,
-        progress_bar_length = norm_pct * 100,
-        $handle_parent = $handle.parent(),
-        $hidden_inputs = $handle.parent().children('input[type=hidden]');
+          handle_l = $.data($handle[0], 'handle_l'),
+          bar_l = $.data($handle[0], 'bar_l'),
+          norm_pct = this.normalized_percentage(value, settings.start, settings.end),
+          handle_offset = norm_pct * (bar_l - handle_l) - 1,
+          progress_bar_length = norm_pct * 100,
+          $handle_parent = $handle.parent(),
+          $hidden_inputs = $handle.parent().children('input[type=hidden]');
 
       if (Foundation.rtl && !settings.vertical) {
         handle_offset = -handle_offset;
@@ -5126,19 +4978,19 @@
 
       $hidden_inputs.val(value);
       if (settings.trigger_input_change) {
-        $hidden_inputs.trigger('change');
+          $hidden_inputs.trigger('change');
       }
 
       if (!$handle[0].hasAttribute('aria-valuemin')) {
         $handle.attr({
-          'aria-valuemin': settings.start,
-          'aria-valuemax': settings.end
+          'aria-valuemin' : settings.start,
+          'aria-valuemax' : settings.end
         });
       }
       $handle.attr('aria-valuenow', value);
 
       if (settings.display_selector != '') {
-        $(settings.display_selector).each(function() {
+        $(settings.display_selector).each(function () {
           if (this.hasOwnProperty('value')) {
             $(this).val(value);
           } else {
@@ -5149,20 +5001,20 @@
 
     },
 
-    normalized_percentage: function(val, start, end) {
+    normalized_percentage : function (val, start, end) {
       return Math.min(1, (val - start) / (end - start));
     },
 
-    normalized_value: function(val, start, end, step, precision) {
+    normalized_value : function (val, start, end, step, precision) {
       var range = end - start,
-        point = val * range,
-        mod = (point - (point % step)) / step,
-        rem = point % step,
-        round = (rem >= step * 0.5 ? step : 0);
+          point = val * range,
+          mod = (point - (point % step)) / step,
+          rem = point % step,
+          round = ( rem >= step * 0.5 ? step : 0);
       return ((mod * step + round) + start).toFixed(precision);
     },
 
-    set_translate: function(ele, offset, vertical) {
+    set_translate : function (ele, offset, vertical) {
       if (vertical) {
         $(ele)
           .css('-webkit-transform', 'translateY(' + offset + 'px)')
@@ -5180,13 +5032,13 @@
       }
     },
 
-    limit_to: function(val, min, max) {
+    limit_to : function (val, min, max) {
       return Math.min(Math.max(val, min), max);
     },
 
-    initialize_settings: function(handle) {
+    initialize_settings : function (handle) {
       var settings = $.extend({}, this.settings, this.data_options($(handle).parent())),
-        decimal_places_match_result;
+          decimal_places_match_result;
 
       if (settings.precision === null) {
         decimal_places_match_result = ('' + settings.step).match(/\.([\d]*)/);
@@ -5209,16 +5061,16 @@
       $.data(handle, 'settings', settings);
     },
 
-    set_initial_position: function($ele) {
+    set_initial_position : function ($ele) {
       var settings = $.data($ele.children('.range-slider-handle')[0], 'settings'),
-        initial = ((typeof settings.initial == 'number' && !isNaN(settings.initial)) ? settings.initial : Math.floor((settings.end - settings.start) * 0.5 / settings.step) * settings.step + settings.start),
-        $handle = $ele.children('.range-slider-handle');
+          initial = ((typeof settings.initial == 'number' && !isNaN(settings.initial)) ? settings.initial : Math.floor((settings.end - settings.start) * 0.5 / settings.step) * settings.step + settings.start),
+          $handle = $ele.children('.range-slider-handle');
       this.set_ui($handle, initial);
     },
 
-    set_value: function(value) {
+    set_value : function (value) {
       var self = this;
-      $('[' + self.attr_name() + ']', this.scope).each(function() {
+      $('[' + self.attr_name() + ']', this.scope).each(function () {
         $(this).attr(self.attr_name(), value);
       });
       if (!!$(this.scope).attr(self.attr_name())) {
@@ -5227,11 +5079,11 @@
       self.reflow();
     },
 
-    reflow: function() {
+    reflow : function () {
       var self = this;
-      self.S('[' + this.attr_name() + ']').each(function() {
+      self.S('[' + this.attr_name() + ']').each(function () {
         var handle = $(this).children('.range-slider-handle')[0],
-          val = $(this).attr(self.attr_name());
+            val = $(this).attr(self.attr_name());
         self.initialize_settings(handle);
 
         if (val) {
@@ -5245,28 +5097,27 @@
 
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.tab = {
-    name: 'tab',
+    name : 'tab',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      active_class: 'active',
-      callback: function() {},
-      deep_linking: false,
-      scroll_to_content: true,
-      is_hover: false
+    settings : {
+      active_class : 'active',
+      callback : function () {},
+      deep_linking : false,
+      scroll_to_content : true,
+      is_hover : false
     },
 
-    default_tab_hashes: [],
+    default_tab_hashes : [],
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       var self = this,
-        S = this.S;
+          S = this.S;
 
       this.bindings(method, options);
 
@@ -5279,31 +5130,31 @@
       // Store the default active tabs which will be referenced when the
       // location hash is absent, as in the case of navigating the tabs and
       // returning to the first viewing via the browser Back button.
-      S('[' + this.attr_name() + '] > .active > a', this.scope).each(function() {
+      S('[' + this.attr_name() + '] > .active > a', this.scope).each(function () {
         self.default_tab_hashes.push(this.hash);
       });
     },
 
-    events: function() {
+    events : function () {
       var self = this,
-        S = this.S;
+          S = this.S;
 
-      var usual_tab_behavior = function(e) {
-        var settings = S(this).closest('[' + self.attr_name() + ']').data(self.attr_name(true) + '-init');
-        if (!settings.is_hover || Modernizr.touch) {
-          e.preventDefault();
-          e.stopPropagation();
-          self.toggle_active_tab(S(this).parent());
-        }
-      };
+      var usual_tab_behavior =  function (e) {
+          var settings = S(this).closest('[' + self.attr_name() + ']').data(self.attr_name(true) + '-init');
+          if (!settings.is_hover || Modernizr.touch) {
+            e.preventDefault();
+            e.stopPropagation();
+            self.toggle_active_tab(S(this).parent());
+          }
+        };
 
       S(this.scope)
         .off('.tab')
         // Click event: tab title
-        .on('focus.fndtn.tab', '[' + this.attr_name() + '] > * > a', usual_tab_behavior)
-        .on('click.fndtn.tab', '[' + this.attr_name() + '] > * > a', usual_tab_behavior)
+        .on('focus.fndtn.tab', '[' + this.attr_name() + '] > * > a', usual_tab_behavior )
+        .on('click.fndtn.tab', '[' + this.attr_name() + '] > * > a', usual_tab_behavior )
         // Hover event: tab title
-        .on('mouseenter.fndtn.tab', '[' + this.attr_name() + '] > * > a', function(e) {
+        .on('mouseenter.fndtn.tab', '[' + this.attr_name() + '] > * > a', function (e) {
           var settings = S(this).closest('[' + self.attr_name() + ']').data(self.attr_name(true) + '-init');
           if (settings.is_hover) {
             self.toggle_active_tab(S(this).parent());
@@ -5311,18 +5162,18 @@
         });
 
       // Location hash change event
-      S(window).on('hashchange.fndtn.tab', function(e) {
+      S(window).on('hashchange.fndtn.tab', function (e) {
         e.preventDefault();
         self.handle_location_hash_change();
       });
     },
 
-    handle_location_hash_change: function() {
+    handle_location_hash_change : function () {
 
       var self = this,
-        S = this.S;
+          S = this.S;
 
-      S('[' + this.attr_name() + ']', this.scope).each(function() {
+      S('[' + this.attr_name() + ']', this.scope).each(function () {
         var settings = S(this).data(self.attr_name(true) + '-init');
         if (settings.deep_linking) {
           // Match the location hash to a label
@@ -5355,75 +5206,75 @@
             }
           }
         }
-      });
-    },
+       });
+     },
 
-    toggle_active_tab: function(tab, location_hash) {
+    toggle_active_tab : function (tab, location_hash) {
       var self = this,
-        S = self.S,
-        tabs = tab.closest('[' + this.attr_name() + ']'),
-        tab_link = tab.find('a'),
-        anchor = tab.children('a').first(),
-        target_hash = '#' + anchor.attr('href').split('#')[1],
-        target = S(target_hash),
-        siblings = tab.siblings(),
-        settings = tabs.data(this.attr_name(true) + '-init'),
-        interpret_keyup_action = function(e) {
-          // Light modification of Heydon Pickering's Practical ARIA Examples: http://heydonworks.com/practical_aria_examples/js/a11y.js
+          S = self.S,
+          tabs = tab.closest('[' + this.attr_name() + ']'),
+          tab_link = tab.find('a'),
+          anchor = tab.children('a').first(),
+          target_hash = '#' + anchor.attr('href').split('#')[1],
+          target = S(target_hash),
+          siblings = tab.siblings(),
+          settings = tabs.data(this.attr_name(true) + '-init'),
+          interpret_keyup_action = function (e) {
+            // Light modification of Heydon Pickering's Practical ARIA Examples: http://heydonworks.com/practical_aria_examples/js/a11y.js
 
-          // define current, previous and next (possible) tabs
+            // define current, previous and next (possible) tabs
 
-          var $original = $(this);
-          var $prev = $(this).parents('li').prev().children('[role="tab"]');
-          var $next = $(this).parents('li').next().children('[role="tab"]');
-          var $target;
+            var $original = $(this);
+            var $prev = $(this).parents('li').prev().children('[role="tab"]');
+            var $next = $(this).parents('li').next().children('[role="tab"]');
+            var $target;
 
-          // find the direction (prev or next)
+            // find the direction (prev or next)
 
-          switch (e.keyCode) {
-            case 37:
-              $target = $prev;
-              break;
-            case 39:
-              $target = $next;
-              break;
-            default:
-              $target = false
-              break;
-          }
+            switch (e.keyCode) {
+              case 37:
+                $target = $prev;
+                break;
+              case 39:
+                $target = $next;
+                break;
+              default:
+                $target = false
+                  break;
+            }
 
-          if ($target.length) {
-            $original.attr({
-              'tabindex': '-1',
-              'aria-selected': null
-            });
-            $target.attr({
-              'tabindex': '0',
-              'aria-selected': true
-            }).focus();
-          }
+            if ($target.length) {
+              $original.attr({
+                'tabindex' : '-1',
+                'aria-selected' : null
+              });
+              $target.attr({
+                'tabindex' : '0',
+                'aria-selected' : true
+              }).focus();
+            }
 
-          // Hide panels
+            // Hide panels
 
-          $('[role="tabpanel"]')
-            .attr('aria-hidden', 'true');
+            $('[role="tabpanel"]')
+              .attr('aria-hidden', 'true');
 
-          // Show panel which corresponds to target
+            // Show panel which corresponds to target
 
-          $('#' + $(document.activeElement).attr('href').substring(1))
-            .attr('aria-hidden', null);
+            $('#' + $(document.activeElement).attr('href').substring(1))
+              .attr('aria-hidden', null);
 
-        },
-        go_to_hash = function(hash) {
-          // This function allows correct behaviour of the browser's back button when deep linking is enabled. Without it
-          // the user would get continually redirected to the default hash.
-          var is_entry_location = window.location.href === self.entry_location,
-            default_hash = settings.scroll_to_content ? self.default_tab_hashes[0] : is_entry_location ? window.location.hash : 'fndtn-' + self.default_tab_hashes[0].replace('#', '')
+          },
+          go_to_hash = function(hash) {
+            // This function allows correct behaviour of the browser's back button when deep linking is enabled. Without it
+            // the user would get continually redirected to the default hash.
+            var is_entry_location = window.location.href === self.entry_location,
+                default_hash = settings.scroll_to_content ? self.default_tab_hashes[0] : is_entry_location ? window.location.hash :'fndtn-' + self.default_tab_hashes[0].replace('#', '')
 
-          if (!(is_entry_location && hash === default_hash)) {
-            window.location.hash = hash;
-          }
-        };
+            if (!(is_entry_location && hash === default_hash)) {
+              window.location.hash = hash;
+            }
+          };
 
       // allow usage of data-tab-content attribute instead of href
       if (S(this).data(this.data_attr('tab-content'))) {
@@ -5458,28 +5309,19 @@
       // window (notably in Chrome).
       // Clean up multiple attr instances to done once
       tab.addClass(settings.active_class).triggerHandler('opened');
-      tab_link.attr({
-        'aria-selected': 'true',
-        tabindex: 0
-      });
+      tab_link.attr({'aria-selected' : 'true',  tabindex : 0});
       siblings.removeClass(settings.active_class)
-      siblings.find('a').attr({
-        'aria-selected': 'false',
-        tabindex: -1
-      });
-      target.siblings().removeClass(settings.active_class).attr({
-        'aria-hidden': 'true',
-        tabindex: -1
-      });
+      siblings.find('a').attr({'aria-selected' : 'false',  tabindex : -1});
+      target.siblings().removeClass(settings.active_class).attr({'aria-hidden' : 'true',  tabindex : -1});
       target.addClass(settings.active_class).attr('aria-hidden', 'false').removeAttr('tabindex');
       settings.callback(tab);
       target.triggerHandler('toggled', [tab]);
       tabs.triggerHandler('toggled', [target]);
 
-      tab_link.off('keydown').on('keydown', interpret_keyup_action);
+      tab_link.off('keydown').on('keydown', interpret_keyup_action );
     },
 
-    data_attr: function(str) {
+    data_attr : function (str) {
       if (this.namespace.length > 0) {
         return this.namespace + '-' + str;
       }
@@ -5487,42 +5329,43 @@
       return str;
     },
 
-    off: function() {},
+    off : function () {},
 
-    reflow: function() {}
+    reflow : function () {}
   };
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.tooltip = {
-    name: 'tooltip',
+    name : 'tooltip',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      additional_inheritable_classes: [],
-      tooltip_class: '.tooltip',
-      append_to: 'body',
-      touch_close_text: 'Tap To Close',
-      disable_for_touch: false,
-      hover_delay: 200,
-      show_on: 'all',
-      tip_template: function(selector, content) {
-        return '<span data-selector="' + selector + '" id="' + selector + '" class="' + Foundation.libs.tooltip.settings.tooltip_class.substring(1) + '" role="tooltip">' + content + '<span class="nub"></span></span>';
+    settings : {
+      additional_inheritable_classes : [],
+      tooltip_class : '.tooltip',
+      append_to : 'body',
+      touch_close_text : 'Tap To Close',
+      disable_for_touch : false,
+      hover_delay : 200,
+      show_on : 'all',
+      tip_template : function (selector, content) {
+        return '<span data-selector="' + selector + '" id="' + selector + '" class="'
+          + Foundation.libs.tooltip.settings.tooltip_class.substring(1)
+          + '" role="tooltip">' + content + '<span class="nub"></span></span>';
       }
     },
 
-    cache: {},
+    cache : {},
 
-    init: function(scope, method, options) {
+    init : function (scope, method, options) {
       Foundation.inherit(this, 'random_str');
       this.bindings(method, options);
     },
 
-    should_show: function(target, tip) {
+    should_show : function (target, tip) {
       var settings = $.extend({}, this.settings, this.data_options(target));
 
       if (settings.show_on === 'all') {
@@ -5537,64 +5380,63 @@
       return false;
     },
 
-    medium: function() {
+    medium : function () {
       return matchMedia(Foundation.media_queries['medium']).matches;
     },
 
-    large: function() {
+    large : function () {
       return matchMedia(Foundation.media_queries['large']).matches;
     },
 
-    events: function(instance) {
+    events : function (instance) {
       var self = this,
-        S = self.S;
+          S = self.S;
 
       self.create(this.S(instance));
 
       $(this.scope)
         .off('.tooltip')
         .on('mouseenter.fndtn.tooltip mouseleave.fndtn.tooltip touchstart.fndtn.tooltip MSPointerDown.fndtn.tooltip',
-          '[' + this.attr_name() + ']',
-          function(e) {
-            var $this = S(this),
+          '[' + this.attr_name() + ']', function (e) {
+          var $this = S(this),
               settings = $.extend({}, self.settings, self.data_options($this)),
               is_touch = false;
 
-            if (Modernizr.touch && /touchstart|MSPointerDown/i.test(e.type) && S(e.target).is('a')) {
-              return false;
+          if (Modernizr.touch && /touchstart|MSPointerDown/i.test(e.type) && S(e.target).is('a')) {
+            return false;
+          }
+
+          if (/mouse/i.test(e.type) && self.ie_touch(e)) {
+            return false;
+          }
+
+          if ($this.hasClass('open')) {
+            if (Modernizr.touch && /touchstart|MSPointerDown/i.test(e.type)) {
+              e.preventDefault();
+            }
+            self.hide($this);
+          } else {
+            if (settings.disable_for_touch && Modernizr.touch && /touchstart|MSPointerDown/i.test(e.type)) {
+              return;
+            } else if (!settings.disable_for_touch && Modernizr.touch && /touchstart|MSPointerDown/i.test(e.type)) {
+              e.preventDefault();
+              S(settings.tooltip_class + '.open').hide();
+              is_touch = true;
             }
 
-            if (/mouse/i.test(e.type) && self.ie_touch(e)) {
-              return false;
-            }
-
-            if ($this.hasClass('open')) {
-              if (Modernizr.touch && /touchstart|MSPointerDown/i.test(e.type)) {
-                e.preventDefault();
-              }
+            if (/enter|over/i.test(e.type)) {
+              this.timer = setTimeout(function () {
+                var tip = self.showTip($this);
+              }.bind(this), self.settings.hover_delay);
+            } else if (e.type === 'mouseout' || e.type === 'mouseleave') {
+              clearTimeout(this.timer);
               self.hide($this);
             } else {
-              if (settings.disable_for_touch && Modernizr.touch && /touchstart|MSPointerDown/i.test(e.type)) {
-                return;
-              } else if (!settings.disable_for_touch && Modernizr.touch && /touchstart|MSPointerDown/i.test(e.type)) {
-                e.preventDefault();
-                S(settings.tooltip_class + '.open').hide();
-                is_touch = true;
-              }
-
-              if (/enter|over/i.test(e.type)) {
-                this.timer = setTimeout(function() {
-                  var tip = self.showTip($this);
-                }.bind(this), self.settings.hover_delay);
-              } else if (e.type === 'mouseout' || e.type === 'mouseleave') {
-                clearTimeout(this.timer);
-                self.hide($this);
-              } else {
-                self.showTip($this);
-              }
+              self.showTip($this);
             }
-          })
-        .on('mouseleave.fndtn.tooltip touchstart.fndtn.tooltip MSPointerDown.fndtn.tooltip', '[' + this.attr_name() + '].open', function(e) {
+          }
+        })
+        .on('mouseleave.fndtn.tooltip touchstart.fndtn.tooltip MSPointerDown.fndtn.tooltip', '[' + this.attr_name() + '].open', function (e) {
           if (/mouse/i.test(e.type) && self.ie_touch(e)) {
             return false;
           }
@@ -5607,17 +5449,17 @@
             self.hide($(this));
           }
         })
-        .on('DOMNodeRemoved DOMAttrModified', '[' + this.attr_name() + ']:not(a)', function(e) {
+        .on('DOMNodeRemoved DOMAttrModified', '[' + this.attr_name() + ']:not(a)', function (e) {
           self.hide(S(this));
         });
     },
 
-    ie_touch: function(e) {
+    ie_touch : function (e) {
       // How do I distinguish between IE11 and Windows Phone 8?????
       return false;
     },
 
-    showTip: function($target) {
+    showTip : function ($target) {
       var $tip = this.getTip($target);
       if (this.should_show($target, $tip)) {
         return this.show($target);
@@ -5625,10 +5467,10 @@
       return;
     },
 
-    getTip: function($target) {
+    getTip : function ($target) {
       var selector = this.selector($target),
-        settings = $.extend({}, this.settings, this.data_options($target)),
-        tip = null;
+          settings = $.extend({}, this.settings, this.data_options($target)),
+          tip = null;
 
       if (selector) {
         tip = this.S('span[data-selector="' + selector + '"]' + settings.tooltip_class);
@@ -5637,9 +5479,9 @@
       return (typeof tip === 'object') ? tip : false;
     },
 
-    selector: function($target) {
+    selector : function ($target) {
       var id = $target.attr('id'),
-        dataSelector = $target.attr(this.attr_name()) || $target.attr('data-selector');
+          dataSelector = $target.attr(this.attr_name()) || $target.attr('data-selector');
 
       if ((id && id.length < 1 || !id) && typeof dataSelector != 'string') {
         dataSelector = this.random_str(6);
@@ -5651,23 +5493,23 @@
       return (id && id.length > 0) ? id : dataSelector;
     },
 
-    create: function($target) {
+    create : function ($target) {
       var self = this,
-        settings = $.extend({}, this.settings, this.data_options($target)),
-        tip_template = this.settings.tip_template;
+          settings = $.extend({}, this.settings, this.data_options($target)),
+          tip_template = this.settings.tip_template;
 
       if (typeof settings.tip_template === 'string' && window.hasOwnProperty(settings.tip_template)) {
         tip_template = window[settings.tip_template];
       }
 
       var $tip = $(tip_template(this.selector($target), $('<div></div>').html($target.attr('title')).html())),
-        classes = this.inheritable_classes($target);
+          classes = this.inheritable_classes($target);
 
       $tip.addClass(classes).appendTo(settings.append_to);
 
       if (Modernizr.touch) {
         $tip.append('<span class="tap-to-close">' + settings.touch_close_text + '</span>');
-        $tip.on('touchstart.fndtn.tooltip MSPointerDown.fndtn.tooltip', function(e) {
+        $tip.on('touchstart.fndtn.tooltip MSPointerDown.fndtn.tooltip', function (e) {
           self.hide($target);
         });
       }
@@ -5675,7 +5517,7 @@
       $target.removeAttr('title').attr('title', '');
     },
 
-    reposition: function(target, tip, classes) {
+    reposition : function (target, tip, classes) {
       var width, nub, nubHeight, nubWidth, column, objPos;
 
       tip.css('visibility', 'hidden').show();
@@ -5686,21 +5528,17 @@
       nubWidth = nub.outerHeight();
 
       if (this.small()) {
-        tip.css({
-          'width': '100%'
-        });
+        tip.css({'width' : '100%'});
       } else {
-        tip.css({
-          'width': (width) ? width : 'auto'
-        });
+        tip.css({'width' : (width) ? width : 'auto'});
       }
 
-      objPos = function(obj, top, right, bottom, left, width) {
+      objPos = function (obj, top, right, bottom, left, width) {
         return obj.css({
-          'top': (top) ? top : 'auto',
-          'bottom': (bottom) ? bottom : 'auto',
-          'left': (left) ? left : 'auto',
-          'right': (right) ? right : 'auto'
+          'top' : (top) ? top : 'auto',
+          'bottom' : (bottom) ? bottom : 'auto',
+          'left' : (left) ? left : 'auto',
+          'right' : (right) ? right : 'auto'
         }).end();
       };
 
@@ -5738,32 +5576,32 @@
       tip.css('visibility', 'visible').hide();
     },
 
-    small: function() {
+    small : function () {
       return matchMedia(Foundation.media_queries.small).matches &&
         !matchMedia(Foundation.media_queries.medium).matches;
     },
 
-    inheritable_classes: function($target) {
+    inheritable_classes : function ($target) {
       var settings = $.extend({}, this.settings, this.data_options($target)),
-        inheritables = ['tip-top', 'tip-left', 'tip-bottom', 'tip-right', 'radius', 'round'].concat(settings.additional_inheritable_classes),
-        classes = $target.attr('class'),
-        filtered = classes ? $.map(classes.split(' '), function(el, i) {
-          if ($.inArray(el, inheritables) !== -1) {
-            return el;
-          }
-        }).join(' ') : '';
+          inheritables = ['tip-top', 'tip-left', 'tip-bottom', 'tip-right', 'radius', 'round'].concat(settings.additional_inheritable_classes),
+          classes = $target.attr('class'),
+          filtered = classes ? $.map(classes.split(' '), function (el, i) {
+            if ($.inArray(el, inheritables) !== -1) {
+              return el;
+            }
+          }).join(' ') : '';
 
       return $.trim(filtered);
     },
 
-    convert_to_touch: function($target) {
+    convert_to_touch : function ($target) {
       var self = this,
-        $tip = self.getTip($target),
-        settings = $.extend({}, self.settings, self.data_options($target));
+          $tip = self.getTip($target),
+          settings = $.extend({}, self.settings, self.data_options($target));
 
       if ($tip.find('.tap-to-close').length === 0) {
         $tip.append('<span class="tap-to-close">' + settings.touch_close_text + '</span>');
-        $tip.on('click.fndtn.tooltip.tapclose touchstart.fndtn.tooltip.tapclose MSPointerDown.fndtn.tooltip.tapclose', function(e) {
+        $tip.on('click.fndtn.tooltip.tapclose touchstart.fndtn.tooltip.tapclose MSPointerDown.fndtn.tooltip.tapclose', function (e) {
           self.hide($target);
         });
       }
@@ -5771,7 +5609,7 @@
       $target.data('tooltip-open-event-type', 'touch');
     },
 
-    show: function($target) {
+    show : function ($target) {
       var $tip = this.getTip($target);
 
       if ($target.data('tooltip-open-event-type') == 'touch') {
@@ -5783,49 +5621,48 @@
       $tip.fadeIn(150);
     },
 
-    hide: function($target) {
+    hide : function ($target) {
       var $tip = this.getTip($target);
 
-      $tip.fadeOut(150, function() {
+      $tip.fadeOut(150, function () {
         $tip.find('.tap-to-close').remove();
         $tip.off('click.fndtn.tooltip.tapclose MSPointerDown.fndtn.tapclose');
         $target.removeClass('open');
       });
     },
 
-    off: function() {
+    off : function () {
       var self = this;
       this.S(this.scope).off('.fndtn.tooltip');
-      this.S(this.settings.tooltip_class).each(function(i) {
+      this.S(this.settings.tooltip_class).each(function (i) {
         $('[' + self.attr_name() + ']').eq(i).attr('title', $(this).text());
       }).remove();
     },
 
-    reflow: function() {}
+    reflow : function () {}
   };
 }(jQuery, window, window.document));
 
-;
-(function($, window, document, undefined) {
+;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.topbar = {
-    name: 'topbar',
+    name : 'topbar',
 
-    version: '5.5.1',
+    version : '5.5.1',
 
-    settings: {
-      index: 0,
-      sticky_class: 'sticky',
-      custom_back_text: true,
-      back_text: 'Back',
-      mobile_show_parent_link: true,
-      is_hover: true,
-      scrolltop: true, // jump to top when sticky nav menu toggle is clicked
-      sticky_on: 'all'
+    settings : {
+      index : 0,
+      sticky_class : 'sticky',
+      custom_back_text : true,
+      back_text : 'Back',
+      mobile_show_parent_link : true,
+      is_hover : true,
+      scrolltop : true, // jump to top when sticky nav menu toggle is clicked
+      sticky_on : 'all'
     },
 
-    init: function(section, method, options) {
+    init : function (section, method, options) {
       Foundation.inherit(this, 'add_custom_rule register_media throttle');
       var self = this;
 
@@ -5833,13 +5670,13 @@
 
       this.bindings(method, options);
 
-      self.S('[' + this.attr_name() + ']', this.scope).each(function() {
+      self.S('[' + this.attr_name() + ']', this.scope).each(function () {
         var topbar = $(this),
-          settings = topbar.data(self.attr_name(true) + '-init'),
-          section = self.S('section, .top-bar-section', this);
+            settings = topbar.data(self.attr_name(true) + '-init'),
+            section = self.S('section, .top-bar-section', this);
         topbar.data('index', 0);
         var topbarContainer = topbar.parent();
-        if (topbarContainer.hasClass('fixed') || self.is_sticky(topbar, topbarContainer, settings)) {
+        if (topbarContainer.hasClass('fixed') || self.is_sticky(topbar, topbarContainer, settings) ) {
           self.settings.sticky_class = settings.sticky_class;
           self.settings.sticky_topbar = topbar;
           topbar.data('height', topbarContainer.outerHeight());
@@ -5868,41 +5705,35 @@
 
     },
 
-    is_sticky: function(topbar, topbarContainer, settings) {
-      var sticky = topbarContainer.hasClass(settings.sticky_class);
+    is_sticky : function (topbar, topbarContainer, settings) {
+      var sticky     = topbarContainer.hasClass(settings.sticky_class);
       var smallMatch = matchMedia(Foundation.media_queries.small).matches;
-      var medMatch = matchMedia(Foundation.media_queries.medium).matches;
-      var lrgMatch = matchMedia(Foundation.media_queries.large).matches;
+      var medMatch   = matchMedia(Foundation.media_queries.medium).matches;
+      var lrgMatch   = matchMedia(Foundation.media_queries.large).matches;
+      
+       if (sticky && settings.sticky_on === 'all') {
+          return true;
+       }
+       if (sticky && this.small() && settings.sticky_on.indexOf('small') !== -1) {
+           if (smallMatch && !medMatch && !lrgMatch) { return true; }
+       }
+       if (sticky && this.medium() && settings.sticky_on.indexOf('medium') !== -1) {
+           if (smallMatch && medMatch && !lrgMatch) { return true; }
+       }
+       if (sticky && this.large() && settings.sticky_on.indexOf('large') !== -1) {
+           if (smallMatch && medMatch && lrgMatch) { return true; }
+       }
 
-      if (sticky && settings.sticky_on === 'all') {
+       // fix for iOS browsers
+       if (sticky && navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
         return true;
-      }
-      if (sticky && this.small() && settings.sticky_on.indexOf('small') !== -1) {
-        if (smallMatch && !medMatch && !lrgMatch) {
-          return true;
-        }
-      }
-      if (sticky && this.medium() && settings.sticky_on.indexOf('medium') !== -1) {
-        if (smallMatch && medMatch && !lrgMatch) {
-          return true;
-        }
-      }
-      if (sticky && this.large() && settings.sticky_on.indexOf('large') !== -1) {
-        if (smallMatch && medMatch && lrgMatch) {
-          return true;
-        }
-      }
-
-      // fix for iOS browsers
-      if (sticky && navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-        return true;
-      }
-      return false;
+       }
+       return false;
     },
 
-    toggle: function(toggleEl) {
+    toggle : function (toggleEl) {
       var self = this,
-        topbar;
+          topbar;
 
       if (toggleEl) {
         topbar = self.S(toggleEl).closest('[' + this.attr_name() + ']');
@@ -5916,19 +5747,11 @@
 
       if (self.breakpoint()) {
         if (!self.rtl) {
-          section.css({
-            left: '0%'
-          });
-          $('>.name', section).css({
-            left: '100%'
-          });
+          section.css({left : '0%'});
+          $('>.name', section).css({left : '100%'});
         } else {
-          section.css({
-            right: '0%'
-          });
-          $('>.name', section).css({
-            right: '100%'
-          });
+          section.css({right : '0%'});
+          $('>.name', section).css({right : '100%'});
         }
 
         self.S('li.moved', section).removeClass('moved');
@@ -5976,29 +5799,29 @@
       }
     },
 
-    timer: null,
+    timer : null,
 
-    events: function(bar) {
+    events : function (bar) {
       var self = this,
-        S = this.S;
+          S = this.S;
 
       S(this.scope)
         .off('.topbar')
-        .on('click.fndtn.topbar', '[' + this.attr_name() + '] .toggle-topbar', function(e) {
+        .on('click.fndtn.topbar', '[' + this.attr_name() + '] .toggle-topbar', function (e) {
           e.preventDefault();
           self.toggle(this);
         })
-        .on('click.fndtn.topbar', '.top-bar .top-bar-section li a[href^="#"],[' + this.attr_name() + '] .top-bar-section li a[href^="#"]', function(e) {
-          var li = $(this).closest('li');
-          if (self.breakpoint() && !li.hasClass('back') && !li.hasClass('has-dropdown')) {
-            self.toggle();
-          }
+        .on('click.fndtn.topbar', '.top-bar .top-bar-section li a[href^="#"],[' + this.attr_name() + '] .top-bar-section li a[href^="#"]', function (e) {
+            var li = $(this).closest('li');
+            if (self.breakpoint() && !li.hasClass('back') && !li.hasClass('has-dropdown')) {
+              self.toggle();
+            }
         })
-        .on('click.fndtn.topbar', '[' + this.attr_name() + '] li.has-dropdown', function(e) {
+        .on('click.fndtn.topbar', '[' + this.attr_name() + '] li.has-dropdown', function (e) {
           var li = S(this),
-            target = S(e.target),
-            topbar = li.closest('[' + self.attr_name() + ']'),
-            settings = topbar.data(self.attr_name(true) + '-init');
+              target = S(e.target),
+              topbar = li.closest('[' + self.attr_name() + ']'),
+              settings = topbar.data(self.attr_name(true) + '-init');
 
           if (target.data('revealId')) {
             self.toggle();
@@ -6033,48 +5856,40 @@
             }
           }
         })
-        .on('click.fndtn.topbar', '[' + this.attr_name() + '] .has-dropdown>a', function(e) {
+        .on('click.fndtn.topbar', '[' + this.attr_name() + '] .has-dropdown>a', function (e) {
           if (self.breakpoint()) {
 
             e.preventDefault();
 
             var $this = S(this),
-              topbar = $this.closest('[' + self.attr_name() + ']'),
-              section = topbar.find('section, .top-bar-section'),
-              dropdownHeight = $this.next('.dropdown').outerHeight(),
-              $selectedLi = $this.closest('li');
+                topbar = $this.closest('[' + self.attr_name() + ']'),
+                section = topbar.find('section, .top-bar-section'),
+                dropdownHeight = $this.next('.dropdown').outerHeight(),
+                $selectedLi = $this.closest('li');
 
             topbar.data('index', topbar.data('index') + 1);
             $selectedLi.addClass('moved');
 
             if (!self.rtl) {
-              section.css({
-                left: -(100 * topbar.data('index')) + '%'
-              });
-              section.find('>.name').css({
-                left: 100 * topbar.data('index') + '%'
-              });
+              section.css({left : -(100 * topbar.data('index')) + '%'});
+              section.find('>.name').css({left : 100 * topbar.data('index') + '%'});
             } else {
-              section.css({
-                right: -(100 * topbar.data('index')) + '%'
-              });
-              section.find('>.name').css({
-                right: 100 * topbar.data('index') + '%'
-              });
+              section.css({right : -(100 * topbar.data('index')) + '%'});
+              section.find('>.name').css({right : 100 * topbar.data('index') + '%'});
             }
 
             topbar.css('height', $this.siblings('ul').outerHeight(true) + topbar.data('height'));
           }
         });
 
-      S(window).off('.topbar').on('resize.fndtn.topbar', self.throttle(function() {
-        self.resize.call(self);
-      }, 50)).trigger('resize').trigger('resize.fndtn.topbar').load(function() {
-        // Ensure that the offset is calculated after all of the pages resources have loaded
-        S(this).trigger('resize.fndtn.topbar');
+      S(window).off('.topbar').on('resize.fndtn.topbar', self.throttle(function () {
+          self.resize.call(self);
+      }, 50)).trigger('resize').trigger('resize.fndtn.topbar').load(function () {
+          // Ensure that the offset is calculated after all of the pages resources have loaded
+          S(this).trigger('resize.fndtn.topbar');
       });
 
-      S('body').off('.topbar').on('click.fndtn.topbar', function(e) {
+      S('body').off('.topbar').on('click.fndtn.topbar', function (e) {
         var parent = S(e.target).closest('li').closest('li.hover');
 
         if (parent.length > 0) {
@@ -6085,32 +5900,24 @@
       });
 
       // Go up a level on Click
-      S(this.scope).on('click.fndtn.topbar', '[' + this.attr_name() + '] .has-dropdown .back', function(e) {
+      S(this.scope).on('click.fndtn.topbar', '[' + this.attr_name() + '] .has-dropdown .back', function (e) {
         e.preventDefault();
 
         var $this = S(this),
-          topbar = $this.closest('[' + self.attr_name() + ']'),
-          section = topbar.find('section, .top-bar-section'),
-          settings = topbar.data(self.attr_name(true) + '-init'),
-          $movedLi = $this.closest('li.moved'),
-          $previousLevelUl = $movedLi.parent();
+            topbar = $this.closest('[' + self.attr_name() + ']'),
+            section = topbar.find('section, .top-bar-section'),
+            settings = topbar.data(self.attr_name(true) + '-init'),
+            $movedLi = $this.closest('li.moved'),
+            $previousLevelUl = $movedLi.parent();
 
         topbar.data('index', topbar.data('index') - 1);
 
         if (!self.rtl) {
-          section.css({
-            left: -(100 * topbar.data('index')) + '%'
-          });
-          section.find('>.name').css({
-            left: 100 * topbar.data('index') + '%'
-          });
+          section.css({left : -(100 * topbar.data('index')) + '%'});
+          section.find('>.name').css({left : 100 * topbar.data('index') + '%'});
         } else {
-          section.css({
-            right: -(100 * topbar.data('index')) + '%'
-          });
-          section.find('>.name').css({
-            right: 100 * topbar.data('index') + '%'
-          });
+          section.css({right : -(100 * topbar.data('index')) + '%'});
+          section.find('>.name').css({right : 100 * topbar.data('index') + '%'});
         }
 
         if (topbar.data('index') === 0) {
@@ -6119,26 +5926,26 @@
           topbar.css('height', $previousLevelUl.outerHeight(true) + topbar.data('height'));
         }
 
-        setTimeout(function() {
+        setTimeout(function () {
           $movedLi.removeClass('moved');
         }, 300);
       });
 
       // Show dropdown menus when their items are focused
       S(this.scope).find('.dropdown a')
-        .focus(function() {
+        .focus(function () {
           $(this).parents('.has-dropdown').addClass('hover');
         })
-        .blur(function() {
+        .blur(function () {
           $(this).parents('.has-dropdown').removeClass('hover');
         });
     },
 
-    resize: function() {
+    resize : function () {
       var self = this;
-      self.S('[' + this.attr_name() + ']').each(function() {
+      self.S('[' + this.attr_name() + ']').each(function () {
         var topbar = self.S(this),
-          settings = topbar.data(self.attr_name(true) + '-init');
+            settings = topbar.data(self.attr_name(true) + '-init');
 
         var stickyContainer = topbar.parent('.' + self.settings.sticky_class);
         var stickyOffset;
@@ -6151,9 +5958,9 @@
             .find('li')
             .removeClass('hover');
 
-          if (doToggle) {
-            self.toggle(topbar);
-          }
+            if (doToggle) {
+              self.toggle(topbar);
+            }
         }
 
         if (self.is_sticky(topbar, stickyContainer, settings)) {
@@ -6177,40 +5984,40 @@
       });
     },
 
-    breakpoint: function() {
+    breakpoint : function () {
       return !matchMedia(Foundation.media_queries['topbar']).matches;
     },
 
-    small: function() {
+    small : function () {
       return matchMedia(Foundation.media_queries['small']).matches;
     },
 
-    medium: function() {
+    medium : function () {
       return matchMedia(Foundation.media_queries['medium']).matches;
     },
 
-    large: function() {
+    large : function () {
       return matchMedia(Foundation.media_queries['large']).matches;
     },
 
-    assemble: function(topbar) {
+    assemble : function (topbar) {
       var self = this,
-        settings = topbar.data(this.attr_name(true) + '-init'),
-        section = self.S('section, .top-bar-section', topbar);
+          settings = topbar.data(this.attr_name(true) + '-init'),
+          section = self.S('section, .top-bar-section', topbar);
 
       // Pull element out of the DOM for manipulation
       section.detach();
 
-      self.S('.has-dropdown>a', section).each(function() {
+      self.S('.has-dropdown>a', section).each(function () {
         var $link = self.S(this),
-          $dropdown = $link.siblings('.dropdown'),
-          url = $link.attr('href'),
-          $titleLi;
+            $dropdown = $link.siblings('.dropdown'),
+            url = $link.attr('href'),
+            $titleLi;
 
         if (!$dropdown.find('.title.back').length) {
 
           if (settings.mobile_show_parent_link == true && url) {
-            $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li><li class="parent-link hide-for-large-up"><a class="parent-link js-generated" href="' + url + '">' + $link.html() + '</a></li>');
+            $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li><li class="parent-link hide-for-large-up"><a class="parent-link js-generated" href="' + url + '">' + $link.html() +'</a></li>');
           } else {
             $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5>');
           }
@@ -6234,35 +6041,33 @@
       this.assembled(topbar);
     },
 
-    assembled: function(topbar) {
-      topbar.data(this.attr_name(true), $.extend({}, topbar.data(this.attr_name(true)), {
-        assembled: true
-      }));
+    assembled : function (topbar) {
+      topbar.data(this.attr_name(true), $.extend({}, topbar.data(this.attr_name(true)), {assembled : true}));
     },
 
-    height: function(ul) {
+    height : function (ul) {
       var total = 0,
-        self = this;
+          self = this;
 
-      $('> li', ul).each(function() {
+      $('> li', ul).each(function () {
         total += self.S(this).outerHeight(true);
       });
 
       return total;
     },
 
-    sticky: function() {
+    sticky : function () {
       var self = this;
 
-      this.S(window).on('scroll', function() {
+      this.S(window).on('scroll', function () {
         self.update_sticky_positioning();
       });
     },
 
-    update_sticky_positioning: function() {
+    update_sticky_positioning : function () {
       var klass = '.' + this.settings.sticky_class,
-        $window = this.S(window),
-        self = this;
+          $window = this.S(window),
+          self = this;
 
       if (self.settings.sticky_topbar && self.is_sticky(this.settings.sticky_topbar, this.settings.sticky_topbar.parent(), this.settings)) {
         var distance = this.settings.sticky_topbar.data('stickyoffset');
@@ -6282,11 +6087,11 @@
       }
     },
 
-    off: function() {
+    off : function () {
       this.S(this.scope).off('.fndtn.topbar');
       this.S(window).off('.fndtn.topbar');
     },
 
-    reflow: function() {}
+    reflow : function () {}
   };
 }(jQuery, window, window.document));

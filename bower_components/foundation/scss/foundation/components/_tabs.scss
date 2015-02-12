@@ -1,12 +1,16 @@
 // Foundation by ZURB
 // foundation.zurb.com
 // Licensed under MIT Open Source
+
 @import "global";
 @import "grid";
+
 //
 // @variables
 //
+
 $include-html-tabs-classes: $include-html-classes !default;
+
 $tabs-navigation-padding: rem-calc(16) !default;
 $tabs-navigation-bg-color: $silver !default;
 $tabs-navigation-active-bg-color: $white !default;
@@ -15,17 +19,19 @@ $tabs-navigation-font-color: $jet !default;
 $tabs-navigation-active-font-color: $tabs-navigation-font-color !default;
 $tabs-navigation-font-size: rem-calc(16) !default;
 $tabs-navigation-font-family: $body-font-family !default;
+
 $tabs-content-margin-bottom: rem-calc(24) !default;
 $tabs-content-padding: ($column-gutter/2) !default;
+
 $tabs-vertical-navigation-margin-bottom: 1.25rem !default;
+
 @include exports("tab") {
   @if $include-html-tabs-classes {
     .tabs {
       @include clearfix;
       margin-bottom: 0 !important;
       margin-left: 0;
-      dd,
-      .tab-title {
+      dd, .tab-title {
         position: relative;
         margin-bottom: 0 !important;
         list-style: none;
@@ -44,34 +50,27 @@ $tabs-vertical-navigation-margin-bottom: 1.25rem !default;
               color: $tabs-navigation-hover-bg-color;
             }
           }
-          &:focus {
-            outline: none;
+          &:focus{
+              outline: none;
           }
         }
         &.active a {
           background: {
             color: $tabs-navigation-active-bg-color;
           }
-          color: $tabs-navigation-active-font-color;
-        }
+          color:$tabs-navigation-active-font-color;
+          }
       }
       &.radius {
-        dd:first-child,
-        .tab:first-child {
-          a {
-            @include side-radius($default-float, $global-radius);
-          }
+        dd:first-child, .tab:first-child {
+          a { @include side-radius($default-float, $global-radius); }
         }
-        dd:last-child,
-        .tab:last-child {
-          a {
-            @include side-radius($opposite-direction, $global-radius);
-          }
+        dd:last-child, .tab:last-child {
+          a { @include side-radius($opposite-direction, $global-radius); }
         }
       }
       &.vertical {
-        dd,
-        .tab-title {
+        dd, .tab-title {
           position: inherit;
           float: none;
           display: block;
@@ -79,6 +78,7 @@ $tabs-vertical-navigation-margin-bottom: 1.25rem !default;
         }
       }
     }
+
     .tabs-content {
       @include clearfix;
       margin-bottom: $tabs-content-margin-bottom;
@@ -88,19 +88,12 @@ $tabs-vertical-navigation-margin-bottom: 1.25rem !default;
         float: $default-float;
         padding: $tabs-content-padding 0;
         width: 100%;
-        &.active {
-          display: block;
-          float: none;
-        }
-        &.contained {
-          padding: $tabs-content-padding;
-        }
+        &.active { display: block; float: none; }
+        &.contained { padding: $tabs-content-padding; }
       }
       &.vertical {
         display: block;
-        > .content {
-          padding: 0 $tabs-content-padding;
-        }
+        > .content { padding: 0 $tabs-content-padding; }
       }
     }
     @media #{$medium-up} {
@@ -117,8 +110,8 @@ $tabs-vertical-navigation-margin-bottom: 1.25rem !default;
           width: 80%;
           max-width: 80%;
           float: $default-float;
-          margin-#{$default-float} : -1px;
-          padding-#{$default-float} : 1rem;
+          margin-#{$default-float}: -1px;
+          padding-#{$default-float}: 1rem;
         }
       }
     }
