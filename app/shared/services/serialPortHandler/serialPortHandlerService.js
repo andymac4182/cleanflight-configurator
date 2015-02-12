@@ -1,35 +1,25 @@
-(function() {
-	'use strict';
+(function () {
+  'use strict';
 
-	angular
-		.module('cleanflightConfigurator')
-		.factory('serialPortHandlerService', serialPortHandlerService);
+  angular
+    .module('cleanflightConfigurator')
+    .factory('serialPortHandlerService', serialPortHandlerService);
 
-	serialPortHandlerService.$inject = ['$log', 'serialService'];
+  serialPortHandlerService.$inject = ['$log', 'serialService'];
 
-	function serialPortHandlerService($log, serialService) {
-		var service = {
+  function serialPortHandlerService($log, serialService) {
+    var service = {
+      portList: serialService.getPortList(),
+      portSpeedList: [1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200],
+      defaultPortSpeed: 115200,
+      refreshPortList: refreshPortList
+    };
 
-			portList: serialService.getPortList(),
-			portSpeedList: [1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400,
-				57600,
-				115200
-			],
+    return service;
 
-
-			defaultPortSpeed: 115200,
-
-			refreshPortList: refreshPortList
-
-		};
-
-		return service;
-
-		function refreshPortList() {
-			$log.info("serialPortHandlerService.refreshPortList")
-			this.portList = serialService.getPortList();
-		};
-
-
-	};
+    function refreshPortList() {
+      $log.info("serialPortHandlerService.refreshPortList");
+      this.portList = serialService.getPortList();
+    }
+  }
 })();
