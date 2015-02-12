@@ -8,6 +8,11 @@
   serialPortHandlerService.$inject = ['$log', 'serialService'];
 
   function serialPortHandlerService($log, serialService) {
+    var portDetails = {
+      portName: null,
+      baudRate: 115200
+    };
+
     var service = {
       portList: serialService.getPortList(),
       portSpeedList: [1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400,
@@ -17,14 +22,7 @@
       refreshPortList: refreshPortList,
       portDetails: portDetails,
 
-      connectToDevice: connectToDevice,
-    };
-
-
-
-    var portDetails = {
-      portName: null,
-      baudRate: 115200
+      connectToDevice: connectToDevice
     };
 
     function refreshPortList() {
