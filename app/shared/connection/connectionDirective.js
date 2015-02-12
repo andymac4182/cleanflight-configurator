@@ -18,8 +18,6 @@
 
         $scope.portDetails = serialPortHandlerService.portDetails;
 
-        alert($scope.portDetails.baudRate);
-
         $scope.refreshPortList = function refreshPortList() {
           $log.info("Loading port list");
           serialPortHandlerService.refreshPortList();
