@@ -8,6 +8,20 @@
   serialPortHandlerService.$inject = ['$log', 'serialService'];
 
   function serialPortHandlerService($log, serialService) {
+    var service = {
+      portList: serialService.getPortList(),
+      portSpeedList: [1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400,
+        57600,
+        115200
+      ],
+      refreshPortList: refreshPortList,
+      portDetails: portDetails,
+
+      connectToDevice: connectToDevice,
+    };
+
+
+
     var portDetails = {
       portName: null,
       baudRate: 115200
@@ -23,17 +37,7 @@
       serialService.openPort(portDetails.portName, portDetails.baudRate);
     }
 
-    var service = {
-      portList: serialService.getPortList(),
-      portSpeedList: [1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400,
-        57600,
-        115200
-      ],
-      refreshPortList: refreshPortList,
-      portDetails: portDetails,
 
-      connectToDevice: connectToDevice,
-    };
 
     return service;
   }
