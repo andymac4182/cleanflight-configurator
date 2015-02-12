@@ -1,23 +1,24 @@
 (function() {
-	"use strict";
-	angular.module('cleanflightConfigurator')
-		.directive('connection', connectionDirective);
+  "use strict";
+  angular.module('cleanflightConfigurator')
+    .directive('connection', connectionDirective);
 
-	connectionDirective.$inject = ['$log', 'serialPortHandlerService'];
+  connectionDirective.$inject = ['$log', 'serialPortHandlerService'];
 
 
-	function connectionDirective($log, serialPortHandlerService) {
-		return {
-			templateUrl: 'app/shared/connection/connectionView.html',
-			restrict: 'E',
-			scope: {
+  function connectionDirective($log, serialPortHandlerService) {
+    return {
+      templateUrl: 'app/shared/connection/connectionView.html',
+      restrict: 'E',
+      scope: {
 
-			},
+      },
       controller: function($scope) {
         $scope.portSpeedList = serialPortHandlerService.portSpeedList;
 
-        $scope.portBaudRate = serialPortHandlerService.portBaudRate;
-        $scope.currentPortName = serialPortHandlerService.currentPortName;
+        $scope.portDetails = serialPortHandlerService.portDetails;
+
+        alert($scope.portDetails.baudRate);
 
         $scope.refreshPortList = function refreshPortList() {
           $log.info("Loading port list");
@@ -37,9 +38,9 @@
 
         }, true);
       },
-			link: function(scope, element, attrs) {
+      link: function(scope, element, attrs) {
 
       }
-		};
-	}
+    };
+  }
 }());

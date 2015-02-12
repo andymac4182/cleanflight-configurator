@@ -15,16 +15,17 @@
         115200
       ],
       refreshPortList: refreshPortList,
-      currentPortName: currentPortName,
-      portBaudRate: portBaudRate,
+      portDetails: portDetails,
 
       connectToDevice: connectToDevice,
     };
 
     return service;
 
-    var currentPortName = null;
-    var portBaudRate = 115200;
+    var portDetails = {
+      portName: null,
+      baudRate: 115200
+    };
 
     function refreshPortList() {
       $log.info("serialPortHandlerService.refreshPortList");
@@ -33,7 +34,7 @@
     }
 
     function connectToDevice() {
-      serialService.openPort(this.currentPortName, this.portBaudRate);
+      serialService.openPort(portDetails.portName, portDetails.baudRate);
     }
   }
 })();
