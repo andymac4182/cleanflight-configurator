@@ -12,11 +12,13 @@
    - Range slider
    - Progress bars and meters
 */
+
 /// @Foundation.settings
 // Forms
 // Basic form variables
 $form-fontsize: 1rem !default;
 $form-padding: 0.5rem !default;
+
 // Text fields
 $input-color: #000 !default;
 $input-color-hover: $input-color !default;
@@ -27,27 +29,32 @@ $input-background-focus: $input-background !default;
 $input-border: 1px solid #ccc !default;
 $input-border-hover: 1px solid #bbb !default;
 $input-border-focus: 1px solid #999 !default;
+
 // Select menus
 $select-color: #000 !default;
 $select-background: #fafafa !default;
 $select-background-hover: smartscale($select-background, 4%) !default;
 $select-arrow: true !default;
 $select-arrow-color: $select-color !default;
+
 // Labels
 $form-label-fontsize: 0.9rem !default;
 $form-label-margin: 0.5rem !default;
 $form-label-color: #333 !default;
+
 // Inline labels
 $inlinelabel-color: #333 !default;
 $inlinelabel-background: #eee !default;
 $inlinelabel-border: $input-border !default;
+
 // Range slider
 $slider-background: #ddd !default;
 $slider-height: 1rem !default;
-$slider-radius: 0 !default;
+$slider-radius: 0px !default;
 $slider-thumb-height: 1.5rem !default;
 $slider-thumb-color: $primary-color !default;
-$slider-thumb-radius: 0 !default;
+$slider-thumb-radius: 0px !default;
+
 // Progress and meter
 $meter-height: 1.5rem !default;
 $meter-background: #ccc !default;
@@ -57,11 +64,13 @@ $meter-fill-medium: #e7cf00 !default;
 $meter-fill-low: $alert-color !default;
 $meter-radius: 0 !default;
 ///
+
 // Disable OS-level styles
 @mixin no-appearance {
   -webkit-appearance: none;
-  -moz-appearance: none;
+     -moz-appearance: none;
 }
+
 // Text fields
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 #{$text-input-selectors} {
@@ -69,7 +78,7 @@ $meter-radius: 0 !default;
   display: block;
   width: 100%;
   padding: $form-padding;
-  margin: 0 0 $global-padding;
+  margin: 0 0 $global-padding 0;
   border: $input-border;
   border-radius: 0;
   background: $input-background;
@@ -77,6 +86,7 @@ $meter-radius: 0 !default;
   font-size: $form-fontsize;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
+
   &:hover {
     border: $input-border-hover;
     background: $input-background-hover;
@@ -88,10 +98,12 @@ $meter-radius: 0 !default;
     background: $input-background-focus;
     color: $input-color-focus;
   }
+
   label > & {
     margin-top: $form-label-margin;
   }
 }
+
 // Labels
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 label {
@@ -99,21 +111,23 @@ label {
   font-size: $form-label-fontsize;
   margin-bottom: $form-label-margin;
   color: $form-label-color;
-  > input,
-  > textarea {
+
+  > input, > textarea {
     margin-top: $form-label-margin;
   }
 }
+
 // Checkbox/radio buttons
 // - - - - - - - - - - - - - - - - - - - - - - - - -
-input[type="checkbox"],
-input[type="radio"] {
+input[type="checkbox"], input[type="radio"] {
   width: 1rem;
   height: 1rem;
+
   // Input inside of a label
   label > & {
     margin-right: $form-padding * 0.5;
   }
+
   // Input next to a label
   & + label {
     display: inline-block;
@@ -123,6 +137,7 @@ input[type="radio"] {
     vertical-align: baseline;
   }
 }
+
 // Inline labels
 // Inline labels allow you to prefix or postfix special labels to inputs
 // - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -131,16 +146,18 @@ input[type="radio"] {
   flex-flow: row nowrap;
   align-items: stretch;
   margin-bottom: $global-padding;
+
   // Imitates the top margin on normal inputs
   label > & {
     margin-top: $form-label-margin;
   }
+
   // Inputs stretch all the way out
-  > input,
-  > select {
+  > input, > select {
     flex: 1;
     margin: 0;
   }
+
   // Inline labels and buttons shrink
   > .form-label {
     flex: 0 0 auto;
@@ -150,12 +167,9 @@ input[type="radio"] {
     padding: 0 $form-padding;
     display: flex;
     align-items: center;
-    &:first-child {
-      border-right: 0;
-    }
-    &:last-child {
-      border-left: 0;
-    }
+
+    &:first-child { border-right: 0; }
+    &:last-child  { border-left: 0; }
   }
   // Assumed to be a button
   > a {
@@ -167,6 +181,7 @@ input[type="radio"] {
     border-radius: 0;
   }
 }
+
 // Text areas
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 textarea {
@@ -174,37 +189,44 @@ textarea {
   width: 100%;
   min-height: 50px;
 }
+
 // Select menus
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 select {
   $color: isitlight($select-background);
+
   @include no-appearance;
   display: block;
   width: 100%;
   padding: $form-padding;
-  margin: 0 0 $global-padding;
+  margin: 0 0 $global-padding 0;
   font-size: $form-fontsize;
   color: $select-color;
   border-radius: 0;
+
   @if $select-arrow {
-    background: $select-background url("image-triangle($select-arrow-color)") right 10px center no-repeat;
+    background: $select-background url(image-triangle($select-arrow-color)) right 10px center no-repeat;
     background-size: 8px 8px;
     padding-right: rem-calc(18px) + $form-padding;
   }
   @else {
-    background-color: $select-background;
+    background-color: $select-background
   }
+
   &:hover {
     background-color: $select-background-hover;
   }
+
   &:focus {
     outline: 0;
   }
 }
+
 // Range slider
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 input[type="range"] {
   $margin: ($slider-thumb-height - $slider-height) / 2;
+
   @include no-appearance;
   display: block;
   width: 100%;
@@ -214,12 +236,15 @@ input[type="range"] {
   overflow: visible;
   margin-top: $margin;
   margin-bottom: $margin;
+
   @if hasvalue($slider-radius) {
     border-radius: $slider-radius;
   }
+
   &:focus {
     outline: 0;
   }
+
   // Chrome/Safari
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -268,33 +293,37 @@ output {
   vertical-align: middle;
   margin-left: 0.5em;
 }
+
 // Number inputs
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 input[type="number"] {
   &::-webkit-inner-spin-button {
-    
+
   }
   &::-webkit-outer-spin-button {
     -webkit-appearance: none;
     background: $primary-color;
   }
 }
+
 // Progress and meter
 // - - - - - - - - - - - - - - - - - - - - - - - - -
-progress,
-meter {
+progress, meter {
   @include no-appearance;
   display: block;
   width: 100%;
   height: $meter-height;
   margin-bottom: 1rem;
+
   @if hasvalue($meter-radius) {
     border-radius: $meter-radius;
   }
+
   // For Firefox
   background: $meter-background;
   border: 0;
 }
+
 progress {
   &::-webkit-progress-bar {
     background: $meter-background;
@@ -314,8 +343,8 @@ progress {
       border-radius: $meter-radius;
     }
   }
-  @each $name,
-  $color in (high: $meter-fill-high, medium: $meter-fill-medium, low: $meter-fill-low) {
+
+  @each $name, $color in (high: $meter-fill-high, medium: $meter-fill-medium, low: $meter-fill-low) {
     &.#{$name} {
       &::-webkit-progress-value {
         background: $color;
@@ -357,6 +386,7 @@ meter {
       border-radius: $meter-radius;
     }
   }
+
   // Firefox
   background: $meter-background;
   &::-moz-meter-bar {

@@ -6,7 +6,7 @@
     $urlRouterProvider, $stateProvider) {
     $stateProvider
       .state('landing', {
-        url: "/landing",
+        url: '/landing',
         templateUrl: 'app/components/landing/landingView.html',
         controller: 'LandingController'
       })

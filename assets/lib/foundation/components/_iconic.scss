@@ -8,6 +8,7 @@
 //  - Built-in coloring and sizing classes
 //  - Coloring mixin
 //  - Angular support
+
 /// @Foundation.settings
 // Iconic
 $iconic-primary-fill: $primary-color !default;
@@ -15,10 +16,17 @@ $iconic-primary-stroke: $primary-color !default;
 $iconic-accent-fill: $iconic-primary-fill !default;
 $iconic-accent-stroke: $iconic-accent-fill !default;
 ///
+
 // Colors the fill, and optionally stroke, accent fill, and accent stroke of an Iconic icon.
-@mixin color-icon( $fill, $stroke: null, $fillAccent: null, $strokeAccent: null ) {
+@mixin color-icon(
+  $fill,
+  $stroke: null,
+  $fillAccent: null,
+  $strokeAccent: null
+) {
   * {
     fill: $fill;
+
     // Use the fill color if no stroke is provided
     @if hasvalue($stroke) {
       stroke: $stroke;
@@ -26,6 +34,7 @@ $iconic-accent-stroke: $iconic-accent-fill !default;
     @else {
       stroke: $fill;
     }
+
     &.iconic-property-accent {
       // Use the fill color if no accent is provided
       @if hasvalue($fillAccent) {
@@ -34,6 +43,7 @@ $iconic-accent-stroke: $iconic-accent-fill !default;
       @else {
         fill: $fill;
       }
+
       // Use the normal stroke color if no accent is provided
       @if hasvalue($strokeAccent) {
         stroke: $strokeAccent;
@@ -50,25 +60,30 @@ $iconic-accent-stroke: $iconic-accent-fill !default;
     }
   }
 }
+
 @include exports(iconic) {
   .iconic {
     width: 1rem;
     height: 1rem;
     vertical-align: middle;
+
     a > & {
       @include color-icon($primary-color);
       margin-top: -2px;
       margin-right: 0.25rem;
     }
   }
+
   .iconic * {
     fill: $iconic-primary-fill;
     stroke: $iconic-primary-stroke;
+
     &.iconic-property-accent {
       fill: $iconic-accent-fill;
       stroke: $iconic-accent-stroke;
     }
   }
+
   @each $color in map-keys($foundation-colors) {
     .iconic-color-#{$color} {
       @include color-icon(map-get($foundation-colors, $color));
