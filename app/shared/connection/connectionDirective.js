@@ -23,7 +23,7 @@
           serialPortHandlerService.refreshPortList();
         };
 
-        $scope.connect = function connect() {
+        $scope.connect = function() {
           $log.log("Connect function");
           serialPortHandlerService.connectToDevice();
         };

@@ -36,11 +36,13 @@
         $rootScope.$on('SerialPort.Opened', function (event, data) {
             portDetails.isConnected = true;
             $log.info("Serial port connected");
+            $rootScope.$apply();
         });
 
         $rootScope.$on('SerialPort.Closed', function (event, data) {
             portDetails.isConnected = false;
             $log.info("Serial port disconnected");
+            $rootScope.$apply();
         });
 
 
