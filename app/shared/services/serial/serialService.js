@@ -5,9 +5,9 @@
     .module('cleanflightConfigurator')
     .factory('serialService', serialService);
 
-  serialService.$inject = ['$log', '$injector'];
+  serialService.$inject = ['$log', '$window', '$injector'];
 
-  function serialService($log, $injector) {
+  function serialService($log, $window, $injector) {
     // Example of handling which serial service to return
     if ($window.cordova) {
       return $injector.get('otgSerialService');
