@@ -9,7 +9,7 @@
 
   function serialService($log, $window, $injector) {
     // Example of handling which serial service to return
-    if ($window.phonegap) {
+    if ($window.cordova) {
       return $injector.get('otgSerialService');
     } else {
       return $injector.get('chromeSerialService');;
